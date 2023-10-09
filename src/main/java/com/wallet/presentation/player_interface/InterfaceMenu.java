@@ -1,12 +1,19 @@
 package com.wallet.presentation.player_interface;
 
-import com.wallet.in.UserInputHandler;
+import com.wallet.in.UserDecimalInputHandler;
+import com.wallet.in.UserMenuNavigationHandler;
 import com.wallet.presentation.Localisation;
 
 import java.util.Scanner;
 
+/**
+ * Интерфейс главного меню
+ */
 public class InterfaceMenu extends Interface implements iInterface {
 
+    /**
+     * Интерфейс главного меню
+     */
     public InterfaceMenu(Scanner scanner) {
         super(scanner);
     }
@@ -15,7 +22,7 @@ public class InterfaceMenu extends Interface implements iInterface {
     public iInterface run() {
         System.out.print(Localisation.START_MENU_RU);
 
-        String userInput = UserInputHandler.menuNavigation(new String[] {"1", "2", "3"}, scanner);
+        String userInput = UserMenuNavigationHandler.menuNavigation(new String[] {"1", "2", "3"}, scanner);
 
         switch (userInput) {
             case "1": {

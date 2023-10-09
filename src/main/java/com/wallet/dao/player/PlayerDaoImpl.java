@@ -1,7 +1,6 @@
 package com.wallet.dao.player;
 
 import com.wallet.entities.Player;
-import com.wallet.infrastructure.InMemory;
 import com.wallet.infrastructure.PlayerInMemoryRepository;
 import com.wallet.infrastructure.UserSession;
 

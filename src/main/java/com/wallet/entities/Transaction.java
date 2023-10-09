@@ -6,7 +6,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.Date;
 
-
+/**
+ * Представляет сущность транзакции.
+ */
 @Getter
 public class Transaction {
 
@@ -14,8 +16,8 @@ public class Transaction {
 
     /**
      * Указывает на тип транзакции.
-     * "Пополнение" - 1;
-     * "Снятие" - 2;
+     * "Пополнение" = 1;
+     * "Снятие" = 2;
      */
     private final int transactionType;
 
@@ -23,9 +25,9 @@ public class Transaction {
 
     /**
     * Указывает статус транзакции.
-     * По умолчанию (при создании) "в обработке" - 0;
-     * "одобрено" - 1;
-     * "отклонено" - 2.
+     * По умолчанию (при создании) "в обработке" = 0;
+     * "одобрено" = 1;
+     * "отклонено" = 2.
     */
     @Setter private int transactionStatus;
     private BigDecimal transactionSum;

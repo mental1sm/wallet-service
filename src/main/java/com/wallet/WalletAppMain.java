@@ -8,10 +8,10 @@ import java.util.Scanner;
 
 public class WalletAppMain {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        iInterface ui = new InterfaceMenu(scanner);
+        Scanner scanner = new Scanner(System.in); // Инициализация сканнера
+        iInterface ui = new InterfaceMenu(scanner); // Инициализация общего интерфейса для запуска прочих UI
         while (ui != null) {
-            ui = ui.run();
+            ui = ui.run(); // Запуск интерфейса. Каждый интерфейс возвращает следующий запускаемый интерфейс
         }
     }
 }

@@ -1,8 +1,9 @@
 package com.wallet.presentation.player_interface;
 
 
+import com.wallet.in.UserRegInputHandler;
 import com.wallet.infrastructure.UserSession;
-import com.wallet.in.UserInputHandler;
+import com.wallet.in.UserDecimalInputHandler;
 import com.wallet.presentation.Localisation;
 import com.wallet.services.accountService.AccountService;
 import com.wallet.services.accountService.AccountServiceImpl;
@@ -10,8 +11,14 @@ import com.wallet.services.accountService.AccountServiceImpl;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Интерфейс регистрации
+ */
 public class InterfaceReg extends Interface implements iInterface{
 
+    /**
+     * Интерфейс регистрации
+     */
     InterfaceReg(Scanner scanner) {
         super(scanner);
     }
@@ -20,8 +27,7 @@ public class InterfaceReg extends Interface implements iInterface{
     public iInterface run() {
         AccountService accountService = new AccountServiceImpl();
 
-        System.out.print(Localisation.REG_MENU_RU);
-        HashMap<String, String> inputValues = UserInputHandler.regInput(scanner);
+        HashMap<String, String> inputValues = UserRegInputHandler.regInput(scanner);
         UserSession userSession = accountService.regUser(inputValues.get("name"), inputValues.get("surname"), inputValues.get("login"), inputValues.get("password"));
         System.out.print(Localisation.REG_FINISH_RU);
 

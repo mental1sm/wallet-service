@@ -1,8 +1,9 @@
 package com.wallet.presentation.player_interface;
 
 
+import com.wallet.in.UserMenuNavigationHandler;
 import com.wallet.infrastructure.UserSession;
-import com.wallet.in.UserInputHandler;
+import com.wallet.in.UserDecimalInputHandler;
 import com.wallet.presentation.Localisation;
 import com.wallet.services.accountService.AccountService;
 import com.wallet.services.walletService.WalletService;
@@ -11,11 +12,17 @@ import com.wallet.services.walletService.WalletServiceImpl;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Интерфейс меню управления кошельком (счетом)
+ */
 public class InterfaceWalletMenu extends Interface implements iInterface{
 
     private final UserSession userSession;
     AccountService accountService;
 
+    /**
+     * Интерфейс меню управления кошельком (счетом)
+     */
     public InterfaceWalletMenu(Scanner scanner, UserSession userSession) {
         super(scanner);
         this.userSession = userSession;
@@ -36,7 +43,7 @@ public class InterfaceWalletMenu extends Interface implements iInterface{
                     walletService.checkMoneyAmount(userSession).toString()
             );
 
-            String userInput = UserInputHandler.menuNavigation(new String[] {"1", "2", "3", "4"}, scanner);
+            String userInput = UserMenuNavigationHandler.menuNavigation(new String[] {"1", "2", "3", "4"}, scanner);
 
             switch (userInput) {
                 case "1": {

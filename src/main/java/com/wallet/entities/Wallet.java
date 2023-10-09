@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+/**
+ * Представляет сущность кошелька.
+ */
 @Getter
 @AllArgsConstructor
 public class Wallet {

@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Представляет сущность игрока.
+*/
 @Getter
 @AllArgsConstructor
 public class Player {

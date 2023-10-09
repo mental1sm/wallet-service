@@ -9,12 +9,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Интерфейс для просмотра истории транзакций
+ */
 public class InterfaceTransactionHistory extends Interface implements iInterface {
 
     WalletService walletService;
     UserSession userSession;
 
-
+    /**
+     * Интерфейс для просмотра истории транзакций
+     */
     public InterfaceTransactionHistory(Scanner scanner, WalletService walletService, UserSession userSession) {
         super(scanner);
         this.walletService = walletService;

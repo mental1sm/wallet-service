@@ -28,15 +28,13 @@ public class AccountServiceImpl implements AccountService {
         playerDao.savePlayer(pl);
         Wallet wallet = new Wallet(IdGenerator.genId(), playerDao.getPID(pl), new BigDecimal(0));
         walletDao.saveWallet(wallet);
-        UserSession userSession = new UserSession(playerDao.getPID(pl));
-        return userSession;
+        return new UserSession(playerDao.getPID(pl));
     }
 
     @Override
     public UserSession authUser(String pLogin, String pPassword) {
         Player pl = playerDao.loadPlayer(pLogin, pPassword);
-        UserSession userSession = new UserSession(playerDao.getPID(pl));
-        return userSession;
+        return new UserSession(playerDao.getPID(pl));
     }
 
 }

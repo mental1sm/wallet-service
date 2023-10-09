@@ -1,7 +1,6 @@
 package com.wallet.dao.wallet;
 
 import com.wallet.entities.Wallet;
-import com.wallet.infrastructure.InMemory;
 import com.wallet.infrastructure.WalletInMemoryRepository;
 
 import java.math.BigDecimal;

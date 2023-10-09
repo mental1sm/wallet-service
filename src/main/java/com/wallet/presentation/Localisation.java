@@ -2,6 +2,9 @@ package com.wallet.presentation;
 
 import java.util.HashMap;
 
+/**
+ * Содержит статические переменные с различными вариантами для вывода при составлении консольного UI
+*/
 public class Localisation {
     public static final String START_MENU_RU = """
                 ================================

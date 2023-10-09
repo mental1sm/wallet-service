@@ -9,7 +9,6 @@ import com.wallet.dao.wallet.WalletDaoImpl;
 import com.wallet.entities.Player;
 import com.wallet.entities.Transaction;
 import com.wallet.entities.Wallet;
-import com.wallet.infrastructure.InMemory;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.IdGenerator;
 

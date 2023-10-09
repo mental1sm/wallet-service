@@ -2,7 +2,12 @@ package com.wallet.utility;
 
 import java.util.Random;
 
+
 public class IdGenerator {
+    /**
+     * Предоставляет случайно сгенерированную строку, состоящую из 16 цифер.
+     * @return Случайно сгенерированный ID в виде строки
+     */
     public static String genId() {
         Random random = new Random();
         String pID = "";

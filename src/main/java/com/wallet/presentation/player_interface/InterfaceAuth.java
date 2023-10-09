@@ -1,7 +1,8 @@
 package com.wallet.presentation.player_interface;
 
+import com.wallet.in.UserAuthInputHandler;
 import com.wallet.infrastructure.UserSession;
-import com.wallet.in.UserInputHandler;
+import com.wallet.in.UserDecimalInputHandler;
 import com.wallet.presentation.Localisation;
 import com.wallet.services.accountService.AccountService;
 import com.wallet.services.accountService.AccountServiceImpl;
@@ -9,8 +10,14 @@ import com.wallet.services.accountService.AccountServiceImpl;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Интерфейс авторизации
+ */
 public class InterfaceAuth extends Interface implements iInterface{
 
+    /**
+     * Интерфейс авторизации
+     */
     InterfaceAuth(Scanner scanner) {
         super(scanner);
     }
@@ -19,8 +26,7 @@ public class InterfaceAuth extends Interface implements iInterface{
     public iInterface run() {
         AccountService accountService = new AccountServiceImpl();
 
-        System.out.print(Localisation.AUTH_MENU_RU);
-        HashMap<String, String> inputValues = UserInputHandler.authInput(scanner);
+        HashMap<String, String> inputValues = UserAuthInputHandler.authInput(scanner);
 
         try {
             UserSession userSession = accountService.authUser(inputValues.get("login"), inputValues.get("password"));
