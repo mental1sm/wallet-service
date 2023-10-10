@@ -2,7 +2,7 @@
 
 <H1>Install instruction</H1>
 
-```git clone https://github.com/mental1sm/wallet-service/new/homework1```
+```git clone https://github.com/mental1sm/wallet-service/tree/homework1```
 
 ```cd wallet-service```
 
