@@ -46,23 +46,28 @@ public class InterfaceWalletMenu extends Interface implements iInterface{
             String userInput = UserMenuNavigationHandler.menuNavigation(new String[] {"1", "2", "3", "4"}, scanner);
 
             switch (userInput) {
-                case "1": {
+                // Пополнение
+                case "1" -> {
+                    loggerService.log(userSession, "Запустить процесс пополнения счета");
                     iInterface interfaceDeposit = new InterfaceDeposit(scanner, walletService, userSession);
                     interfaceDeposit.run();
-                    break;
                 }
-                case "2": {
+                // Снятие
+                case "2" -> {
+                    loggerService.log(userSession, "Запустить процесс снятия денег");
                     iInterface interfaceWithdraw = new InterfaceWithdraw(scanner, walletService, userSession);
                     interfaceWithdraw.run();
-                    break;
                 }
-                case "3": {
+                // История транзакций
+                case "3" -> {
+                    loggerService.log(userSession, "Запустить историю транзакций");
                     iInterface interfaceTransactionHistory = new InterfaceTransactionHistory(scanner, walletService, userSession);
                     interfaceTransactionHistory.run();
-                    break;
                 }
-                case "4": {
+                // Выйти из аккаунта
+                case "4" -> {
                     deauthFlag = true;
+                    loggerService.log(userSession, "Выход из аккаунта");
                 }
             }
         }

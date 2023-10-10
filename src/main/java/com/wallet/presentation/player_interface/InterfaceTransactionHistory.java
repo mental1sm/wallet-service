@@ -6,7 +6,6 @@ import com.wallet.presentation.Localisation;
 import com.wallet.services.walletService.WalletService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -29,6 +28,8 @@ public class InterfaceTransactionHistory extends Interface implements iInterface
     @Override
     public iInterface run() {
 
+        loggerService.log(userSession, "Просмотр истории транзакций");
+
         System.out.print(Localisation.WALLET_MENU_TRANSACTION_HISTORY_HEADER_RU);
         ArrayList<Transaction> transactionHistory = walletService.getTransactionHistory(userSession);
         try {
@@ -48,7 +49,7 @@ public class InterfaceTransactionHistory extends Interface implements iInterface
             System.out.println(Localisation.EMPTY_TRANSACTION_HISTORY_RU);
         }
         System.out.println(Localisation.UTIL_LINER);
-        System.out.println(Localisation.WALLET_MENU_TRANSACTION_GOBACK_RU);
+        System.out.println(Localisation.GOBACK_RU);
         scanner.next();
         return null;
     }

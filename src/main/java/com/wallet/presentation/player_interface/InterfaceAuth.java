@@ -31,6 +31,7 @@ public class InterfaceAuth extends Interface implements iInterface{
         try {
             UserSession userSession = accountService.authUser(inputValues.get("login"), inputValues.get("password"));
             System.out.print(Localisation.AUTH_FINISH_RU);
+            loggerService.log(userSession, "Авторизация");
             return new InterfaceWalletMenu(scanner, userSession);
         } catch (NullPointerException e) {
             System.out.println(Localisation.USER_IS_NOT_EXISTS_RU);

@@ -22,14 +22,21 @@ public class InterfaceMenu extends Interface implements iInterface {
     public iInterface run() {
         System.out.print(Localisation.START_MENU_RU);
 
-        String userInput = UserMenuNavigationHandler.menuNavigation(new String[] {"1", "2", "3"}, scanner);
+        String userInput = UserMenuNavigationHandler.menuNavigation(new String[] {"1", "2", "3", "4"}, scanner);
 
         switch (userInput) {
-            case "1": {
+            case "1" -> {
                 return new InterfaceAuth(this.scanner);
             }
-            case "2": { return new InterfaceReg(this.scanner); }
-            case "3": { System.exit(-1); break;}
+            case "2" -> {
+                return new InterfaceReg(this.scanner);
+            }
+            case "3" -> {
+                System.exit(-1);
+            }
+            case "4" -> {
+                return new InterfaceAudit(this.scanner);
+            }
         }
         return null;
     }

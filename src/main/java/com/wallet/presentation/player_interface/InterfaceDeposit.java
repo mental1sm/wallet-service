@@ -31,6 +31,9 @@ public class InterfaceDeposit extends Interface implements iInterface{
         BigDecimal userInput = UserDecimalInputHandler.inputDepositMoney(scanner);
         walletService.depositMoney(userSession, userInput);
         System.out.println(Localisation.UTIL_LINER);
+
+        loggerService.log(userSession, String.format("Попытка пополнения на %s", userInput));
+
         return null;
     }
 }

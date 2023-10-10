@@ -13,7 +13,7 @@ public class Localisation {
                 [1] - Авторизация
                 [2] - Регистрация
                 [3] - Выйти из приложения
-                
+                [4] - Журнал аудита (ADMIN)
                 ================================
                 """;
 
@@ -99,7 +99,19 @@ public class Localisation {
                 --------------------------------
                 """;
 
-    public static final String WALLET_MENU_TRANSACTION_GOBACK_RU = "Введите любой символ, чтобы вернуться назад.";
+    public static final String GOBACK_RU = "Введите любой символ, чтобы вернуться назад.";
+
+    public static final String AUDIT_HEADER_RU = """
+                ================================
+                \t[Журнал аудита]                
+                ================================
+                """;
+
+    public static final String AUDIT_SINGLE_LOG_RU = """
+                -------------------------------------------------
+                \t%s               
+                -------------------------------------------------
+                """;
 
     public static final String INCORRECT_INPUT_RU = "Ошибка ввода данных!";
     public static final String INPUT_MISMATCH_EXCEPTION_RU = "Некорректное значение ввода";

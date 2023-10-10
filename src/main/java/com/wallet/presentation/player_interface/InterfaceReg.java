@@ -30,6 +30,7 @@ public class InterfaceReg extends Interface implements iInterface{
         HashMap<String, String> inputValues = UserRegInputHandler.regInput(scanner);
         UserSession userSession = accountService.regUser(inputValues.get("name"), inputValues.get("surname"), inputValues.get("login"), inputValues.get("password"));
         System.out.print(Localisation.REG_FINISH_RU);
+        loggerService.log(userSession, "Регистрация");
 
         return new InterfaceWalletMenu(scanner, userSession);
     }

@@ -31,6 +31,7 @@ public class InterfaceWithdraw extends Interface implements iInterface {
         BigDecimal userInput = UserDecimalInputHandler.inputWithdrawMoney(scanner);
         walletService.withdrawMoney(userSession, userInput);
         System.out.println(Localisation.UTIL_LINER);
+        loggerService.log(userSession, String.format("Попытка снятия на %s", userInput));
         return null;
     }
 }
