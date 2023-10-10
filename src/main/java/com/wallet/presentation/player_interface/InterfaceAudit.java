@@ -21,6 +21,6 @@ public class InterfaceAudit extends Interface implements iInterface {
         System.out.println(Localisation.UTIL_LINER);
         System.out.println(Localisation.GOBACK_RU);
         scanner.next();
-        return null;
+        return new InterfaceMenu(scanner);
     }
 }

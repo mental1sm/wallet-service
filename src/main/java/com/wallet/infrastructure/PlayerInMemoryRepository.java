@@ -70,8 +70,6 @@ public class PlayerInMemoryRepository {
             Player pl = entry.getValue();
             if (Objects.equals(pl.getPLogin(), login)) {
                 selectedPlayer = pl;
-            } else {
-                return null;
             }
         }
         try {

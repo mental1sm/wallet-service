@@ -10,14 +10,14 @@ import java.util.Map;
  */
 public class LoggerInMemoryRepository {
     private static LoggerInMemoryRepository instance = null;
-    private HashMap<String, String> Logs;
+    private HashMap<String, ArrayList<String>> Logs;
 
     /**
      * Приватный конструктор для создания объекта LoggerInMemoryRepository.
      * Внутренний хеш-отображение Logs инициализируется при создании объекта.
      */
     private LoggerInMemoryRepository() {
-        this.Logs = new HashMap<>();
+        Logs = new HashMap<>();
     }
 
     /**
@@ -39,7 +39,9 @@ public class LoggerInMemoryRepository {
      * @param log      Запись журнала, которую нужно сохранить.
      */
     public void saveLog(String playerID, String log) {
-        this.Logs.put(playerID, log);
+        if (Logs.get(playerID) == null) { Logs.put(playerID, new ArrayList<String>());}
+        ArrayList<String> playerLogs = Logs.get(playerID);
+        playerLogs.add(log);
     }
 
     /**
@@ -49,8 +51,8 @@ public class LoggerInMemoryRepository {
      */
     public ArrayList<String> getAllLogs() {
         ArrayList<String> logView = new ArrayList<>();
-        for (Map.Entry<String, String> entry : this.Logs.entrySet()) {
-            logView.add(entry.getValue());
+        for (Map.Entry<String, ArrayList<String>> entry : Logs.entrySet()) {
+            logView.addAll(entry.getValue());
         }
         return logView;
     }

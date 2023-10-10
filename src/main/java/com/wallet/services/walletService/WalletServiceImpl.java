@@ -14,6 +14,7 @@ import com.wallet.utility.IdGenerator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class WalletServiceImpl implements WalletService {
@@ -31,13 +32,15 @@ public class WalletServiceImpl implements WalletService {
     public void depositMoney(UserSession session, BigDecimal amount) {
         Wallet wallet = walletDao.loadWallet(session.getPlayerID());
 
-        Transaction transaction = new Transaction(
-                wallet.getWalletId(),
-                wallet.getPlayerId(),
-                IdGenerator.genId(),
-                1,
-                0,
-                amount);
+        Transaction transaction = Transaction.builder()
+                .walletId(wallet.getWalletId())
+                .playerId(wallet.getPlayerId())
+                .transactionId(IdGenerator.genId())
+                .transactionType(1)
+                .transactionStatus(0)
+                .transactionSum(amount)
+                .transactionDate(new Date())
+                .build();
 
         BigDecimal currentMoney = wallet.getWalletMoneyAmount();
         wallet.setWalletMoneyAmount(currentMoney.add(amount));
@@ -49,17 +52,19 @@ public class WalletServiceImpl implements WalletService {
     public void withdrawMoney(UserSession session, BigDecimal amount) {
         Wallet wallet = this.walletDao.loadWallet(session.getPlayerID());
 
-        Transaction transaction = new Transaction(
-                wallet.getWalletId(),
-                wallet.getPlayerId(),
-                IdGenerator.genId(),
-                2,
-                0,
-                amount);
+        Transaction transaction = Transaction.builder()
+                .walletId(wallet.getWalletId())
+                .playerId(wallet.getPlayerId())
+                .transactionId(IdGenerator.genId())
+                .transactionType(2)
+                .transactionStatus(0)
+                .transactionSum(amount)
+                .transactionDate(new Date())
+                .build();
 
         BigDecimal currentMoney = wallet.getWalletMoneyAmount();
 
-        if (currentMoney.compareTo(amount) > 0 ) {
+        if (currentMoney.compareTo(amount) >= 0 ) {
             walletDao.setWalletMoneyAmount(currentMoney.subtract(amount), wallet);
             transactionDao.setTransactionStatus(1, transaction);
         }

@@ -1,5 +1,7 @@
 package com.wallet.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,19 +11,21 @@ import java.util.Date;
 /**
  * Представляет сущность транзакции.
  */
+@AllArgsConstructor
+@Builder
 @Getter
 public class Transaction {
 
-    private final String walletId, playerId, transactionId;
+    private String walletId, playerId, transactionId;
 
     /**
      * Указывает на тип транзакции.
      * "Пополнение" = 1;
      * "Снятие" = 2;
      */
-    private final int transactionType;
+    private int transactionType;
 
-    private final Date transactionDate;
+    private Date transactionDate;
 
     /**
     * Указывает статус транзакции.
@@ -31,16 +35,6 @@ public class Transaction {
     */
     @Setter private int transactionStatus;
     private BigDecimal transactionSum;
-
-    public Transaction(String walletId, String playerId, String transactionId, int transactionType, int transactionStatus, BigDecimal transactionSum) {
-        this.walletId = walletId;
-        this.playerId = playerId;
-        this.transactionId = transactionId;
-        this.transactionType = transactionType;
-        this.transactionStatus = transactionStatus;
-        this.transactionDate = new Date();
-        this.transactionSum = transactionSum;
-    }
 
 
 }
