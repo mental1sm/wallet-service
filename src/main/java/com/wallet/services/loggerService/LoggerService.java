@@ -22,10 +22,10 @@ public class LoggerService {
     private final WalletDao walletDao;
 
 
-    private LoggerService() {
-        this.loggerRepository = LoggerInMemoryRepository.getInstance();
-        this.playerDao = new PlayerDaoImpl();
-        this.walletDao = new WalletDaoImpl();
+    private LoggerService(LoggerInMemoryRepository loggerRepository, PlayerDao playerDao, WalletDao walletDao) {
+        this.loggerRepository = loggerRepository;
+        this.playerDao = playerDao;
+        this.walletDao = walletDao;
     }
 
     /**
@@ -33,9 +33,9 @@ public class LoggerService {
      *
      * @return Единственный экземпляр LoggerService.
      */
-    public static LoggerService getInstance() {
+    public static LoggerService getInstance(LoggerInMemoryRepository loggerRepository, PlayerDao playerDao, WalletDao walletDao) {
         if (instance == null) {
-            instance = new LoggerService();
+            instance = new LoggerService(loggerRepository, playerDao, walletDao);
         }
         return instance;
     }
@@ -47,8 +47,8 @@ public class LoggerService {
      * @param action Описание действия, которое требуется зарегистрировать.
      */
     public void log(Player player, String action) {
-        String playerID = playerDao.getPID(player);
-        String walletID = walletDao.loadWallet(playerID).getWalletId();
+        String playerID = player.getPlayerID();
+        String walletID = walletDao.findWallet(playerID).getWalletId();
         String date = String.valueOf(new Date());
         String logString = String.format("[%s] - [ID игрока: %s] [ID кошелька: %s] [%s]", date, playerID, walletID, action);
         loggerRepository.saveLog(playerID, logString);
@@ -61,9 +61,9 @@ public class LoggerService {
      * @param action  Описание действия, которое требуется зарегистрировать.
      */
     public void log(UserSession session, String action) {
-        Player player = playerDao.loadPlayer(session);
-        String playerID = playerDao.getPID(player);
-        String walletID = walletDao.loadWallet(playerID).getWalletId();
+        Player player = playerDao.findPlayer(session);
+        String playerID = player.getPlayerID();
+        String walletID = walletDao.findWallet(playerID).getWalletId();
         String date = String.valueOf(new Date());
         String logString = String.format("[%s] - [ID игрока: %s] [ID кошелька: %s] [%s]", date, playerID, walletID, action);
         loggerRepository.saveLog(playerID, logString);

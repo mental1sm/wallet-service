@@ -1,5 +1,7 @@
 package com.wallet.presentation;
 
+import com.wallet.entities.Transaction;
+
 import java.util.HashMap;
 
 /**
@@ -118,17 +120,18 @@ public class Localisation {
     public static final String EMPTY_TRANSACTION_HISTORY_RU = "Ваша история транзакций пока что пуста...";
     public static final String USER_IS_NOT_EXISTS_RU = "Пользователь с таким логином/паролем не найден.";
 
-    public static String transactionStatusCodeTranslateRu(Integer statusCode) {
-        HashMap<Integer, String> codeDict = new HashMap<>();
-        codeDict.put(1, "Одобрено");
-        codeDict.put(2, "Отказано");
+    public static String transactionStatusCodeTranslateRu(Transaction.Status statusCode) {
+        HashMap<Transaction.Status, String> codeDict = new HashMap<>();
+        codeDict.put(Transaction.Status.Approved, "Одобрено");
+        codeDict.put(Transaction.Status.Disapproved, "Отказано");
+        codeDict.put(Transaction.Status.Pending, "В обработке");
         return codeDict.get(statusCode);
     }
 
-    public static String transactionTypeCodeTranslateRu(Integer typeCode) {
-        HashMap<Integer, String> codeDict = new HashMap<>();
-        codeDict.put(1, "Пополнение");
-        codeDict.put(2, "Снятие");
+    public static String transactionTypeCodeTranslateRu(Transaction.Type typeCode) {
+        HashMap<Transaction.Type, String> codeDict = new HashMap<>();
+        codeDict.put(Transaction.Type.Deposit, "Пополнение");
+        codeDict.put(Transaction.Type.Withdrawing, "Снятие");
         return codeDict.get(typeCode);
     }
 }

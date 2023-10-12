@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Интерфейс для просмотра истории транзакций
  */
-public class InterfaceTransactionHistory extends Interface implements iInterface {
+public class UITransactionHistory extends AbstractUI implements UI {
 
     WalletService walletService;
     UserSession userSession;
@@ -19,14 +19,14 @@ public class InterfaceTransactionHistory extends Interface implements iInterface
     /**
      * Интерфейс для просмотра истории транзакций
      */
-    public InterfaceTransactionHistory(Scanner scanner, WalletService walletService, UserSession userSession) {
+    public UITransactionHistory(Scanner scanner, WalletService walletService, UserSession userSession) {
         super(scanner);
         this.walletService = walletService;
         this.userSession = userSession;
     }
 
     @Override
-    public iInterface run() {
+    public UI run() {
 
         loggerService.log(userSession, "Просмотр истории транзакций");
 

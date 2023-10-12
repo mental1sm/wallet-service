@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Интерфейс для пополнения счета
  */
-public class InterfaceDeposit extends Interface implements iInterface{
+public class UIDeposit extends AbstractUI implements UI {
 
     private final WalletService walletService;
     private final UserSession userSession;
@@ -19,14 +19,14 @@ public class InterfaceDeposit extends Interface implements iInterface{
     /**
      * Интерфейс для пополнения счета
      */
-    InterfaceDeposit(Scanner scanner, WalletService walletService, UserSession userSession) {
+    UIDeposit(Scanner scanner, WalletService walletService, UserSession userSession) {
         super(scanner);
         this.userSession = userSession;
         this.walletService = walletService;
     }
 
     @Override
-    public iInterface run() {
+    public UI run() {
         System.out.print(Localisation.WALLET_MENU_DEPOSIT_HEADER_RU);
         BigDecimal userInput = UserDecimalInputHandler.inputDepositMoney(scanner);
         walletService.depositMoney(userSession, userInput);

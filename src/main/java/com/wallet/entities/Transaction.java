@@ -15,26 +15,35 @@ import java.util.Date;
 @Builder
 @Getter
 public class Transaction {
+    public enum Type {
+        Deposit,
+        Withdrawing
+    }
+
+    public enum Status {
+        Pending,
+        Approved,
+        Disapproved
+    }
 
     private String walletId, playerId, transactionId;
 
     /**
      * Указывает на тип транзакции.
-     * "Пополнение" = 1;
-     * "Снятие" = 2;
+     * "Пополнение"
+     * "Снятие"
      */
-    private int transactionType;
-
-    private Date transactionDate;
+    private Type transactionType;
 
     /**
     * Указывает статус транзакции.
-     * По умолчанию (при создании) "в обработке" = 0;
-     * "одобрено" = 1;
-     * "отклонено" = 2.
+     * По умолчанию (при создании) -> "в обработке"
+     * "одобрено"
+     * "отклонено"
     */
-    @Setter private int transactionStatus;
+    @Setter private Status transactionStatus;
     private BigDecimal transactionSum;
+    private Date transactionDate;
 
 
 }

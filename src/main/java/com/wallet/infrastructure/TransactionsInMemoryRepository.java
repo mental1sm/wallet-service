@@ -51,7 +51,6 @@ public class TransactionsInMemoryRepository {
      * @param transaction Объект Transaction, представляющий сохраняемую транзакцию.
      */
     public void saveTransaction(String walletId, Transaction transaction) {
-        System.out.println("2");
         if (this.getAllTransactionsByWalletId(walletId) == null) {
             ArrayList<Transaction> transactionsList = new ArrayList<>();
             transactionsList.add(transaction);

@@ -1,6 +1,7 @@
 package com.wallet.infrastructure;
 
 import com.wallet.entities.Player;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class PlayerInMemoryRepository {
      * @param password Пароль игрока.
      * @return Объект Player, если соответствие найдено, иначе null.
      */
-    public Player getPlayerByLoginPassword(String login, String password) {
+    public Player getPlayerByLoginPassword(String login, String password) throws PlayerIsNotExistsException {
         Player selectedPlayer = null;
         // Перебор всех игроков для поиска совпадения
         for (Map.Entry<String, Player> entry : this.Players.entrySet()) {
@@ -76,7 +77,9 @@ public class PlayerInMemoryRepository {
             if (Objects.equals(selectedPlayer.getPPassword(), password)) {
                 return selectedPlayer;
             }
-        } catch (Exception ignored) {}
+        } catch (NullPointerException e) {
+            throw new PlayerIsNotExistsException("Такого пользователя не существует");
+        }
 
         return null;
     }

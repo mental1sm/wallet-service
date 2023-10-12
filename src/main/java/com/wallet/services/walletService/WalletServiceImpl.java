@@ -30,14 +30,14 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public void depositMoney(UserSession session, BigDecimal amount) {
-        Wallet wallet = walletDao.loadWallet(session.getPlayerID());
+        Wallet wallet = walletDao.findWallet(session.getPlayerID());
 
         Transaction transaction = Transaction.builder()
                 .walletId(wallet.getWalletId())
                 .playerId(wallet.getPlayerId())
                 .transactionId(IdGenerator.genId())
-                .transactionType(1)
-                .transactionStatus(0)
+                .transactionType(Transaction.Type.Deposit)
+                .transactionStatus(Transaction.Status.Pending)
                 .transactionSum(amount)
                 .transactionDate(new Date())
                 .build();
@@ -45,19 +45,19 @@ public class WalletServiceImpl implements WalletService {
         BigDecimal currentMoney = wallet.getWalletMoneyAmount();
         wallet.setWalletMoneyAmount(currentMoney.add(amount));
 
-        transactionDao.setTransactionStatus(1, transaction);
+        transaction.setTransactionStatus(Transaction.Status.Approved);
         transactionDao.saveTransaction(transaction);
     }
     @Override
     public void withdrawMoney(UserSession session, BigDecimal amount) {
-        Wallet wallet = this.walletDao.loadWallet(session.getPlayerID());
+        Wallet wallet = this.walletDao.findWallet(session.getPlayerID());
 
         Transaction transaction = Transaction.builder()
                 .walletId(wallet.getWalletId())
                 .playerId(wallet.getPlayerId())
                 .transactionId(IdGenerator.genId())
-                .transactionType(2)
-                .transactionStatus(0)
+                .transactionType(Transaction.Type.Withdrawing)
+                .transactionStatus(Transaction.Status.Pending)
                 .transactionSum(amount)
                 .transactionDate(new Date())
                 .build();
@@ -65,37 +65,37 @@ public class WalletServiceImpl implements WalletService {
         BigDecimal currentMoney = wallet.getWalletMoneyAmount();
 
         if (currentMoney.compareTo(amount) >= 0 ) {
-            walletDao.setWalletMoneyAmount(currentMoney.subtract(amount), wallet);
-            transactionDao.setTransactionStatus(1, transaction);
+            wallet.setWalletMoneyAmount(currentMoney.subtract(amount));
+            transaction.setTransactionStatus(Transaction.Status.Approved);
         }
         else {
-            transactionDao.setTransactionStatus(2, transaction);
+            transaction.setTransactionStatus(Transaction.Status.Disapproved);
         }
         transactionDao.saveTransaction(transaction);
     }
 
     @Override
     public BigDecimal checkMoneyAmount(UserSession session) {
-        Wallet wallet = this.walletDao.loadWallet(session.getPlayerID());
+        Wallet wallet = this.walletDao.findWallet(session.getPlayerID());
 
-        return walletDao.getMoneyAmount(wallet);
+        return wallet.getWalletMoneyAmount();
     }
 
     @Override
     public HashMap<String, String> getUserInfo(UserSession session) {
-        Player pl = playerDao.loadPlayer(session);
+        Player pl = playerDao.findPlayer(session);
         HashMap<String, String> userInfo = new HashMap<>();
-        userInfo.put("name", playerDao.getName(pl));
-        userInfo.put("surname", playerDao.getSurname(pl));
-        Wallet wallet = walletDao.loadWallet(playerDao.getPID(pl));
-        userInfo.put("walletId", walletDao.getWalletId(wallet));
+        userInfo.put("name", pl.getName());
+        userInfo.put("surname", pl.getSurname());
+        Wallet wallet = walletDao.findWallet(pl.getPlayerID());
+        userInfo.put("walletId", wallet.getWalletId());
         return userInfo;
     }
 
     @Override
     public ArrayList<Transaction> getTransactionHistory(UserSession session) {
-        Wallet wallet = this.walletDao.loadWallet(session.getPlayerID());
-        return transactionDao.loadTransactions(walletDao.getWalletId(wallet));
+        Wallet wallet = this.walletDao.findWallet(session.getPlayerID());
+        return transactionDao.findTransaction(wallet.getWalletId());
 
     }
 }

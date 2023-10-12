@@ -3,7 +3,6 @@ package com.wallet.presentation.player_interface;
 
 import com.wallet.in.UserRegInputHandler;
 import com.wallet.infrastructure.UserSession;
-import com.wallet.in.UserDecimalInputHandler;
 import com.wallet.presentation.Localisation;
 import com.wallet.services.accountService.AccountService;
 import com.wallet.services.accountService.AccountServiceImpl;
@@ -14,17 +13,17 @@ import java.util.Scanner;
 /**
  * Интерфейс регистрации
  */
-public class InterfaceReg extends Interface implements iInterface{
+public class UIReg extends AbstractUI implements UI {
 
     /**
      * Интерфейс регистрации
      */
-    InterfaceReg(Scanner scanner) {
+    UIReg(Scanner scanner) {
         super(scanner);
     }
 
     @Override
-    public iInterface run() {
+    public UI run() {
         AccountService accountService = new AccountServiceImpl();
 
         HashMap<String, String> inputValues = UserRegInputHandler.regInput(scanner);
@@ -32,6 +31,6 @@ public class InterfaceReg extends Interface implements iInterface{
         System.out.print(Localisation.REG_FINISH_RU);
         loggerService.log(userSession, "Регистрация");
 
-        return new InterfaceWalletMenu(scanner, userSession);
+        return new UIWalletMenu(scanner, userSession);
     }
 }

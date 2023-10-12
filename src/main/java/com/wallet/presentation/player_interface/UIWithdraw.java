@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Интерфейс для снятия средств со счета
  */
-public class InterfaceWithdraw extends Interface implements iInterface {
+public class UIWithdraw extends AbstractUI implements UI {
 
     private final WalletService walletService;
     private final UserSession userSession;
@@ -19,14 +19,14 @@ public class InterfaceWithdraw extends Interface implements iInterface {
     /**
      * Интерфейс для снятия средств со счета
      */
-    InterfaceWithdraw(Scanner scanner, WalletService walletService, UserSession userSession) {
+    UIWithdraw(Scanner scanner, WalletService walletService, UserSession userSession) {
         super(scanner);
         this.userSession = userSession;
         this.walletService = walletService;
     }
 
     @Override
-    public iInterface run() {
+    public UI run() {
         System.out.print(Localisation.WALLET_MENU_WITHDRAW_HEADER_RU);
         BigDecimal userInput = UserDecimalInputHandler.inputWithdrawMoney(scanner);
         walletService.withdrawMoney(userSession, userInput);

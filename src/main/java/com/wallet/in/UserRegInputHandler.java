@@ -5,6 +5,9 @@ import com.wallet.presentation.Localisation;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Отвечает за ввод пользователя, связанный с регистрацией.
+ */
 public class UserRegInputHandler {
 
     /**

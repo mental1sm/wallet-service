@@ -3,6 +3,7 @@ package com.wallet.dao.player;
 import com.wallet.entities.Player;
 import com.wallet.infrastructure.PlayerInMemoryRepository;
 import com.wallet.infrastructure.UserSession;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 public class PlayerDaoImpl implements PlayerDao{
 
@@ -18,34 +19,14 @@ public class PlayerDaoImpl implements PlayerDao{
     }
 
     @Override
-    public Player loadPlayer(String pLogin, String pPassword) {
+    public Player findPlayer(String pLogin, String pPassword) throws PlayerIsNotExistsException {
         return this.playerInMemoryRepository.getPlayerByLoginPassword(pLogin, pPassword);
     }
 
     @Override
-    public Player loadPlayer(UserSession userSession) {
+    public Player findPlayer(UserSession userSession) {
         String PID = userSession.getPlayerID();
         return this.playerInMemoryRepository.getPlayerById(PID);
     }
 
-    @Override
-    public String getName(Player pl) {
-        return pl.getName();
-    }
-
-    @Override
-    public String getSurname(Player pl) {
-        return pl.getSurname();
-    }
-
-    @Override
-    public String getPID(Player pl) {
-        return pl.getPlayerID();
-    }
-
-
-    @Override
-    public void setPassword(String newPassword, Player pl) {
-        pl.setPPassword(newPassword);
-    }
 }

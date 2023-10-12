@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Отвечает за ввод пользователя, связанный с навигацией в меню с ограниченным набором опций.
+ */
 public class UserMenuNavigationHandler {
 
     /**

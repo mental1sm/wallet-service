@@ -3,9 +3,9 @@ package com.wallet.presentation.player_interface;
 /**
  * Обищй интерфейс для всех UI
 */
-public interface iInterface {
+public interface UI {
     /**
      * Запуск UI
     */
-    iInterface run();
+    UI run();
 }

@@ -3,7 +3,6 @@ package com.wallet.presentation.player_interface;
 
 import com.wallet.in.UserMenuNavigationHandler;
 import com.wallet.infrastructure.UserSession;
-import com.wallet.in.UserDecimalInputHandler;
 import com.wallet.presentation.Localisation;
 import com.wallet.services.accountService.AccountService;
 import com.wallet.services.walletService.WalletService;
@@ -15,7 +14,7 @@ import java.util.Scanner;
 /**
  * Интерфейс меню управления кошельком (счетом)
  */
-public class InterfaceWalletMenu extends Interface implements iInterface{
+public class UIWalletMenu extends AbstractUI implements UI {
 
     private final UserSession userSession;
     AccountService accountService;
@@ -23,13 +22,13 @@ public class InterfaceWalletMenu extends Interface implements iInterface{
     /**
      * Интерфейс меню управления кошельком (счетом)
      */
-    public InterfaceWalletMenu(Scanner scanner, UserSession userSession) {
+    public UIWalletMenu(Scanner scanner, UserSession userSession) {
         super(scanner);
         this.userSession = userSession;
     }
 
     @Override
-    public iInterface run() {
+    public UI run() {
         boolean deauthFlag = false;
 
         while (!deauthFlag) {
@@ -49,20 +48,20 @@ public class InterfaceWalletMenu extends Interface implements iInterface{
                 // Пополнение
                 case "1" -> {
                     loggerService.log(userSession, "Запустить процесс пополнения счета");
-                    iInterface interfaceDeposit = new InterfaceDeposit(scanner, walletService, userSession);
-                    interfaceDeposit.run();
+                    UI UIDeposit = new UIDeposit(scanner, walletService, userSession);
+                    UIDeposit.run();
                 }
                 // Снятие
                 case "2" -> {
                     loggerService.log(userSession, "Запустить процесс снятия денег");
-                    iInterface interfaceWithdraw = new InterfaceWithdraw(scanner, walletService, userSession);
-                    interfaceWithdraw.run();
+                    UI UIWithdraw = new UIWithdraw(scanner, walletService, userSession);
+                    UIWithdraw.run();
                 }
                 // История транзакций
                 case "3" -> {
                     loggerService.log(userSession, "Запустить историю транзакций");
-                    iInterface interfaceTransactionHistory = new InterfaceTransactionHistory(scanner, walletService, userSession);
-                    interfaceTransactionHistory.run();
+                    UI UITransactionHistory = new UITransactionHistory(scanner, walletService, userSession);
+                    UITransactionHistory.run();
                 }
                 // Выйти из аккаунта
                 case "4" -> {
@@ -71,6 +70,6 @@ public class InterfaceWalletMenu extends Interface implements iInterface{
                 }
             }
         }
-        return new InterfaceMenu(scanner);
+        return new UIMenu(scanner);
     }
 }

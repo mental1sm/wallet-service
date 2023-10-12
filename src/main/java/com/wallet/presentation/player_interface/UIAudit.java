@@ -5,14 +5,14 @@ import com.wallet.presentation.Localisation;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class InterfaceAudit extends Interface implements iInterface {
+public class UIAudit extends AbstractUI implements UI {
 
-    public InterfaceAudit(Scanner scanner) {
+    public UIAudit(Scanner scanner) {
         super(scanner);
     }
 
     @Override
-    public iInterface run() {
+    public UI run() {
         System.out.println(Localisation.AUDIT_HEADER_RU);
         ArrayList<String> auditLogs = loggerService.getAllLogs();
         for (String log : auditLogs) {
@@ -21,6 +21,6 @@ public class InterfaceAudit extends Interface implements iInterface {
         System.out.println(Localisation.UTIL_LINER);
         System.out.println(Localisation.GOBACK_RU);
         scanner.next();
-        return new InterfaceMenu(scanner);
+        return new UIMenu(scanner);
     }
 }

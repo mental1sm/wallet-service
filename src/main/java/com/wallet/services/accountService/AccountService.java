@@ -1,6 +1,7 @@
 package com.wallet.services.accountService;
 
 import com.wallet.infrastructure.UserSession;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 /**
  * Представляет класс для управления аккаунтом пользователя.
@@ -17,10 +18,10 @@ public interface AccountService {
     UserSession regUser(String name, String surname, String pLogin, String pPassword);
 
     /**
-     * Метод, авторизующий пользователя.
+     * Метод, аутентифицирующий пользователя.
      * @param pLogin Уникальный логин игрока
      * @param pPassword Пароль от аккаунта
      * @return Объект UserSession - сессия пользователя
      */
-    UserSession authUser(String pLogin, String pPassword);
+    UserSession authUser(String pLogin, String pPassword) throws PlayerIsNotExistsException;
 }

@@ -5,6 +5,9 @@ import com.wallet.presentation.Localisation;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
+/**
+ * Отвечает за ввод пользователя, связанный с суммами для кошелька.
+*/
 public class UserDecimalInputHandler {
 
     /**

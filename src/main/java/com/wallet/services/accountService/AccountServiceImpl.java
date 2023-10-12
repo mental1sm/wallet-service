@@ -8,6 +8,7 @@ import com.wallet.entities.Player;
 import com.wallet.entities.Wallet;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.IdGenerator;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.math.BigDecimal;
 
@@ -26,15 +27,19 @@ public class AccountServiceImpl implements AccountService {
     public UserSession regUser(String name, String surname, String pLogin, String pPassword) {
         Player pl = new Player(name, surname, IdGenerator.genId(), pLogin, pPassword);
         playerDao.savePlayer(pl);
-        Wallet wallet = new Wallet(IdGenerator.genId(), playerDao.getPID(pl), new BigDecimal(0));
+        Wallet wallet = new Wallet(IdGenerator.genId(), pl.getPlayerID(), new BigDecimal(0));
         walletDao.saveWallet(wallet);
-        return new UserSession(playerDao.getPID(pl));
+        return new UserSession(pl.getPlayerID());
     }
 
     @Override
-    public UserSession authUser(String pLogin, String pPassword) {
-        Player pl = playerDao.loadPlayer(pLogin, pPassword);
-        return new UserSession(playerDao.getPID(pl));
+    public UserSession authUser(String pLogin, String pPassword) throws PlayerIsNotExistsException {
+        Player pl = playerDao.findPlayer(pLogin, pPassword);
+        return new UserSession(pl.getPlayerID());
+
+
+
+
     }
 
 }
