@@ -2,6 +2,7 @@ package com.wallet.dao.player;
 
 import com.wallet.entities.Player;
 import com.wallet.infrastructure.UserSession;
+import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 /**
@@ -14,7 +15,7 @@ public interface PlayerDao {
      *
      * @param pl Объект игрока, который должен быть сохранен.
      */
-    void savePlayer(Player pl);
+    void savePlayer(Player pl) throws PlayerAllreadyExistsException;
 
     /**
      * Загружает информацию об игроке по его логину и паролю.

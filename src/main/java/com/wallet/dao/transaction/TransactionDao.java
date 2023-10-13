@@ -20,9 +20,9 @@ public interface TransactionDao {
     /**
      * Загружает список транзакций для указанного идентификатора игрока (PID).
      *
-     * @param PID Идентификатор игрока, для которого нужно загрузить транзакции.
-     * @return Список объектов транзакций для указанного игрока.
+     * @param walletId Идентификатор кошелька, для которого нужно загрузить транзакции.
+     * @return Список объектов транзакций для указанного кошелька.
      */
-    ArrayList<Transaction> findTransaction(UUID PID);
+    ArrayList<Transaction> findTransaction(UUID walletId);
 
 }
