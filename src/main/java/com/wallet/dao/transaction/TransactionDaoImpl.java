@@ -6,6 +6,7 @@ import com.wallet.infrastructure.TransactionsInMemoryRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 public class TransactionDaoImpl implements TransactionDao {
 
@@ -16,7 +17,7 @@ public class TransactionDaoImpl implements TransactionDao {
         this.transactionsInMemoryRepository.saveTransaction(transaction.getWalletId(), transaction);
     };
     @Override
-    public ArrayList<Transaction> findTransaction(String walletId) {
+    public ArrayList<Transaction> findTransaction(UUID walletId) {
         return this.transactionsInMemoryRepository.getAllTransactionsByWalletId(walletId);
     }
 

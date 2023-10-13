@@ -88,7 +88,7 @@ public class WalletServiceImpl implements WalletService {
         userInfo.put("name", pl.getName());
         userInfo.put("surname", pl.getSurname());
         Wallet wallet = walletDao.findWallet(pl.getPlayerID());
-        userInfo.put("walletId", wallet.getWalletId());
+        userInfo.put("walletId", wallet.getWalletId().toString());
         return userInfo;
     }
 

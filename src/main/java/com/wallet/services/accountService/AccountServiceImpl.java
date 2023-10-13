@@ -25,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public UserSession regUser(String name, String surname, String pLogin, String pPassword) {
-        Player pl = new Player(name, surname, IdGenerator.genId(), pLogin, pPassword);
+        Player pl = new Player(IdGenerator.genId(), name, surname, pLogin, pPassword);
         playerDao.savePlayer(pl);
         Wallet wallet = new Wallet(IdGenerator.genId(), pl.getPlayerID(), new BigDecimal(0));
         walletDao.saveWallet(wallet);

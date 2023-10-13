@@ -3,6 +3,7 @@ package com.wallet.infrastructure;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Класс LoggerInMemoryRepository представляет репозиторий для хранения журнала действий в памяти.
@@ -10,7 +11,7 @@ import java.util.Map;
  */
 public class LoggerInMemoryRepository {
     private static LoggerInMemoryRepository instance = null;
-    private HashMap<String, ArrayList<String>> Logs;
+    private HashMap<UUID, ArrayList<String>> Logs;
 
     /**
      * Приватный конструктор для создания объекта LoggerInMemoryRepository.
@@ -38,7 +39,7 @@ public class LoggerInMemoryRepository {
      * @param playerID Идентификатор игрока, для которого выполняется сохранение записи журнала.
      * @param log      Запись журнала, которую нужно сохранить.
      */
-    public void saveLog(String playerID, String log) {
+    public void saveLog(UUID playerID, String log) {
         if (Logs.get(playerID) == null) { Logs.put(playerID, new ArrayList<String>());}
         ArrayList<String> playerLogs = Logs.get(playerID);
         playerLogs.add(log);
@@ -51,7 +52,7 @@ public class LoggerInMemoryRepository {
      */
     public ArrayList<String> getAllLogs() {
         ArrayList<String> logView = new ArrayList<>();
-        for (Map.Entry<String, ArrayList<String>> entry : Logs.entrySet()) {
+        for (Map.Entry<UUID, ArrayList<String>> entry : Logs.entrySet()) {
             logView.addAll(entry.getValue());
         }
         return logView;

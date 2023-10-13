@@ -4,6 +4,7 @@ import com.wallet.entities.Transaction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Класс TransactionsInMemoryRepository представляет репозиторий для хранения и управления
@@ -11,7 +12,7 @@ import java.util.HashMap;
  */
 public class TransactionsInMemoryRepository {
     private static TransactionsInMemoryRepository instance = null;
-    private HashMap<String, ArrayList<Transaction>> Transactions;
+    private HashMap<UUID, ArrayList<Transaction>> Transactions;
 
     /**
      * Приватный конструктор класса TransactionsInMemoryRepository создает экземпляр HashMap для хранения
@@ -40,7 +41,7 @@ public class TransactionsInMemoryRepository {
      * @param walletId Идентификатор кошелька, для которого необходимо получить список транзакций.
      * @return Список транзакций, связанных с указанным кошельком, или null, если такие транзакции отсутствуют.
      */
-    public ArrayList<Transaction> getAllTransactionsByWalletId(String walletId) {
+    public ArrayList<Transaction> getAllTransactionsByWalletId(UUID walletId) {
         return this.Transactions.get(walletId);
     }
 
@@ -50,7 +51,7 @@ public class TransactionsInMemoryRepository {
      * @param walletId   Идентификатор кошелька, для которого необходимо сохранить транзакцию.
      * @param transaction Объект Transaction, представляющий сохраняемую транзакцию.
      */
-    public void saveTransaction(String walletId, Transaction transaction) {
+    public void saveTransaction(UUID walletId, Transaction transaction) {
         if (this.getAllTransactionsByWalletId(walletId) == null) {
             ArrayList<Transaction> transactionsList = new ArrayList<>();
             transactionsList.add(transaction);

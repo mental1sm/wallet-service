@@ -5,6 +5,8 @@ import com.wallet.infrastructure.PlayerInMemoryRepository;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
+import java.util.UUID;
+
 public class PlayerDaoImpl implements PlayerDao{
 
     PlayerInMemoryRepository playerInMemoryRepository;
@@ -25,7 +27,7 @@ public class PlayerDaoImpl implements PlayerDao{
 
     @Override
     public Player findPlayer(UserSession userSession) {
-        String PID = userSession.getPlayerID();
+        UUID PID = userSession.getPlayerID();
         return this.playerInMemoryRepository.getPlayerById(PID);
     }
 

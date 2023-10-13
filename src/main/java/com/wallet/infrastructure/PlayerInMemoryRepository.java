@@ -6,6 +6,7 @@ import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Класс PlayerInMemoryRepository представляет репозиторий для хранения и управления объектами Player
@@ -13,7 +14,7 @@ import java.util.Objects;
  */
 public class PlayerInMemoryRepository {
     private static PlayerInMemoryRepository instance = null;
-    public HashMap<String, Player> Players;
+    public HashMap<UUID, Player> Players;
 
     /**
      * Приватный конструктор класса создает экземпляр HashMap для хранения
@@ -51,7 +52,7 @@ public class PlayerInMemoryRepository {
      * @param playerId Идентификатор игрока.
      * @return Объект Player с соответствующим идентификатором или null, если игрок не найден.
      */
-    public Player getPlayerById(String playerId) {
+    public Player getPlayerById(UUID playerId) {
         return this.Players.get(playerId);
     }
 
@@ -66,8 +67,8 @@ public class PlayerInMemoryRepository {
     public Player getPlayerByLoginPassword(String login, String password) throws PlayerIsNotExistsException {
         Player selectedPlayer = null;
         // Перебор всех игроков для поиска совпадения
-        for (Map.Entry<String, Player> entry : this.Players.entrySet()) {
-            String PID = entry.getKey();
+        for (Map.Entry<UUID, Player> entry : this.Players.entrySet()) {
+            UUID PID = entry.getKey();
             Player pl = entry.getValue();
             if (Objects.equals(pl.getPLogin(), login)) {
                 selectedPlayer = pl;

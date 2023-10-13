@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 /**
  * Представляет сущность игрока.
 */
@@ -11,7 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Player {
 
-    final private String name, surname, playerID, pLogin;
+    final private UUID playerID;
+    final private String name, surname, pLogin;
     @Setter private String pPassword;
 
 

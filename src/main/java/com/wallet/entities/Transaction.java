@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Представляет сущность транзакции.
@@ -26,7 +27,7 @@ public class Transaction {
         Disapproved
     }
 
-    private String walletId, playerId, transactionId;
+    private UUID walletId, playerId, transactionId;
 
     /**
      * Указывает на тип транзакции.

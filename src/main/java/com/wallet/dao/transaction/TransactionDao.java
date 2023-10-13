@@ -3,6 +3,7 @@ package com.wallet.dao.transaction;
 import com.wallet.entities.Transaction;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Интерфейс, представляющий доступ к данным транзакций.
@@ -22,6 +23,6 @@ public interface TransactionDao {
      * @param PID Идентификатор игрока, для которого нужно загрузить транзакции.
      * @return Список объектов транзакций для указанного игрока.
      */
-    ArrayList<Transaction> findTransaction(String PID);
+    ArrayList<Transaction> findTransaction(UUID PID);
 
 }

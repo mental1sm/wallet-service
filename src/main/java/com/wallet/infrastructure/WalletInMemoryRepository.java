@@ -4,6 +4,7 @@ package com.wallet.infrastructure;
 import com.wallet.entities.Wallet;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Класс WalletInMemoryRepository представляет репозиторий для хранения и управления кошельками
@@ -11,7 +12,7 @@ import java.util.HashMap;
  */
 public class WalletInMemoryRepository {
     private static WalletInMemoryRepository instance = null;
-    private final HashMap<String, Wallet> Wallets;
+    private final HashMap<UUID, Wallet> Wallets;
 
     /**
      * Приватный конструктор класса WalletInMemoryRepository создает экземпляр HashMap для хранения
@@ -40,7 +41,7 @@ public class WalletInMemoryRepository {
      * @param PID    Идентификатор игрока, связанный с кошельком.
      * @param wallet Объект Wallet, представляющий сохраняемый кошелек.
      */
-    public void saveWallet(String PID, Wallet wallet) {
+    public void saveWallet(UUID PID, Wallet wallet) {
         this.Wallets.put(PID, wallet);
     }
 
@@ -50,7 +51,7 @@ public class WalletInMemoryRepository {
      * @param PID Идентификатор игрока, для которого необходимо получить кошелек.
      * @return Объект Wallet, соответствующий указанному идентификатору игрока, или null, если кошелек не найден.
      */
-    public Wallet getWalletById(String PID) {
+    public Wallet getWalletById(UUID PID) {
         return this.Wallets.get(PID);
     }
 }

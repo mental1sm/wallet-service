@@ -10,6 +10,7 @@ import com.wallet.infrastructure.UserSession;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Класс LoggerService предоставляет сервис для журналирования действий игроков и управления журналом.
@@ -47,8 +48,8 @@ public class LoggerService {
      * @param action Описание действия, которое требуется зарегистрировать.
      */
     public void log(Player player, String action) {
-        String playerID = player.getPlayerID();
-        String walletID = walletDao.findWallet(playerID).getWalletId();
+        UUID playerID = player.getPlayerID();
+        UUID walletID = walletDao.findWallet(playerID).getWalletId();
         String date = String.valueOf(new Date());
         String logString = String.format("[%s] - [ID игрока: %s] [ID кошелька: %s] [%s]", date, playerID, walletID, action);
         loggerRepository.saveLog(playerID, logString);
@@ -62,8 +63,8 @@ public class LoggerService {
      */
     public void log(UserSession session, String action) {
         Player player = playerDao.findPlayer(session);
-        String playerID = player.getPlayerID();
-        String walletID = walletDao.findWallet(playerID).getWalletId();
+        UUID playerID = player.getPlayerID();
+        UUID walletID = walletDao.findWallet(playerID).getWalletId();
         String date = String.valueOf(new Date());
         String logString = String.format("[%s] - [ID игрока: %s] [ID кошелька: %s] [%s]", date, playerID, walletID, action);
         loggerRepository.saveLog(playerID, logString);

@@ -4,6 +4,7 @@ import com.wallet.entities.Wallet;
 import com.wallet.infrastructure.WalletInMemoryRepository;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class WalletDaoImpl implements WalletDao{
 
@@ -14,7 +15,7 @@ public class WalletDaoImpl implements WalletDao{
         this.walletInMemoryRepository.saveWallet(wallet.getPlayerId(), wallet);
     }
     @Override
-    public Wallet findWallet(String PID) {
+    public Wallet findWallet(UUID PID) {
         return walletInMemoryRepository.getWalletById(PID);
     }
 
