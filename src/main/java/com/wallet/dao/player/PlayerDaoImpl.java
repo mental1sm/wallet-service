@@ -3,6 +3,7 @@ package com.wallet.dao.player;
 import com.wallet.entities.Player;
 import com.wallet.infrastructure.PlayerInMemoryRepository;
 import com.wallet.infrastructure.UserSession;
+import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.util.UUID;
@@ -16,7 +17,7 @@ public class PlayerDaoImpl implements PlayerDao{
     }
 
     @Override
-    public void savePlayer(Player pl) {
+    public void savePlayer(Player pl) throws PlayerAllreadyExistsException {
         this.playerInMemoryRepository.savePlayer(pl);
     }
 
