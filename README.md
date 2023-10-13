@@ -6,6 +6,8 @@
 
 ```cd wallet-service```
 
+```git checkout homework1```
+
 ```mvn clean package```
 
 ```cd target```
