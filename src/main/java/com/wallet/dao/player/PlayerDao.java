@@ -32,6 +32,6 @@ public interface PlayerDao {
      * @param userSession Сеанс пользователя, для которого нужно загрузить информацию об игроке.
      * @return Объект игрока, связанный с указанным сеансом пользователя, или null, если игрок не найден.
      */
-    Player findPlayer(UserSession userSession);
+    Player findPlayer(UserSession userSession) throws PlayerIsNotExistsException;
 
 }

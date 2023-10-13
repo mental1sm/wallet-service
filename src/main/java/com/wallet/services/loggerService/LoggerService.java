@@ -1,12 +1,12 @@
 package com.wallet.services.loggerService;
 
 import com.wallet.dao.player.PlayerDao;
-import com.wallet.dao.player.PlayerDaoImpl;
 import com.wallet.dao.wallet.WalletDao;
-import com.wallet.dao.wallet.WalletDaoImpl;
 import com.wallet.entities.Player;
 import com.wallet.infrastructure.LoggerInMemoryRepository;
 import com.wallet.infrastructure.UserSession;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
+import com.wallet.utility.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,12 +62,15 @@ public class LoggerService {
      * @param action  Описание действия, которое требуется зарегистрировать.
      */
     public void log(UserSession session, String action) {
-        Player player = playerDao.findPlayer(session);
-        UUID playerID = player.getPlayerID();
-        UUID walletID = walletDao.findWallet(playerID).getWalletId();
-        String date = String.valueOf(new Date());
-        String logString = String.format("[%s] - [ID игрока: %s] [ID кошелька: %s] [%s]", date, playerID, walletID, action);
-        loggerRepository.saveLog(playerID, logString);
+        Player player;
+        try {
+            player = playerDao.findPlayer(session);
+            UUID playerID = player.getPlayerID();
+            UUID walletID = walletDao.findWallet(playerID).getWalletId();
+            String date = String.valueOf(new Date());
+            String logString = String.format("[%s] - [ID игрока: %s] [ID кошелька: %s] [%s]", date, playerID, walletID, action);
+            loggerRepository.saveLog(playerID, logString);
+        } catch (PlayerIsNotExistsException e) {}
     }
 
     /**

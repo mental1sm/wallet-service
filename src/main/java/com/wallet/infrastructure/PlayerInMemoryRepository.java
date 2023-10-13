@@ -1,6 +1,7 @@
 package com.wallet.infrastructure;
 
 import com.wallet.entities.Player;
+import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.util.HashMap;
@@ -42,8 +43,30 @@ public class PlayerInMemoryRepository {
      *
      * @param player Объект Player для сохранения.
      */
-    public void savePlayer(Player player) {
-        this.Players.put(player.getPlayerID(), player);
+    public void savePlayer(Player player) throws PlayerAllreadyExistsException {
+        if (checkExisting(player.getPLogin())) {
+            throw new PlayerAllreadyExistsException("Пользователь с таким логином уже зарегистрирован.");
+        } else {
+            this.Players.put(player.getPlayerID(), player);
+        }
+    }
+
+    /**
+     * Метод для проверки существования игрока по логину
+     * @param login - Логин игрокаъ
+     * @return boolean значение
+    */
+    public boolean checkExisting(String login) {
+        Player selectedPlayer = null;
+
+        for (Map.Entry<UUID, Player> entry : this.Players.entrySet()) {
+            UUID PID = entry.getKey();
+            Player pl = entry.getValue();
+            if (Objects.equals(pl.getPLogin(), login)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -52,8 +75,14 @@ public class PlayerInMemoryRepository {
      * @param playerId Идентификатор игрока.
      * @return Объект Player с соответствующим идентификатором или null, если игрок не найден.
      */
-    public Player getPlayerById(UUID playerId) {
-        return this.Players.get(playerId);
+    public Player getPlayerById(UUID playerId) throws PlayerIsNotExistsException {
+        Player selectedPlayer;
+        try {
+            selectedPlayer = Players.get(playerId);
+        } catch (NullPointerException e) {
+            throw new PlayerIsNotExistsException("Такого игрока не существует.");
+        }
+        return selectedPlayer;
     }
 
     /**

@@ -109,6 +109,11 @@ public class Localisation {
                 ================================
                 """;
 
+    public static final String AUDIT_LOGIN_RU = "Логин администратора: ";
+    public static final String AUDIT_PASSWORD_RU = "Пароль администратора: ";
+    public static final String AUDIT_INCORRECT_RU = "Такого администратора не существует.";
+    public static final String AUDIT_CORRECT_RU = "<Вы вошли в журнал аудита>";
+
     public static final String AUDIT_SINGLE_LOG_RU = """
                 ---------------------------------------------------------------------------------------------------------------------------------------------------
                 \t%s               

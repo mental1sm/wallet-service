@@ -1,11 +1,16 @@
 package com.wallet.presentation.player_interface;
 
+import com.wallet.dao.player.PlayerDao;
+import com.wallet.entities.Player;
 import com.wallet.entities.Transaction;
+import com.wallet.in.AdminAuthInputHandler;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.presentation.Localisation;
 import com.wallet.services.walletService.WalletService;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -14,6 +19,7 @@ import java.util.Scanner;
 public class UITransactionHistory extends AbstractUI implements UI {
 
     WalletService walletService;
+    PlayerDao playerDao;
     UserSession userSession;
 
     /**
@@ -21,13 +27,12 @@ public class UITransactionHistory extends AbstractUI implements UI {
      */
     public UITransactionHistory(Scanner scanner, WalletService walletService, UserSession userSession) {
         super(scanner);
-        this.walletService = walletService;
+        this.playerDao = playerDao;
         this.userSession = userSession;
     }
 
     @Override
     public UI run() {
-
         loggerService.log(userSession, "Просмотр истории транзакций");
 
         System.out.print(Localisation.WALLET_MENU_TRANSACTION_HISTORY_HEADER_RU);

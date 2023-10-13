@@ -27,7 +27,7 @@ public class PlayerDaoImpl implements PlayerDao{
     }
 
     @Override
-    public Player findPlayer(UserSession userSession) {
+    public Player findPlayer(UserSession userSession) throws PlayerIsNotExistsException {
         UUID PID = userSession.getPlayerID();
         return this.playerInMemoryRepository.getPlayerById(PID);
     }

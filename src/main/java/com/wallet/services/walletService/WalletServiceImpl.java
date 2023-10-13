@@ -11,6 +11,7 @@ import com.wallet.entities.Transaction;
 import com.wallet.entities.Wallet;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.IdGenerator;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public HashMap<String, String> getUserInfo(UserSession session) {
+    public HashMap<String, String> getUserInfo(UserSession session) throws PlayerIsNotExistsException {
         Player pl = playerDao.findPlayer(session);
         HashMap<String, String> userInfo = new HashMap<>();
         userInfo.put("name", pl.getName());

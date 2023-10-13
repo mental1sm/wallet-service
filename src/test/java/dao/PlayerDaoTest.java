@@ -14,14 +14,13 @@ import org.junit.jupiter.api.Test;
 public class PlayerDaoTest {
 
     @Test
-    public void savePlayerTest() throws PlayerIsNotExistsException {
+    public void savePlayerTest() throws PlayerIsNotExistsException, PlayerAllreadyExistsException {
         PlayerInMemoryRepository repository = PlayerInMemoryRepository.getInstance();
-
-        Player player1 = new Player(IdGenerator.genId(), "Test", "test", "login", "pass");
-        Player player2 = new Player(IdGenerator.genId(), "Test", "test", "login!!!!", "pass");
-        Player player3 = new Player(IdGenerator.genId(), "Test", "Test", "login", "pass");
-
         PlayerDao playerDao = new PlayerDaoImpl();
+
+        Player player1 = new Player(IdGenerator.genId(), Player.Permission.USER, "Test", "test", "login", "pass");
+        Player player2 = new Player(IdGenerator.genId(), Player.Permission.USER, "Test", "test", "login!!!!", "pass");
+        Player player3 = new Player(IdGenerator.genId(), Player.Permission.USER, "Test", "Test", "login", "pass");
 
         playerDao.savePlayer(player1);
         playerDao.savePlayer(player2);
@@ -37,12 +36,12 @@ public class PlayerDaoTest {
     }
 
     @Test
-    public void findPlayerTest() throws PlayerIsNotExistsException {
+    public void findPlayerTest() throws PlayerIsNotExistsException, PlayerAllreadyExistsException {
         PlayerInMemoryRepository repository = PlayerInMemoryRepository.getInstance();
-
-        Player pl_1 = new Player(IdGenerator.genId(), "Test", "test", "login", "pass");
-
         PlayerDao playerDao = new PlayerDaoImpl();
+
+        Player pl_1 = new Player(IdGenerator.genId(), Player.Permission.USER, "Test", "test", "login", "pass");
+
         playerDao.savePlayer(pl_1);
 
         Player test = playerDao.findPlayer("login", "pass");

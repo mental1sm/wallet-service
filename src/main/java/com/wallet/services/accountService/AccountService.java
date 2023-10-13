@@ -1,6 +1,7 @@
 package com.wallet.services.accountService;
 
 import com.wallet.infrastructure.UserSession;
+import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 /**
@@ -15,7 +16,7 @@ public interface AccountService {
      * @param pPassword Пароль от аккаунта
      * @return Объект UserSession - сессия пользователя
     */
-    UserSession regUser(String name, String surname, String pLogin, String pPassword);
+    UserSession regUser(String name, String surname, String pLogin, String pPassword) throws PlayerAllreadyExistsException;
 
     /**
      * Метод, аутентифицирующий пользователя.

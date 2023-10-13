@@ -7,6 +7,7 @@ import com.wallet.presentation.Localisation;
 import com.wallet.services.accountService.AccountService;
 import com.wallet.services.walletService.WalletService;
 import com.wallet.services.walletService.WalletServiceImpl;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -33,41 +34,46 @@ public class UIWalletMenu extends AbstractUI implements UI {
 
         while (!deauthFlag) {
             WalletService walletService = new WalletServiceImpl();
-            HashMap<String, String> userInfo = walletService.getUserInfo(userSession);
+            try {
+                HashMap<String, String> userInfo = walletService.getUserInfo(userSession);
 
-            System.out.printf(
-                    Localisation.WALLET_MENU_INFO_RU,
-                    userInfo.get("name") + " " + userInfo.get("surname"),
-                    userInfo.get("walletId"),
-                    walletService.checkMoneyAmount(userSession).toString()
-            );
+                System.out.printf(
+                        Localisation.WALLET_MENU_INFO_RU,
+                        userInfo.get("name") + " " + userInfo.get("surname"),
+                        userInfo.get("walletId"),
+                        walletService.checkMoneyAmount(userSession).toString()
+                );
 
-            String userInput = UserMenuNavigationHandler.menuNavigation(new String[] {"1", "2", "3", "4"}, scanner);
+                String userInput = UserMenuNavigationHandler.menuNavigation(new String[] {"1", "2", "3", "4"}, scanner);
 
-            switch (userInput) {
-                // Пополнение
-                case "1" -> {
-                    loggerService.log(userSession, "Запустить процесс пополнения счета");
-                    UI UIDeposit = new UIDeposit(scanner, walletService, userSession);
-                    UIDeposit.run();
+                switch (userInput) {
+                    // Пополнение
+                    case "1" -> {
+                        loggerService.log(userSession, "Запустить процесс пополнения счета");
+                        UI UIDeposit = new UIDeposit(scanner, walletService, userSession);
+                        UIDeposit.run();
+                    }
+                    // Снятие
+                    case "2" -> {
+                        loggerService.log(userSession, "Запустить процесс снятия денег");
+                        UI UIWithdraw = new UIWithdraw(scanner, walletService, userSession);
+                        UIWithdraw.run();
+                    }
+                    // История транзакций
+                    case "3" -> {
+                        loggerService.log(userSession, "Запустить историю транзакций");
+                        UI UITransactionHistory = new UITransactionHistory(scanner, walletService, userSession);
+                        UITransactionHistory.run();
+                    }
+                    // Выйти из аккаунта
+                    case "4" -> {
+                        deauthFlag = true;
+                        loggerService.log(userSession, "Выход из аккаунта");
+                    }
                 }
-                // Снятие
-                case "2" -> {
-                    loggerService.log(userSession, "Запустить процесс снятия денег");
-                    UI UIWithdraw = new UIWithdraw(scanner, walletService, userSession);
-                    UIWithdraw.run();
-                }
-                // История транзакций
-                case "3" -> {
-                    loggerService.log(userSession, "Запустить историю транзакций");
-                    UI UITransactionHistory = new UITransactionHistory(scanner, walletService, userSession);
-                    UITransactionHistory.run();
-                }
-                // Выйти из аккаунта
-                case "4" -> {
-                    deauthFlag = true;
-                    loggerService.log(userSession, "Выход из аккаунта");
-                }
+            } catch (PlayerIsNotExistsException e) {
+                System.out.println("Возникла непредвиденная ошибка: ");
+                System.out.print(e.getMessage());
             }
         }
         return new UIMenu(scanner);

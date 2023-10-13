@@ -12,8 +12,14 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 public class Player {
+    public static enum Permission {
+        USER,
+        ADMIN,
+        SUPERADMIN
+    }
 
     final private UUID playerID;
+    final private Permission permission;
     final private String name, surname, pLogin;
     @Setter private String pPassword;
 

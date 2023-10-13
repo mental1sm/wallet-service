@@ -10,6 +10,7 @@ import com.wallet.entities.Player;
 import com.wallet.entities.Transaction;
 import com.wallet.entities.Wallet;
 import com.wallet.utility.IdGenerator;
+import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,14 +26,14 @@ public class TransactionDaoTest {
     static UUID walletId;
 
     @BeforeAll
-    public static void setUp(){
+    public static void setUp() throws PlayerAllreadyExistsException {
         PlayerDao playerDao = new PlayerDaoImpl();
         WalletDao walletDao = new WalletDaoImpl();
 
         playerId = IdGenerator.genId();
         walletId = IdGenerator.genId();
 
-        Player player1 = new Player(playerId, "pl name", "pl surname", "login", "pswd");
+        Player player1 = new Player(playerId, Player.Permission.USER,"pl name", "pl surname", "login", "pswd");
         Wallet wallet1 = new Wallet(walletId, playerId, new BigDecimal(0));
 
         playerDao.savePlayer(player1);

@@ -3,6 +3,7 @@ package com.wallet.services.walletService;
 
 import com.wallet.entities.Transaction;
 import com.wallet.infrastructure.UserSession;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public interface WalletService {
      * @param session Сессия пользователя, для которой выполняется операция.
      * @return HashMap, содержащая информацию о пользователе, например, имя и фамилию.
      */
-    HashMap<String, String> getUserInfo(UserSession session);
+    HashMap<String, String> getUserInfo(UserSession session) throws PlayerIsNotExistsException;
 
     /**
      * Метод getTransactionHistory позволяет получить историю транзакций пользователя.
