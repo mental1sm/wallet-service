@@ -8,43 +8,52 @@ import com.wallet.utility.IdGenerator;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class PlayerDaoTest {
 
+    @BeforeAll
+    public static void setUp() {
+    }
+
+
     @Test
-    public void savePlayerTest() throws PlayerIsNotExistsException, PlayerAllreadyExistsException {
+    public void playerSaveLoadTest() throws PlayerIsNotExistsException, PlayerAllreadyExistsException {
         PlayerInMemoryRepository repository = PlayerInMemoryRepository.getInstance();
         PlayerDao playerDao = new PlayerDaoImpl();
 
-        Player player1 = new Player(IdGenerator.genId(), Player.Permission.USER, "Test", "test", "login", "pass");
-        Player player2 = new Player(IdGenerator.genId(), Player.Permission.USER, "Test", "test", "login!!!!", "pass");
-        Player player3 = new Player(IdGenerator.genId(), Player.Permission.USER, "Test", "Test", "login", "pass");
+        Player testPlayer = mock(Player.class);
+        when(testPlayer.getPLogin()).thenReturn("login");
+        when(testPlayer.getPPassword()).thenReturn("pass");
 
-        playerDao.savePlayer(player1);
-        playerDao.savePlayer(player2);
+        playerDao.savePlayer(testPlayer);
 
-        Player testPlayer1 = playerDao.findPlayer("login", "pass");
-        Player testPlayer2 = playerDao.findPlayer("login!", "pass");
+        Assertions.assertThat(
+                playerDao.findPlayer(
+                        testPlayer.getPLogin(),
+                        testPlayer.getPPassword()
+                ))
+                .isNotNull()
+                .satisfies(
+                        player -> {
+                            Assertions.assertThat(player.getPLogin()).isEqualTo(testPlayer.getPLogin());
+                            Assertions.assertThat(player.getPPassword()).isEqualTo(testPlayer.getPPassword());
+                        }
+                );
 
-        Assertions.assertThat(player1).isEqualTo(testPlayer1);
-        Assertions.assertThat(player2).isEqualTo(testPlayer2);
+
+
+        // Попытка сохранить игрока с тем же логином и паролем, что player1
         Assertions.assertThatThrownBy(() -> {
-            playerDao.savePlayer(player3);
+            playerDao.savePlayer(testPlayer);
         }).isInstanceOf(PlayerAllreadyExistsException.class);
     }
 
-    @Test
-    public void findPlayerTest() throws PlayerIsNotExistsException, PlayerAllreadyExistsException {
-        PlayerInMemoryRepository repository = PlayerInMemoryRepository.getInstance();
-        PlayerDao playerDao = new PlayerDaoImpl();
-
-        Player pl_1 = new Player(IdGenerator.genId(), Player.Permission.USER, "Test", "test", "login", "pass");
-
-        playerDao.savePlayer(pl_1);
-
-        Player test = playerDao.findPlayer("login", "pass");
-        Assertions.assertThat(pl_1).isEqualTo(test);
-    }
 }

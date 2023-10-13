@@ -10,10 +10,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Интерфейс журнала аудита
+*/
 public class UIAudit extends AbstractUI implements UI {
 
     PlayerDao playerDao;
 
+    /**
+     * Интерфейс журнала аудита
+     */
     public UIAudit(Scanner scanner, PlayerDao playerDao) {
         super(scanner);
         this.playerDao = playerDao;

@@ -27,25 +27,25 @@ public class TransactionDaoTest {
 
     @BeforeAll
     public static void setUp() throws PlayerAllreadyExistsException {
+        initPlayersAndWallets();
+    }
+
+    private static void initPlayersAndWallets() throws PlayerAllreadyExistsException {
         PlayerDao playerDao = new PlayerDaoImpl();
         WalletDao walletDao = new WalletDaoImpl();
 
         playerId = IdGenerator.genId();
         walletId = IdGenerator.genId();
 
-        Player player1 = new Player(playerId, Player.Permission.USER,"pl name", "pl surname", "login", "pswd");
+        Player player1 = new Player(playerId, Player.Permission.USER,"pl name", "pl surname", "Alex", "12345");
         Wallet wallet1 = new Wallet(walletId, playerId, new BigDecimal(0));
 
         playerDao.savePlayer(player1);
         walletDao.saveWallet(wallet1);
-
-
     }
-    @Test
-    public void transactionSaveTest(){
-        TransactionDao transactionDao = new TransactionDaoImpl();
 
-        Transaction transaction1 = Transaction.builder()
+    private static Transaction createTestTransaction() {
+        return Transaction.builder()
                 .transactionId(IdGenerator.genId())
                 .transactionDate(new Date())
                 .transactionStatus(Transaction.Status.Pending)
@@ -53,10 +53,16 @@ public class TransactionDaoTest {
                 .walletId(walletId)
                 .build();
 
-        transactionDao.saveTransaction(transaction1);
-        ArrayList<Transaction> testTransactionArray = transactionDao.findTransaction(walletId);
+    }
 
-        Assertions.assertThat(testTransactionArray).contains(transaction1);
+    @Test
+    public void transactionSaveLoadTest() {
+        TransactionDao transactionDao = new TransactionDaoImpl();
+        Transaction testTransaction = createTestTransaction();
+        transactionDao.saveTransaction(testTransaction);
+
+        ArrayList<Transaction> testTransactionArray = transactionDao.findTransaction(walletId);
+        Assertions.assertThat(testTransactionArray).contains(testTransaction);
     }
 
 
