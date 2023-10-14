@@ -8,7 +8,7 @@
 
         <createTable schemaName="logs" tableName="Log">
 
-            <column name="id" type="BIGINT" defaultValueSequenceNext="logs.log_ids">
+            <column name="id" type="BIGINT" defaultValueComputed="nextval('logs.log_ids')">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="timestamp" type="timestamp">

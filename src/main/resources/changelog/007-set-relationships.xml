@@ -4,22 +4,28 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
     <changeSet id="007-set-relationships" author="ment09">
 
-        <addForeignKeyConstraint baseTableName="walletservice.Wallet"
+        <addForeignKeyConstraint baseTableName="Wallet"
+                                 baseTableSchemaName="walletservice"
                                  baseColumnNames="player_id"
                                  constraintName="fk_wallet_player"
-                                 referencedTableName="walletservice.Player"
+                                 referencedTableName="Player"
+                                 referencedTableSchemaName="walletservice"
                                  referencedColumnNames="id" />
 
-        <addForeignKeyConstraint baseTableName="walletservice.Transaction"
+        <addForeignKeyConstraint baseTableName="Transaction"
                                  baseColumnNames="wallet_id"
+                                 baseTableSchemaName="walletservice"
                                  constraintName="fk_transaction_wallet"
-                                 referencedTableName="walletservice.Wallet"
+                                 referencedTableName="Wallet"
+                                 referencedTableSchemaName="walletservice"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="walletservice.Player"
+        <addForeignKeyConstraint baseTableName="Player"
                                  baseColumnNames="permission_id"
+                                 baseTableSchemaName="walletservice"
                                  constraintName="fk_player_permission"
-                                 referencedTableName="walletservice.Permission"
+                                 referencedTableName="Permission"
+                                 referencedTableSchemaName="walletservice"
                                  referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

@@ -7,7 +7,7 @@
     <changeSet id="003-create-wallet-table" author="ment09">
         <createTable schemaName="walletservice" tableName="Wallet">
 
-            <column name="id" type="BIGINT" defaultValueSequenceNext="walletservice.wallet_ids">
+            <column name="id" type="BIGINT" defaultValueComputed="nextval('walletservice.wallet_ids')">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="player_id" type="BIGINT">
