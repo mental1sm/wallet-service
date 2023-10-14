@@ -5,20 +5,20 @@
 
     <changeSet id="008-insert-superadmin-data" author="ment09">
 
-        <insert tableName="WalletService.Permission">
+        <insert tableName="walletservice.Permission">
             <column name="id" valueNumeric="1"/>
             <column name="name" value="SUPERADMIN"/>
         </insert>
-        <insert tableName="WalletService.Permission">
+        <insert tableName="walletservice.Permission">
             <column name="id" valueNumeric="2"/>
             <column name="name" value="ADMIN"/>
         </insert>
-        <insert tableName="WalletService.Permission">
+        <insert tableName="walletservice.Permission">
             <column name="id" valueNumeric="3"/>
             <column name="name" value="USER"/>
         </insert>
 
-        <insert tableName="WalletService.Player">
+        <insert tableName="walletservice.Player">
             <column name="id" valueNumeric="DEFAULT"/>
             <column name="login" value="ment09"/>
             <column name="password" value="123321"/>

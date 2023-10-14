@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
     <changeSet id="005-create-permission-table" author="ment09">
 
-        <createTable tableName="WalletService.Permission">
+        <createTable tableName="walletservice.Permission">
             <column name="id" type="BIGINT"/>
             <column name="name" type="VARCHAR(60)"/>
         </createTable>

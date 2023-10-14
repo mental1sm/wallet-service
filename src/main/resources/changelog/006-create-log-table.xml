@@ -6,9 +6,9 @@
 
     <changeSet id="006-create-log-table" author="ment09">
 
-        <createTable schemaName="Logs" tableName="Log">
+        <createTable schemaName="logs" tableName="Log">
 
-            <column name="id" type="BIGINT" defaultValueSequenceNext="Logs.log_ids">
+            <column name="id" type="BIGINT" defaultValueSequenceNext="logs.log_ids">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="timestamp" type="timestamp">

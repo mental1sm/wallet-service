@@ -3,9 +3,9 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
     <changeSet id="004-create-transaction-table" author="ment09">
-        <createTable tableName="WalletService.Transaction">
+        <createTable tableName="walletservice.Transaction">
 
-            <column name="id" type="BIGINT" defaultValueSequenceNext="WalletService.transaction_ids">
+            <column name="id" type="BIGINT" defaultValueSequenceNext="walletservice.transaction_ids">
                 <constraints nullable="false"/>
             </column>
             <column name="wallet_id" type="BIGINT">
