@@ -120,6 +120,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <propertyFile>/liquibase.properties</propertyFile>
+                </configuration>
             </plugin>
 
         </plugins>
