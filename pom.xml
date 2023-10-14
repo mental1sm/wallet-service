@@ -20,6 +20,8 @@
         <lombok.version>1.18.30</lombok.version>
         <assertj.version>3.24.2</assertj.version>
         <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
+        <postgresql.version>42.6.0</postgresql.version>
+        <liquibase.version>4.10.0</liquibase.version>
     </properties>
 
     <dependencies>
@@ -51,6 +53,18 @@
             <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
