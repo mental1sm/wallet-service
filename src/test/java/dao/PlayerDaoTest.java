@@ -4,14 +4,12 @@ import com.wallet.dao.player.PlayerDao;
 import com.wallet.dao.player.PlayerDaoImpl;
 import com.wallet.entities.Player;
 import com.wallet.infrastructure.PlayerInMemoryRepository;
-import com.wallet.utility.IdGenerator;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,7 +24,6 @@ public class PlayerDaoTest {
 
     @Test
     public void playerSaveLoadTest() throws PlayerIsNotExistsException, PlayerAllreadyExistsException {
-        PlayerInMemoryRepository repository = PlayerInMemoryRepository.getInstance();
         PlayerDao playerDao = new PlayerDaoImpl();
 
         Player testPlayer = mock(Player.class);
