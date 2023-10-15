@@ -1,3 +1,6 @@
 /target
 /wallet-service/.idea/
 
+/wallet-service/target/
+/schema-executor/target/
+/.idea/
