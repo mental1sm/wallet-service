@@ -2,7 +2,6 @@ package com.wallet.infrastructure;
 
 import com.wallet.utility.IdGenerator;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.UUID;
 
