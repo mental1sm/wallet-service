@@ -21,8 +21,21 @@ public class DatabaseConfig implements Config {
         }
     }
 
+    private DatabaseConfig(String jdbcUrl, String username, String password) {
+        Properties properties = new Properties();
+        properties.put("url", jdbcUrl);
+        properties.put("username", username);
+        properties.put("password", password);
+        this.property = properties;
+    }
+
     public static DatabaseConfig getInstance() {
         if (instance == null) { instance = new DatabaseConfig(); }
+        return instance;
+    }
+
+    public static DatabaseConfig getInstance(String jdbcUrl, String username, String password) {
+        if (instance == null) { instance = new DatabaseConfig(jdbcUrl, username, password); }
         return instance;
     }
 

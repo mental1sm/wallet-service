@@ -25,7 +25,9 @@
         <liquibase.version>4.10.0</liquibase.version>
         <liquibase.plugin.version>4.10.0</liquibase.plugin.version>
         <surefire.version>3.0.0-M5</surefire.version>
-        <test.container.postgres.version>1.19.1</test.container.postgres.version>
+        <testcontainers.version>1.16.0</testcontainers.version>
+        <junit.testcontainters.version>1.19.1</junit.testcontainters.version>
+        <postgres.testcontainers.version>1.19.1</postgres.testcontainers.version>
     </properties>
 
     <dependencies>
@@ -68,13 +70,28 @@
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.testcontainters.version}</version>
+            <scope>test</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.testcontainers/postgresql -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${test.container.postgres.version}</version>
+            <version>${postgres.testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
+
+
 
     </dependencies>
 
