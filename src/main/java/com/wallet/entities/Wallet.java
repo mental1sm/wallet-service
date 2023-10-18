@@ -1,6 +1,7 @@
 package com.wallet.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,8 @@ import java.util.UUID;
  */
 @Getter
 @AllArgsConstructor
+@Builder
 public class Wallet {
-    private UUID walletId, playerId;
+    private long walletId, playerId;
     @Setter private BigDecimal walletMoneyAmount;
 }

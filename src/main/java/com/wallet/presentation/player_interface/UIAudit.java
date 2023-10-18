@@ -1,6 +1,7 @@
 package com.wallet.presentation.player_interface;
 
 import com.wallet.dao.player.PlayerDao;
+import com.wallet.entities.Log;
 import com.wallet.entities.Player;
 import com.wallet.in.AdminAuthInputHandler;
 import com.wallet.presentation.Localisation;
@@ -30,18 +31,18 @@ public class UIAudit extends AbstractUI implements UI {
         HashMap<String, String> userInput = AdminAuthInputHandler.authInput(scanner);
         Player admin;
 
-        try {
-            admin = playerDao.findPlayer(userInput.get("login"), userInput.get("password"));
-        } catch (PlayerIsNotExistsException e) {
-            System.out.println(Localisation.AUDIT_INCORRECT_RU);
-            return new UIMenu(scanner);
-        }
-        if (admin.getPermission().equals(Player.Permission.ADMIN)) {
+        admin = playerDao.findPlayer(userInput.get("login"));
+        if (admin == null) { return new UIMenu(scanner); }
+        else if (admin.getPermission().equals(Player.Permission.ADMIN) || admin.getPermission().equals(Player.Permission.SUPERADMIN)) {
             System.out.println(Localisation.AUDIT_CORRECT_RU);
             System.out.println(Localisation.AUDIT_HEADER_RU);
-            ArrayList<String> auditLogs = loggerService.getAllLogs();
-            for (String log : auditLogs) {
-                System.out.printf(Localisation.AUDIT_SINGLE_LOG_RU, log);
+            ArrayList<Log> auditLogs = loggerService.getAllLogs(1);
+            for (Log log : auditLogs) {
+                System.out.printf(Localisation.AUDIT_SINGLE_LOG_RU,
+                        String.format("[%s] - [id:%s] [%s] [%s]",
+                        log.getTimestamp(), log.getPlayerId(), log.getAction(), log.getInfoLevel()
+                        )
+                );
             }
             System.out.println(Localisation.UTIL_LINER);
             System.out.println(Localisation.GOBACK_RU);

@@ -1,12 +1,14 @@
 package com.wallet.services.loggerService;
 
+import com.wallet.dao.log.LogDao;
 import com.wallet.dao.player.PlayerDao;
 import com.wallet.dao.wallet.WalletDao;
+import com.wallet.entities.Log;
 import com.wallet.entities.Player;
-import com.wallet.infrastructure.LoggerInMemoryRepository;
+import com.wallet.entities.Wallet;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
-import com.wallet.utility.IdGenerator;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,14 +19,15 @@ import java.util.UUID;
  * Этот класс реализует паттерн Singleton.
  */
 public class LoggerService {
+    @Getter
     private static LoggerService instance = null;
-    private final LoggerInMemoryRepository loggerRepository;
+    private final LogDao logDao;
     private final PlayerDao playerDao;
     private final WalletDao walletDao;
 
 
-    private LoggerService(LoggerInMemoryRepository loggerRepository, PlayerDao playerDao, WalletDao walletDao) {
-        this.loggerRepository = loggerRepository;
+    private LoggerService(LogDao logDao, PlayerDao playerDao, WalletDao walletDao) {
+        this.logDao = logDao;
         this.playerDao = playerDao;
         this.walletDao = walletDao;
     }
@@ -34,43 +37,30 @@ public class LoggerService {
      *
      * @return Единственный экземпляр LoggerService.
      */
-    public static LoggerService getInstance(LoggerInMemoryRepository loggerRepository, PlayerDao playerDao, WalletDao walletDao) {
+    public static LoggerService getInstance(LogDao logDao, PlayerDao playerDao, WalletDao walletDao) {
         if (instance == null) {
-            instance = new LoggerService(loggerRepository, playerDao, walletDao);
+            instance = new LoggerService(logDao, playerDao, walletDao);
         }
         return instance;
     }
 
     /**
-     * Метод для журналирования действия игрока.
-     *
-     * @param player Игрок, для которого выполняется журналирование.
-     * @param action Описание действия, которое требуется зарегистрировать.
-     */
-    public void log(Player player, String action) {
-        UUID playerID = player.getPlayerID();
-        UUID walletID = walletDao.findWallet(playerID).getWalletId();
-        String date = String.valueOf(new Date());
-        String logString = String.format("[%s] - [ID игрока: %s] [ID кошелька: %s] [%s]", date, playerID, walletID, action);
-        loggerRepository.saveLog(playerID, logString);
-    }
-
-    /**
      * Метод для журналирования действия в рамках сеанса пользователя.
      *
-     * @param session Сеанс пользователя, для которого выполняется журналирование.
-     * @param action  Описание действия, которое требуется зарегистрировать.
+     * @param session Сессия игрока, для которого выполняется журналирование.
+     * @param action Описание действия, которое требуется зарегистрировать.
+     * @param infoLevel Уровень информирования лога
      */
-    public void log(UserSession session, String action) {
-        Player player;
-        try {
-            player = playerDao.findPlayer(session);
-            UUID playerID = player.getPlayerID();
-            UUID walletID = walletDao.findWallet(playerID).getWalletId();
-            String date = String.valueOf(new Date());
-            String logString = String.format("[%s] - [ID игрока: %s] [ID кошелька: %s] [%s]", date, playerID, walletID, action);
-            loggerRepository.saveLog(playerID, logString);
-        } catch (PlayerIsNotExistsException e) {}
+    public void log(UserSession session, String action, Log.InfoLevels infoLevel) {
+        Player pl = playerDao.findPlayer(session);
+        Log log = Log.builder()
+                .id(0)
+                .timestamp(new Date())
+                .playerId(pl.getPlayerID())
+                .infoLevel(infoLevel)
+                .action(action)
+                .build();
+        logDao.saveLog(log);
     }
 
     /**
@@ -79,8 +69,8 @@ public class LoggerService {
      * @param playerID Идентификатор игрока, для которого нужно получить записи журнала.
      * @return Список строк, представляющих записи журнала для указанного игрока.
      */
-    public ArrayList<String> getPlayerLogs(String playerID) {
-        return loggerRepository.getAllLogs();
+    public ArrayList<Log> getPlayerLogs(long playerID) {
+        return logDao.getLogsOfPlayer(playerID);
     }
 
     /**
@@ -88,7 +78,10 @@ public class LoggerService {
      *
      * @return Список строк, представляющих записи журнала.
      */
-    public ArrayList<String> getAllLogs() {
-        return loggerRepository.getAllLogs();
+    public ArrayList<Log> getAllImportantLogs(int page) {
+        return logDao.getImportantLogs(100*(long)page, 100);
+    }
+    public ArrayList<Log> getAllLogs(int page) {
+        return logDao.getAllLogs();
     }
 }

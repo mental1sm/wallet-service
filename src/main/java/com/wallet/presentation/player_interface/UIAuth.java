@@ -1,5 +1,8 @@
 package com.wallet.presentation.player_interface;
 
+import com.wallet.dao.player.PlayerDaoImpl;
+import com.wallet.dao.wallet.WalletDaoImpl;
+import com.wallet.entities.Log;
 import com.wallet.in.UserAuthInputHandler;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.presentation.Localisation;
@@ -24,14 +27,14 @@ public class UIAuth extends AbstractUI implements UI {
 
     @Override
     public UI run() {
-        AccountService accountService = new AccountServiceImpl();
-
+        AccountService accountService = new AccountServiceImpl(new PlayerDaoImpl(), new WalletDaoImpl());
         HashMap<String, String> inputValues = UserAuthInputHandler.authInput(scanner);
 
         try {
             UserSession userSession = accountService.authUser(inputValues.get("login"), inputValues.get("password"));
             System.out.print(Localisation.AUTH_FINISH_RU);
-            loggerService.log(userSession, "Авторизация");
+            loggerService.log(userSession, "Авторизация", Log.InfoLevels.INFO);
+
             return new UIWalletMenu(scanner, userSession);
         } catch (PlayerIsNotExistsException e) {
             System.out.println(Localisation.USER_IS_NOT_EXISTS_RU);

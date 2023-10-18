@@ -1,6 +1,7 @@
 package com.wallet.presentation.player_interface;
 
 import com.wallet.dao.player.PlayerDao;
+import com.wallet.entities.Log;
 import com.wallet.entities.Player;
 import com.wallet.entities.Transaction;
 import com.wallet.in.AdminAuthInputHandler;
@@ -33,12 +34,11 @@ public class UITransactionHistory extends AbstractUI implements UI {
 
     @Override
     public UI run() {
-        loggerService.log(userSession, "Просмотр истории транзакций");
+        loggerService.log(userSession, "Просмотр истории транзакций", Log.InfoLevels.INFO);
 
         System.out.print(Localisation.WALLET_MENU_TRANSACTION_HISTORY_HEADER_RU);
-        ArrayList<Transaction> transactionHistory = walletService.getTransactionHistory(userSession);
         try {
-
+            ArrayList<Transaction> transactionHistory = walletService.getTransactionHistory(userSession);
 
             for (Transaction transaction : transactionHistory) {
                 System.out.printf(
@@ -52,6 +52,8 @@ public class UITransactionHistory extends AbstractUI implements UI {
             }
         } catch (NullPointerException e) {
             System.out.println(Localisation.EMPTY_TRANSACTION_HISTORY_RU);
+        } catch (PlayerIsNotExistsException e) {
+            loggerService.log(userSession, "Критическая ошибка во время просмотра истории транзакций", Log.InfoLevels.ERROR);
         }
         System.out.println(Localisation.UTIL_LINER);
         System.out.println(Localisation.GOBACK_RU);

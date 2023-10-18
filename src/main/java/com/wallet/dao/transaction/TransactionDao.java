@@ -1,5 +1,4 @@
 package com.wallet.dao.transaction;
-
 import com.wallet.entities.Transaction;
 
 import java.util.ArrayList;
@@ -18,11 +17,32 @@ public interface TransactionDao {
     void saveTransaction(Transaction transaction);
 
     /**
-     * Загружает список транзакций для указанного идентификатора игрока (PID).
+     * Обновляет информацию о транзакции (статус) в БД.
+     *
+     * @param transaction Объект транзакции, который необходимо обновить.
+     */
+    void updateTransaction(Transaction transaction);
+
+    /**
+     * Удаляет информацию о транзакции (статус) из БД.
+     *
+     * @param transaction Объект транзакции, который необходимо удалить.
+     */
+    void deleteTransaction(Transaction transaction);
+
+    /**
+     * Загружает список транзакций для указанного id кошелька
+     *
+     * @param id Идентификатор транзакции.
+     * @return Объект транзакции.
+     */
+    Transaction getTransactionById(UUID id);
+    /**
+     * Загружает список транзакций для указанного id кошелька
      *
      * @param walletId Идентификатор кошелька, для которого нужно загрузить транзакции.
      * @return Список объектов транзакций для указанного кошелька.
      */
-    ArrayList<Transaction> findTransaction(UUID walletId);
+    ArrayList<Transaction> getTransactionsOfWallet(long walletId);
 
 }

@@ -3,9 +3,7 @@ package com.wallet.services.walletService;
 import com.wallet.dao.player.PlayerDao;
 import com.wallet.dao.player.PlayerDaoImpl;
 import com.wallet.dao.transaction.TransactionDao;
-import com.wallet.dao.transaction.TransactionDaoImpl;
 import com.wallet.dao.wallet.WalletDao;
-import com.wallet.dao.wallet.WalletDaoImpl;
 import com.wallet.entities.Player;
 import com.wallet.entities.Transaction;
 import com.wallet.entities.Wallet;
@@ -24,14 +22,15 @@ public class WalletServiceImpl implements WalletService {
     private final TransactionDao transactionDao;
     private final PlayerDao playerDao = new PlayerDaoImpl();
 
-    public WalletServiceImpl() {
-        walletDao = new WalletDaoImpl();
-        transactionDao = new TransactionDaoImpl();
+    public WalletServiceImpl(WalletDao walletDao, TransactionDao transactionDao) {
+        this.walletDao = walletDao;
+        this.transactionDao = transactionDao;
     }
 
     @Override
-    public void depositMoney(UserSession session, BigDecimal amount) {
-        Wallet wallet = walletDao.findWallet(session.getPlayerID());
+    public void depositMoney(UserSession session, BigDecimal amount) throws PlayerIsNotExistsException {
+        Player player = playerDao.findPlayer(session);
+        Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
 
         Transaction transaction = Transaction.builder()
                 .walletId(wallet.getWalletId())
@@ -43,15 +42,19 @@ public class WalletServiceImpl implements WalletService {
                 .transactionDate(new Date())
                 .build();
 
+        transactionDao.saveTransaction(transaction);
+
         BigDecimal currentMoney = wallet.getWalletMoneyAmount();
         wallet.setWalletMoneyAmount(currentMoney.add(amount));
 
         transaction.setTransactionStatus(Transaction.Status.Approved);
-        transactionDao.saveTransaction(transaction);
+        walletDao.updateWallet(wallet);
+        transactionDao.updateTransaction(transaction);
     }
     @Override
-    public void withdrawMoney(UserSession session, BigDecimal amount) {
-        Wallet wallet = this.walletDao.findWallet(session.getPlayerID());
+    public void withdrawMoney(UserSession session, BigDecimal amount) throws PlayerIsNotExistsException {
+        Player player = playerDao.findPlayer(session);
+        Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
 
         Transaction transaction = Transaction.builder()
                 .walletId(wallet.getWalletId())
@@ -62,22 +65,26 @@ public class WalletServiceImpl implements WalletService {
                 .transactionSum(amount)
                 .transactionDate(new Date())
                 .build();
+        transactionDao.saveTransaction(transaction);
 
         BigDecimal currentMoney = wallet.getWalletMoneyAmount();
 
         if (currentMoney.compareTo(amount) >= 0 ) {
             wallet.setWalletMoneyAmount(currentMoney.subtract(amount));
             transaction.setTransactionStatus(Transaction.Status.Approved);
+            transactionDao.updateTransaction(transaction);
+            walletDao.updateWallet(wallet);
         }
         else {
             transaction.setTransactionStatus(Transaction.Status.Disapproved);
+            transactionDao.updateTransaction(transaction);
         }
-        transactionDao.saveTransaction(transaction);
     }
 
     @Override
-    public BigDecimal checkMoneyAmount(UserSession session) {
-        Wallet wallet = this.walletDao.findWallet(session.getPlayerID());
+    public BigDecimal checkMoneyAmount(UserSession session) throws PlayerIsNotExistsException {
+        Player player = playerDao.findPlayer(session);
+        Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
 
         return wallet.getWalletMoneyAmount();
     }
@@ -88,16 +95,16 @@ public class WalletServiceImpl implements WalletService {
         HashMap<String, String> userInfo = new HashMap<>();
         userInfo.put("name", pl.getName());
         userInfo.put("surname", pl.getSurname());
-        Wallet wallet = walletDao.findWallet(pl.getPlayerID());
-        userInfo.put("walletId", wallet.getWalletId().toString());
+        Wallet wallet = walletDao.getWalletsOfPlayer(pl).get(session.getCurrentWalletNum());
+        userInfo.put("walletId", Long.valueOf(wallet.getWalletId()).toString());
         return userInfo;
     }
 
     @Override
-    public ArrayList<Transaction> getTransactionHistory(UserSession session) {
-        Wallet wallet = this.walletDao.findWallet(session.getPlayerID());
-        return transactionDao.findTransaction(wallet.getWalletId());
-
+    public ArrayList<Transaction> getTransactionHistory(UserSession session) throws PlayerIsNotExistsException {
+        Player pl = playerDao.findPlayer(session);
+        Wallet wallet = walletDao.getWalletsOfPlayer(pl).get(session.getCurrentWalletNum());
+        return transactionDao.getTransactionsOfWallet(wallet.getWalletId());
     }
 }
 

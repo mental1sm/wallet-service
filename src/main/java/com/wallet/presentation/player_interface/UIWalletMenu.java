@@ -1,6 +1,9 @@
 package com.wallet.presentation.player_interface;
 
 
+import com.wallet.dao.transaction.TransactionDaoImpl;
+import com.wallet.dao.wallet.WalletDaoImpl;
+import com.wallet.entities.Log;
 import com.wallet.in.UserMenuNavigationHandler;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.presentation.Localisation;
@@ -33,7 +36,7 @@ public class UIWalletMenu extends AbstractUI implements UI {
         boolean deauthFlag = false;
 
         while (!deauthFlag) {
-            WalletService walletService = new WalletServiceImpl();
+            WalletService walletService = new WalletServiceImpl(new WalletDaoImpl(), new TransactionDaoImpl());
             try {
                 HashMap<String, String> userInfo = walletService.getUserInfo(userSession);
 
@@ -49,30 +52,30 @@ public class UIWalletMenu extends AbstractUI implements UI {
                 switch (userInput) {
                     // Пополнение
                     case "1" -> {
-                        loggerService.log(userSession, "Запустить процесс пополнения счета");
+                        loggerService.log(userSession, "Запущен процесс пополнения счета", Log.InfoLevels.INFO);
                         UI UIDeposit = new UIDeposit(scanner, walletService, userSession);
                         UIDeposit.run();
                     }
                     // Снятие
                     case "2" -> {
-                        loggerService.log(userSession, "Запустить процесс снятия денег");
+                        loggerService.log(userSession, "Запущен процесс снятия денег", Log.InfoLevels.INFO);
                         UI UIWithdraw = new UIWithdraw(scanner, walletService, userSession);
                         UIWithdraw.run();
                     }
                     // История транзакций
                     case "3" -> {
-                        loggerService.log(userSession, "Запустить историю транзакций");
+                        loggerService.log(userSession, "Просмотр истории транзакций", Log.InfoLevels.INFO);
                         UI UITransactionHistory = new UITransactionHistory(scanner, walletService, userSession);
                         UITransactionHistory.run();
                     }
                     // Выйти из аккаунта
                     case "4" -> {
                         deauthFlag = true;
-                        loggerService.log(userSession, "Выход из аккаунта");
+                        loggerService.log(userSession, "Выход из аккаунта", Log.InfoLevels.INFO);
                     }
                 }
             } catch (PlayerIsNotExistsException e) {
-                System.out.println("Возникла непредвиденная ошибка: ");
+                loggerService.log(userSession, "Возникла непредвиденная ошибка", Log.InfoLevels.ERROR);
                 System.out.print(e.getMessage());
             }
         }

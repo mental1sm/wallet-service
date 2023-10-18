@@ -5,6 +5,7 @@ import com.wallet.infrastructure.configs.DatabaseConfig;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -25,4 +26,17 @@ public class SetupConnection {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Получение готового соединения
+     */
+    public static Connection getConnection() throws SQLException {
+        Config config = DatabaseConfig.getInstance();
+        String URL = config.getProperty("url");
+        String user = config.getProperty("username");
+        String password = config.getProperty("password");
+        return DriverManager.getConnection(URL, user, password);
+    }
+
+
 }
