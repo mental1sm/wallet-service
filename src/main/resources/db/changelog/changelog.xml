@@ -6,7 +6,6 @@
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd"
         logicalFilePath="changelog.xml">
 
-    <property name="liquibaseSchemaName" value="changelog"/>
     <property name="defaultSchemaName" value="changelog"/>
     <include file="v.1.0.0/000-create-schemas.xml" relativeToChangelogFile="true"/>
     <include file="v.1.0.0/001-create-sequences.xml" relativeToChangelogFile="true"/>

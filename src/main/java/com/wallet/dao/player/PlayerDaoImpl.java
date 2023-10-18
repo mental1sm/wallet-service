@@ -43,6 +43,7 @@ public class PlayerDaoImpl implements PlayerDao{
             preparedStatement.setString(2, pl.getName());
             preparedStatement.setString(3, pl.getSurname());
             preparedStatement.setInt(4, pl.getPermissionId());
+            preparedStatement.setString(5, pl.getPLogin());
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -52,7 +53,7 @@ public class PlayerDaoImpl implements PlayerDao{
     public void deletePlayer(Player pl) {
         SetupConnection.withConnection(connection -> {
             PreparedStatement preparedStatement = preparedStatementPlayer.deletePlayer(connection);
-            preparedStatement.setLong(1, pl.getPlayerID());
+            preparedStatement.setString(1, pl.getPLogin());
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -64,12 +65,16 @@ public class PlayerDaoImpl implements PlayerDao{
         try (
                 Connection connection = SetupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerByLogin(connection);
-        ) {
+        )
+        {
             preparedStatement.setString(1, pLogin);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            pl = extractPlayerFromResultSet(resultSet);
+            do {
+                pl = extractPlayerFromResultSet(resultSet);
+            } while (resultSet.next());
             resultSet.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

@@ -33,7 +33,7 @@ public class PreparedStatementPlayer {
      * [1 - long id]
      */
     public PreparedStatement deletePlayer(Connection connection) throws SQLException {
-        return connection.prepareStatement("DELETE FROM walletservice.\"Player\" WHERE id = ?;");
+        return connection.prepareStatement("DELETE FROM walletservice.\"Player\" WHERE login = ?;");
     }
 
     /**
@@ -52,7 +52,7 @@ public class PreparedStatementPlayer {
                 name = ?,
                 surname = ?,
                 permission_id = ?
-                WHERE id = ?;
+                WHERE login = ?;
                 """);
     }
 
