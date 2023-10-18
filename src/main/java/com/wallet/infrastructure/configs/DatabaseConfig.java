@@ -29,11 +29,17 @@ public class DatabaseConfig implements Config {
         this.property = properties;
     }
 
+    /**
+     * Получение синглтона
+    */
     public static DatabaseConfig getInstance() {
         if (instance == null) { instance = new DatabaseConfig(); }
         return instance;
     }
 
+    /**
+     * Получение синглтона (TESTS ONLY)
+     */
     public static DatabaseConfig getInstance(String jdbcUrl, String username, String password) {
         if (instance == null) { instance = new DatabaseConfig(jdbcUrl, username, password); }
         return instance;

@@ -24,5 +24,5 @@ public interface AccountService {
      * @param pPassword Пароль от аккаунта
      * @return Объект UserSession - сессия пользователя
      */
-    UserSession authUser(String pLogin, String pPassword) throws PlayerIsNotExistsException;
+    UserSession authUser(String pLogin, String pPassword);
 }

@@ -19,10 +19,10 @@ public interface WalletService {
     /**
      * Метод depositMoney позволяет внести деньги на кошелек пользователя.
      *
-     * @param walletId Id кошелька, для которого выполняется операция.
+     * @param session Id сессии
      * @param amount  Сумма денег, которую нужно внести на кошелек.
      */
-    void depositMoney(UserSession session, BigDecimal amount) throws PlayerIsNotExistsException;
+    void depositMoney(UserSession session, BigDecimal amount);
 
     /**
      * Метод withdrawMoney позволяет снять деньги с кошелька пользователя.
@@ -30,7 +30,7 @@ public interface WalletService {
      * @param session Сессия пользователя, для которой выполняется операция.
      * @param amount  Сумма денег, которую нужно снять с кошелька.
      */
-    void withdrawMoney(UserSession session, BigDecimal amount) throws PlayerIsNotExistsException;
+    void withdrawMoney(UserSession session, BigDecimal amount);
 
     /**
      * Метод checkMoneyAmount позволяет проверить текущий баланс на кошельке пользователя.
@@ -38,7 +38,7 @@ public interface WalletService {
      * @param session Сессия пользователя, для которой выполняется операция.
      * @return Текущий баланс на кошельке пользователя.
      */
-    BigDecimal checkMoneyAmount(UserSession session) throws PlayerIsNotExistsException;
+    BigDecimal checkMoneyAmount(UserSession session);
 
     /**
      * Метод getUserInfo позволяет получить информацию о пользователе.
@@ -46,7 +46,7 @@ public interface WalletService {
      * @param session Сессия пользователя, для которой выполняется операция.
      * @return HashMap, содержащая информацию о пользователе, например, имя и фамилию.
      */
-    HashMap<String, String> getUserInfo(UserSession session) throws PlayerIsNotExistsException;
+    HashMap<String, String> getUserInfo(UserSession session);
 
     /**
      * Метод getTransactionHistory позволяет получить историю транзакций пользователя.
@@ -54,5 +54,5 @@ public interface WalletService {
      * @param session Сессия пользователя, для которой выполняется операция.
      * @return Список транзакций, совершенных пользователем.
      */
-    ArrayList<Transaction> getTransactionHistory(UserSession session) throws PlayerIsNotExistsException;
+    ArrayList<Transaction> getTransactionHistory(UserSession session);
 }

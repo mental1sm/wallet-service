@@ -16,7 +16,7 @@ public abstract class AbstractUI {
 
     AbstractUI(Scanner scanner) {
         this.scanner = scanner;
-        this.loggerService = LoggerService.getInstance(new LogDaoImpl(), new PlayerDaoImpl(), new WalletDaoImpl());
+        this.loggerService = LoggerService.getInstance(new LogDaoImpl(), new PlayerDaoImpl());
     }
 
 }

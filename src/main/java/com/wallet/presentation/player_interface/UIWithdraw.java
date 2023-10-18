@@ -31,13 +31,10 @@ public class UIWithdraw extends AbstractUI implements UI {
     public UI run() {
         System.out.print(Localisation.WALLET_MENU_WITHDRAW_HEADER_RU);
         BigDecimal userInput = UserDecimalInputHandler.inputWithdrawMoney(scanner);
-        try {
-            walletService.withdrawMoney(userSession, userInput);
-            System.out.println(Localisation.UTIL_LINER);
-            loggerService.log(userSession, String.format("Попытка снятия на %s", userInput), Log.InfoLevels.INFO);
-        } catch (PlayerIsNotExistsException e) {
-            loggerService.log(userSession, "Критическая ошибка при попытке снятия", Log.InfoLevels.ERROR);
-        }
+        walletService.withdrawMoney(userSession, userInput);
+        System.out.println(Localisation.UTIL_LINER);
+        loggerService.log(userSession, String.format("Попытка снятия на %s", userInput), Log.InfoLevels.INFO);
+
 
         return null;
     }

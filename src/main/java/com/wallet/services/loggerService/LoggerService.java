@@ -23,13 +23,11 @@ public class LoggerService {
     private static LoggerService instance = null;
     private final LogDao logDao;
     private final PlayerDao playerDao;
-    private final WalletDao walletDao;
 
 
-    private LoggerService(LogDao logDao, PlayerDao playerDao, WalletDao walletDao) {
+    private LoggerService(LogDao logDao, PlayerDao playerDao) {
         this.logDao = logDao;
         this.playerDao = playerDao;
-        this.walletDao = walletDao;
     }
 
     /**
@@ -37,9 +35,9 @@ public class LoggerService {
      *
      * @return Единственный экземпляр LoggerService.
      */
-    public static LoggerService getInstance(LogDao logDao, PlayerDao playerDao, WalletDao walletDao) {
+    public static LoggerService getInstance(LogDao logDao, PlayerDao playerDao) {
         if (instance == null) {
-            instance = new LoggerService(logDao, playerDao, walletDao);
+            instance = new LoggerService(logDao, playerDao);
         }
         return instance;
     }

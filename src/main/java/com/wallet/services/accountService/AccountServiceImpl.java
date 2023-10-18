@@ -45,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
 
     }
     @Override
-    public UserSession authUser(String pLogin, String pPassword) throws PlayerIsNotExistsException {
+    public UserSession authUser(String pLogin, String pPassword) {
         Player pl = playerDao.findPlayer(pLogin);
         if (pl == null) { return null; }
         else if (pl.getPPassword().contentEquals(pPassword)) {

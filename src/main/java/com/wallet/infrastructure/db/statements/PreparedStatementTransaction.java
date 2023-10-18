@@ -33,11 +33,13 @@ public class PreparedStatementTransaction {
      * @param connection Соединение с БД
      * @return PreparedStatement объект
      * [1 - String status]
+     * [2 - UUID.toString() id]
      */
     public PreparedStatement updateTransaction(Connection connection) throws SQLException {
         return connection.prepareStatement("""
                 UPDATE walletservice."Transaction" SET
-                status = ?;
+                status = ?
+                WHERE id = ?;
                 """);
     }
 

@@ -125,6 +125,8 @@ public class Localisation {
     public static final String EMPTY_TRANSACTION_HISTORY_RU = "Ваша история транзакций пока что пуста...";
     public static final String USER_IS_NOT_EXISTS_RU = "Пользователь с таким логином/паролем не найден.";
 
+    public static final String USER_IS_ALREADY_EXISTS_RU = "Этот логин занят.";
+
     public static String transactionStatusCodeTranslateRu(Transaction.Status statusCode) {
         HashMap<Transaction.Status, String> codeDict = new HashMap<>();
         codeDict.put(Transaction.Status.Approved, "Одобрено");

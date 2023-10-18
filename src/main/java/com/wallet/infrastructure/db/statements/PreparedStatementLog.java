@@ -64,6 +64,11 @@ public class PreparedStatementLog {
                 """);
     }
 
+    /**
+     * Подготовленный Statement
+     * @param connection Соединение с БД
+     * @return PreparedStatement объект
+     */
     public PreparedStatement getAllLogs(Connection connection) throws SQLException {
         return connection.prepareStatement("""
                 SELECT * FROM logs."Log";

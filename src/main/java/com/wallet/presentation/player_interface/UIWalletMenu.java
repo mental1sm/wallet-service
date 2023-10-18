@@ -37,46 +37,41 @@ public class UIWalletMenu extends AbstractUI implements UI {
 
         while (!deauthFlag) {
             WalletService walletService = new WalletServiceImpl(new WalletDaoImpl(), new TransactionDaoImpl());
-            try {
-                HashMap<String, String> userInfo = walletService.getUserInfo(userSession);
+            HashMap<String, String> userInfo = walletService.getUserInfo(userSession);
 
-                System.out.printf(
-                        Localisation.WALLET_MENU_INFO_RU,
-                        userInfo.get("name") + " " + userInfo.get("surname"),
-                        userInfo.get("walletId"),
-                        walletService.checkMoneyAmount(userSession).toString()
-                );
+            System.out.printf(
+                    Localisation.WALLET_MENU_INFO_RU,
+                    userInfo.get("name") + " " + userInfo.get("surname"),
+                    userInfo.get("walletId"),
+                    walletService.checkMoneyAmount(userSession).toString()
+            );
 
-                String userInput = UserMenuNavigationHandler.menuNavigation(new String[] {"1", "2", "3", "4"}, scanner);
+            String userInput = UserMenuNavigationHandler.menuNavigation(new String[] {"1", "2", "3", "4"}, scanner);
 
-                switch (userInput) {
-                    // Пополнение
-                    case "1" -> {
-                        loggerService.log(userSession, "Запущен процесс пополнения счета", Log.InfoLevels.INFO);
-                        UI UIDeposit = new UIDeposit(scanner, walletService, userSession);
-                        UIDeposit.run();
-                    }
-                    // Снятие
-                    case "2" -> {
-                        loggerService.log(userSession, "Запущен процесс снятия денег", Log.InfoLevels.INFO);
-                        UI UIWithdraw = new UIWithdraw(scanner, walletService, userSession);
-                        UIWithdraw.run();
-                    }
-                    // История транзакций
-                    case "3" -> {
-                        loggerService.log(userSession, "Просмотр истории транзакций", Log.InfoLevels.INFO);
-                        UI UITransactionHistory = new UITransactionHistory(scanner, walletService, userSession);
-                        UITransactionHistory.run();
-                    }
-                    // Выйти из аккаунта
-                    case "4" -> {
-                        deauthFlag = true;
-                        loggerService.log(userSession, "Выход из аккаунта", Log.InfoLevels.INFO);
-                    }
+            switch (userInput) {
+                // Пополнение
+                case "1" -> {
+                    loggerService.log(userSession, "Запущен процесс пополнения счета", Log.InfoLevels.INFO);
+                    UI UIDeposit = new UIDeposit(scanner, walletService, userSession);
+                    UIDeposit.run();
                 }
-            } catch (PlayerIsNotExistsException e) {
-                loggerService.log(userSession, "Возникла непредвиденная ошибка", Log.InfoLevels.ERROR);
-                System.out.print(e.getMessage());
+                // Снятие
+                case "2" -> {
+                    loggerService.log(userSession, "Запущен процесс снятия денег", Log.InfoLevels.INFO);
+                    UI UIWithdraw = new UIWithdraw(scanner, walletService, userSession);
+                    UIWithdraw.run();
+                }
+                // История транзакций
+                case "3" -> {
+                    loggerService.log(userSession, "Просмотр истории транзакций", Log.InfoLevels.INFO);
+                    UI UITransactionHistory = new UITransactionHistory(scanner, walletService, userSession);
+                    UITransactionHistory.run();
+                }
+                // Выйти из аккаунта
+                case "4" -> {
+                    deauthFlag = true;
+                    loggerService.log(userSession, "Выход из аккаунта", Log.InfoLevels.INFO);
+                }
             }
         }
         return new UIMenu(scanner);

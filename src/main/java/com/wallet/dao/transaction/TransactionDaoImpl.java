@@ -36,6 +36,7 @@ public class TransactionDaoImpl implements TransactionDao {
         SetupConnection.withConnection(connection -> {
             PreparedStatement preparedStatement = preparedStatementTransaction.updateTransaction(connection);
             preparedStatement.setString(1, transaction.getTransactionStatus().toString());
+            preparedStatement.setString(2, transaction.getTransactionId().toString());
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });

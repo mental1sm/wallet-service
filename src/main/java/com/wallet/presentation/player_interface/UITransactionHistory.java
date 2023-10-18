@@ -30,6 +30,7 @@ public class UITransactionHistory extends AbstractUI implements UI {
         super(scanner);
         this.playerDao = playerDao;
         this.userSession = userSession;
+        this.walletService = walletService;
     }
 
     @Override
@@ -39,7 +40,6 @@ public class UITransactionHistory extends AbstractUI implements UI {
         System.out.print(Localisation.WALLET_MENU_TRANSACTION_HISTORY_HEADER_RU);
         try {
             ArrayList<Transaction> transactionHistory = walletService.getTransactionHistory(userSession);
-
             for (Transaction transaction : transactionHistory) {
                 System.out.printf(
                         Localisation.WALLET_MENU_TRANSACTION_DETAILS_RU,
@@ -52,8 +52,6 @@ public class UITransactionHistory extends AbstractUI implements UI {
             }
         } catch (NullPointerException e) {
             System.out.println(Localisation.EMPTY_TRANSACTION_HISTORY_RU);
-        } catch (PlayerIsNotExistsException e) {
-            loggerService.log(userSession, "Критическая ошибка во время просмотра истории транзакций", Log.InfoLevels.ERROR);
         }
         System.out.println(Localisation.UTIL_LINER);
         System.out.println(Localisation.GOBACK_RU);

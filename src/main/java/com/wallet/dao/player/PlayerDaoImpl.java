@@ -30,7 +30,6 @@ public class PlayerDaoImpl implements PlayerDao{
             preparedStatement.setString(4, pl.getSurname());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new PlayerAllreadyExistsException("");
         }
     }
