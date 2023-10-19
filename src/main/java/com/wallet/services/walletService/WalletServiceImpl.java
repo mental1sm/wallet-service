@@ -103,7 +103,7 @@ public class WalletServiceImpl implements WalletService {
     public ArrayList<Transaction> getTransactionHistory(UserSession session) {
         Player pl = playerDao.findPlayer(session);
         Wallet wallet = walletDao.getWalletsOfPlayer(pl).get(session.getCurrentWalletNum());
-        return transactionDao.getTransactionsOfWallet(wallet.getWalletId());
+        return transactionDao.getTransactionsOfWallet(wallet);
     }
 }
 

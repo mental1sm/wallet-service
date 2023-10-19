@@ -1,5 +1,6 @@
 package com.wallet.dao.transaction;
 import com.wallet.entities.Transaction;
+import com.wallet.entities.Wallet;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -40,9 +41,9 @@ public interface TransactionDao {
     /**
      * Загружает список транзакций для указанного id кошелька
      *
-     * @param walletId Идентификатор кошелька, для которого нужно загрузить транзакции.
+     * @param wallet Объект кошелька, для которого нужно загрузить транзакции.
      * @return Список объектов транзакций для указанного кошелька.
      */
-    ArrayList<Transaction> getTransactionsOfWallet(long walletId);
+    ArrayList<Transaction> getTransactionsOfWallet(Wallet wallet);
 
 }

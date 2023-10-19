@@ -22,9 +22,7 @@ public class WalletDaoImpl implements WalletDao{
     @Override
     public void saveWallet(Wallet wallet) {
         SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementWallet.insertWallet(connection);
-            preparedStatement.setLong(1, wallet.getPlayerId());
-            preparedStatement.setBigDecimal(2, wallet.getWalletMoneyAmount());
+            PreparedStatement preparedStatement = preparedStatementWallet.insertWallet(connection, wallet);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -33,9 +31,7 @@ public class WalletDaoImpl implements WalletDao{
     @Override
     public void updateWallet(Wallet wallet) {
         SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementWallet.updateWallet(connection);
-            preparedStatement.setBigDecimal(1, wallet.getWalletMoneyAmount());
-            preparedStatement.setLong(2, wallet.getWalletId());
+            PreparedStatement preparedStatement = preparedStatementWallet.updateWallet(connection, wallet);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -44,8 +40,7 @@ public class WalletDaoImpl implements WalletDao{
     @Override
     public void deleteWallet(Wallet wallet) {
         SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementWallet.deleteWallet(connection);
-            preparedStatement.setLong(1, wallet.getWalletId());
+            PreparedStatement preparedStatement = preparedStatementWallet.deleteWallet(connection, wallet);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -56,10 +51,9 @@ public class WalletDaoImpl implements WalletDao{
         Wallet wallet = null;
         try (
                 Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementWallet.getWalletById(connection);
+                PreparedStatement preparedStatement = preparedStatementWallet.getWalletById(connection, id);
                 )
         {
-            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             wallet = extractWalletFromResultSet(resultSet);
             resultSet.close();
@@ -74,10 +68,9 @@ public class WalletDaoImpl implements WalletDao{
         ArrayList<Wallet> playerWallets = new ArrayList<>();
         try (
              Connection connection = SetupConnection.getConnection();
-             PreparedStatement preparedStatement = preparedStatementWallet.getWalletsOfPlayer(connection);
+             PreparedStatement preparedStatement = preparedStatementWallet.getWalletsOfPlayer(connection, pl);
              )
         {
-            preparedStatement.setLong(1, pl.getPlayerID());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 playerWallets.add(extractWalletFromResultSet(resultSet));

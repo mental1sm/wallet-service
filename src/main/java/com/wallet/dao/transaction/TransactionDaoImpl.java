@@ -1,6 +1,7 @@
 package com.wallet.dao.transaction;
 
 import com.wallet.entities.Transaction;
+import com.wallet.entities.Wallet;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementTransaction;
 
@@ -20,12 +21,7 @@ public class TransactionDaoImpl implements TransactionDao {
     @Override
     public void saveTransaction(Transaction transaction) {
         SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementTransaction.insertTransaction(connection);
-            preparedStatement.setString(1, transaction.getTransactionId().toString());
-            preparedStatement.setLong(2, transaction.getWalletId());
-            preparedStatement.setString(3, transaction.getTransactionType().toString());
-            preparedStatement.setString(4, transaction.getTransactionStatus().toString());
-            preparedStatement.setBigDecimal(5, transaction.getTransactionSum());
+            PreparedStatement preparedStatement = preparedStatementTransaction.insertTransaction(connection, transaction);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -34,9 +30,7 @@ public class TransactionDaoImpl implements TransactionDao {
     @Override
     public void updateTransaction(Transaction transaction) {
         SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementTransaction.updateTransaction(connection);
-            preparedStatement.setString(1, transaction.getTransactionStatus().toString());
-            preparedStatement.setString(2, transaction.getTransactionId().toString());
+            PreparedStatement preparedStatement = preparedStatementTransaction.updateTransaction(connection, transaction);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -45,8 +39,7 @@ public class TransactionDaoImpl implements TransactionDao {
     @Override
     public void deleteTransaction(Transaction transaction) {
         SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementTransaction.deleteTransaction(connection);
-            preparedStatement.setString(1, transaction.getTransactionId().toString());
+            PreparedStatement preparedStatement = preparedStatementTransaction.deleteTransaction(connection, transaction);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -58,10 +51,9 @@ public class TransactionDaoImpl implements TransactionDao {
         Transaction transaction = null;
         try (
                 Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementTransaction.getTransactionById(connection);
+                PreparedStatement preparedStatement = preparedStatementTransaction.getTransactionById(connection, id);
                 )
         {
-            preparedStatement.setString(1, id.toString());
             ResultSet resultSet = preparedStatement.executeQuery();
             transaction = extractTransactionFromResultSet(resultSet);
         } catch (SQLException e) {
@@ -72,14 +64,13 @@ public class TransactionDaoImpl implements TransactionDao {
     }
 
     @Override
-    public ArrayList<Transaction> getTransactionsOfWallet(long walletId) {
+    public ArrayList<Transaction> getTransactionsOfWallet(Wallet wallet) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         try (
                 Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementTransaction.getTransactionHistoryOfWallet(connection);
+                PreparedStatement preparedStatement = preparedStatementTransaction.getTransactionHistoryOfWallet(connection, wallet);
         )
         {
-            preparedStatement.setLong(1, walletId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 transactions.add(extractTransactionFromResultSet(resultSet));

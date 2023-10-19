@@ -21,13 +21,8 @@ public class PlayerDaoImpl implements PlayerDao{
     public void savePlayer(Player pl) throws PlayerAllreadyExistsException {
         try (
                 Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementPlayer.insertPlayer(connection);
-
+                PreparedStatement preparedStatement = preparedStatementPlayer.insertPlayer(connection, pl);
         ) {
-            preparedStatement.setString(1, pl.getPLogin());
-            preparedStatement.setString(2, pl.getPPassword());
-            preparedStatement.setString(3, pl.getName());
-            preparedStatement.setString(4, pl.getSurname());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new PlayerAllreadyExistsException("");
@@ -37,12 +32,7 @@ public class PlayerDaoImpl implements PlayerDao{
     @Override
     public void updatePlayer(Player pl) {
         SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementPlayer.updatePlayer(connection);
-            preparedStatement.setString(1, pl.getPPassword());
-            preparedStatement.setString(2, pl.getName());
-            preparedStatement.setString(3, pl.getSurname());
-            preparedStatement.setInt(4, pl.getPermissionId());
-            preparedStatement.setString(5, pl.getPLogin());
+            PreparedStatement preparedStatement = preparedStatementPlayer.updatePlayer(connection, pl);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -51,8 +41,7 @@ public class PlayerDaoImpl implements PlayerDao{
     @Override
     public void deletePlayer(Player pl) {
         SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementPlayer.deletePlayer(connection);
-            preparedStatement.setString(1, pl.getPLogin());
+            PreparedStatement preparedStatement = preparedStatementPlayer.deletePlayer(connection, pl);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         });
@@ -60,20 +49,15 @@ public class PlayerDaoImpl implements PlayerDao{
 
     @Override
     public Player findPlayer(String pLogin) {
-        Player pl = null;
+        Player pl;
         try (
                 Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerByLogin(connection);
+                PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerByLogin(connection, pLogin);
         )
         {
-            preparedStatement.setString(1, pLogin);
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            do {
-                pl = extractPlayerFromResultSet(resultSet);
-            } while (resultSet.next());
+            pl = extractPlayerFromResultSet(resultSet);
             resultSet.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -83,14 +67,12 @@ public class PlayerDaoImpl implements PlayerDao{
 
     @Override
     public Player findPlayer(long id) {
-        Player pl = null;
+        Player pl;
         try (
                 Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerById(connection);
+                PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerById(connection, id);
         ) {
-            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             pl = extractPlayerFromResultSet(resultSet);
             resultSet.close();
         } catch (SQLException e) {
