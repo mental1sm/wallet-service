@@ -5,7 +5,6 @@ import com.wallet.infrastructure.UserSession;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementPlayer;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.sql.*;
 
@@ -21,10 +20,11 @@ public class PlayerDaoImpl implements PlayerDao{
     public void savePlayer(Player pl) throws PlayerAllreadyExistsException {
         try (
                 Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementPlayer.insertPlayer(connection, pl);
+                PreparedStatement preparedStatement = preparedStatementPlayer.insertPlayer(connection, pl)
         ) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new PlayerAllreadyExistsException("");
         }
     }
@@ -52,7 +52,7 @@ public class PlayerDaoImpl implements PlayerDao{
         Player pl;
         try (
                 Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerByLogin(connection, pLogin);
+                PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerByLogin(connection, pLogin)
         )
         {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -70,7 +70,7 @@ public class PlayerDaoImpl implements PlayerDao{
         Player pl;
         try (
                 Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerById(connection, id);
+                PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerById(connection, id)
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
             pl = extractPlayerFromResultSet(resultSet);

@@ -2,17 +2,13 @@ package com.wallet.services.loggerService;
 
 import com.wallet.dao.log.LogDao;
 import com.wallet.dao.player.PlayerDao;
-import com.wallet.dao.wallet.WalletDao;
 import com.wallet.entities.Log;
 import com.wallet.entities.Player;
-import com.wallet.entities.Wallet;
 import com.wallet.infrastructure.UserSession;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Класс LoggerService предоставляет сервис для журналирования действий игроков и управления журналом.
@@ -55,6 +51,23 @@ public class LoggerService {
                 .id(0)
                 .timestamp(new Date())
                 .playerId(pl.getPlayerID())
+                .infoLevel(infoLevel)
+                .action(action)
+                .build();
+        logDao.saveLog(log);
+    }
+
+    /**
+     * Метод для журналирования действий самой программы.
+     *
+     * @param action Описание действия, которое требуется зарегистрировать.
+     * @param infoLevel Уровень информирования лога
+     */
+    public void logAnonymously(String action, Log.InfoLevels infoLevel) {
+        Log log = Log.builder()
+                .id(0)
+                .timestamp(new Date())
+                .playerId(0)
                 .infoLevel(infoLevel)
                 .action(action)
                 .build();

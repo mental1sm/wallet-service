@@ -5,22 +5,21 @@ import com.wallet.dao.player.PlayerDaoImpl;
 import com.wallet.entities.Player;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 import org.junit.jupiter.api.*;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.testcontainers.junit.jupiter.Testcontainers;
-import java.sql.SQLException;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Testcontainers
 public class PlayerDaoTest {
 
-    static PlayerDao playerDao;
-    static Player mockedPlayer;
+    private static PlayerDao playerDao;
+    private static Player mockedPlayer;
 
     @BeforeAll
     public static void setUp() {
+        DatabaseContainer.setUp();
         playerDao = new PlayerDaoImpl();
         mockedPlayer = mock(Player.class);
         when(mockedPlayer.getPLogin()).thenReturn("some_login");
@@ -80,4 +79,5 @@ public class PlayerDaoTest {
         Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getPLogin());
         Assertions.assertNull(retrievedPlayer);
     }
+
 }

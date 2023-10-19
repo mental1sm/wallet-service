@@ -5,7 +5,6 @@ import com.wallet.infrastructure.UserSession;
 import com.wallet.in.UserDecimalInputHandler;
 import com.wallet.presentation.Localisation;
 import com.wallet.services.walletService.WalletService;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -34,7 +33,6 @@ public class UIDeposit extends AbstractUI implements UI {
         walletService.depositMoney(userSession, userInput);
         System.out.println(Localisation.UTIL_LINER);
         loggerService.log(userSession, String.format("Попытка пополнения на %s", userInput), Log.InfoLevels.INFO);
-
         return null;
     }
 }

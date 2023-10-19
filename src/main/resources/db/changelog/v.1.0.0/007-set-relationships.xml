@@ -11,7 +11,9 @@
                                  constraintName="fk_wallet_player"
                                  referencedTableName="Player"
                                  referencedTableSchemaName="walletservice"
-                                 referencedColumnNames="id" />
+                                 referencedColumnNames="id"
+                                 deleteCascade="true"
+        />
 
         <addForeignKeyConstraint baseTableName="Transaction"
                                  baseColumnNames="wallet_id"
@@ -19,7 +21,9 @@
                                  constraintName="fk_transaction_wallet"
                                  referencedTableName="Wallet"
                                  referencedTableSchemaName="walletservice"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id"
+                                 deleteCascade="true"
+        />
 
         <addForeignKeyConstraint baseTableName="Player"
                                  baseColumnNames="permission_id"
@@ -27,6 +31,7 @@
                                  constraintName="fk_player_permission"
                                  referencedTableName="Permission"
                                  referencedTableSchemaName="walletservice"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id"
+        />
     </changeSet>
 </databaseChangeLog>

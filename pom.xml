@@ -28,6 +28,7 @@
         <junit.testcontainters.version>1.19.1</junit.testcontainters.version>
         <postgres.testcontainers.version>1.19.1</postgres.testcontainers.version>
         <logback.version>1.4.11</logback.version>
+        <javafaker.version>1.0.2</javafaker.version>
     </properties>
 
     <dependencies>
@@ -97,6 +98,13 @@
             <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${javafaker.version}</version>
+        </dependency>
+
 
 
 
