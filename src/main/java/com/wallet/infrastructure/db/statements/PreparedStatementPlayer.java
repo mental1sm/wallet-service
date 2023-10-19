@@ -26,8 +26,8 @@ public class PreparedStatementPlayer {
     */
     public PreparedStatement insertPlayer(Connection connection, Player pl) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO walletservice.\"Player\" VALUES (DEFAULT, ?, ?, ?, ?, 3);");
-        preparedStatement.setString(1, pl.getPLogin());
-        preparedStatement.setString(2, pl.getPPassword());
+        preparedStatement.setString(1, pl.getLogin());
+        preparedStatement.setString(2, pl.getPassword());
         preparedStatement.setString(3, pl.getName());
         preparedStatement.setString(4, pl.getSurname());
         return preparedStatement;
@@ -41,7 +41,7 @@ public class PreparedStatementPlayer {
      */
     public PreparedStatement deletePlayer(Connection connection, Player pl) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM walletservice.\"Player\" WHERE login = ?;");
-        preparedStatement.setString(1, pl.getPLogin());
+        preparedStatement.setString(1, pl.getLogin());
         return preparedStatement;
     }
 
@@ -63,11 +63,11 @@ public class PreparedStatementPlayer {
                 permission_id = ?
                 WHERE login = ?;
                 """);
-        preparedStatement.setString(1, pl.getPPassword());
+        preparedStatement.setString(1, pl.getPassword());
         preparedStatement.setString(2, pl.getName());
         preparedStatement.setString(3, pl.getSurname());
         preparedStatement.setInt(4, pl.getPermissionId());
-        preparedStatement.setString(5, pl.getPLogin());
+        preparedStatement.setString(5, pl.getLogin());
         return preparedStatement;
     }
 

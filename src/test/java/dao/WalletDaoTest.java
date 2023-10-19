@@ -31,16 +31,16 @@ public class WalletDaoTest {
         playerDao = new PlayerDaoImpl();
 
         mockedPlayer = FakePlayer.getFake();
-        when(mockedPlayer.getPLogin()).thenReturn("for_wallet_testing");
+        when(mockedPlayer.getLogin()).thenReturn("for_wallet_testing");
         playerDao.savePlayer(mockedPlayer);
-        mockedPlayer = playerDao.findPlayer(mockedPlayer.getPLogin());
+        mockedPlayer = playerDao.findPlayer(mockedPlayer.getLogin());
     }
 
     @Test
     @Order(1)
     public void testWalletSaveFind() {
         mockedWallet = FakeWallet.getFake();
-        when(mockedWallet.getPlayerId()).thenReturn(mockedPlayer.getPlayerID());
+        when(mockedWallet.getPlayerId()).thenReturn(mockedPlayer.getId());
         walletDao.saveWallet(mockedWallet);
         Wallet retrievedWallet = walletDao.getWalletsOfPlayer(mockedPlayer).get(0);
         Assertions.assertEquals(mockedWallet.getPlayerId(), retrievedWallet.getPlayerId());
@@ -52,17 +52,17 @@ public class WalletDaoTest {
     public void testWalletUpdate() {
         BigDecimal money = BigDecimal.valueOf(1490);
         Wallet retrievedWallet = walletDao.getWalletsOfPlayer(mockedPlayer).get(0);
-        retrievedWallet.setWalletMoneyAmount(money);
+        retrievedWallet.setMoneyAmount(money);
         walletDao.updateWallet(retrievedWallet);
         Wallet updatedWallet = walletDao.getWalletsOfPlayer(mockedPlayer).get(0);
-        Assertions.assertEquals(updatedWallet.getWalletMoneyAmount(), retrievedWallet.getWalletMoneyAmount());
+        Assertions.assertEquals(updatedWallet.getMoneyAmount(), retrievedWallet.getMoneyAmount());
     }
 
     @Test
     @Order(3)
     public void testMultipleWallets() {
         Wallet secondMockedWallet = FakeWallet.getFake();
-        when(secondMockedWallet.getPlayerId()).thenReturn(mockedPlayer.getPlayerID());
+        when(secondMockedWallet.getPlayerId()).thenReturn(mockedPlayer.getId());
         walletDao.saveWallet(secondMockedWallet);
         ArrayList<Wallet> wallets = walletDao.getWalletsOfPlayer(mockedPlayer);
         Assertions.assertEquals(2, wallets.size());

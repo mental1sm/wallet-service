@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
 /**
  * Представляет сущность игрока.
 */
@@ -20,11 +18,11 @@ public class Player {
         SUPERADMIN
     }
 
-    final private long playerID;
+    final private long id;
     final private int permissionId;
-    final private Permission permission;
-    final private String name, surname, pLogin;
-    @Setter private String pPassword;
+    final private Permission permissionLevel;
+    final private String name, surname, login;
+    @Setter private String password;
 
 
 }

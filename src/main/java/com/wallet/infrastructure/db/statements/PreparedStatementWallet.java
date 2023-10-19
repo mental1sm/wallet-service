@@ -27,7 +27,7 @@ public class PreparedStatementWallet {
     public PreparedStatement insertWallet(Connection connection, Wallet wallet) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO walletservice.\"Wallet\" VALUES (DEFAULT, ?, ?);");
         preparedStatement.setLong(1, wallet.getPlayerId());
-        preparedStatement.setBigDecimal(2, wallet.getWalletMoneyAmount());
+        preparedStatement.setBigDecimal(2, wallet.getMoneyAmount());
         return preparedStatement;
     }
 
@@ -39,7 +39,7 @@ public class PreparedStatementWallet {
      */
     public PreparedStatement deleteWallet(Connection connection, Wallet wallet) throws SQLException {
         PreparedStatement preparedStatement =  connection.prepareStatement("DELETE FROM walletservice.\"Wallet\" WHERE id = ?;");
-        preparedStatement.setLong(1, wallet.getWalletId());
+        preparedStatement.setLong(1, wallet.getId());
         return preparedStatement;
     }
 
@@ -56,8 +56,8 @@ public class PreparedStatementWallet {
                 money_amount = ?
                 WHERE id = ?;
                 """);
-        preparedStatement.setBigDecimal(1, wallet.getWalletMoneyAmount());
-        preparedStatement.setLong(2, wallet.getWalletId());
+        preparedStatement.setBigDecimal(1, wallet.getMoneyAmount());
+        preparedStatement.setLong(2, wallet.getId());
         return preparedStatement;
     }
 
@@ -69,7 +69,7 @@ public class PreparedStatementWallet {
      */
     public PreparedStatement getWalletsOfPlayer(Connection connection, Player pl) throws SQLException {
         PreparedStatement preparedStatement =  connection.prepareStatement("SELECT * FROM walletservice.\"Wallet\" WHERE player_id = ?;");
-        preparedStatement.setLong(1, pl.getPlayerID());
+        preparedStatement.setLong(1, pl.getId());
         return preparedStatement;
     }
 

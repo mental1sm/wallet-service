@@ -99,13 +99,13 @@ public class PlayerDaoImpl implements PlayerDao{
 
         if (resultSet.next()) {
             pl =  Player.builder()
-                    .playerID(resultSet.getLong("id"))
-                    .permission(Player.Permission.valueOf(resultSet.getString(7)))
+                    .id(resultSet.getLong("id"))
+                    .permissionLevel(Player.Permission.valueOf(resultSet.getString(7)))
                     .permissionId(resultSet.getInt("permission_id"))
                     .name(resultSet.getString("name"))
                     .surname(resultSet.getString("surname"))
-                    .pLogin(resultSet.getString("login"))
-                    .pPassword(resultSet.getString("password"))
+                    .login(resultSet.getString("login"))
+                    .password(resultSet.getString("password"))
                     .build();
         } else {
             pl = null;

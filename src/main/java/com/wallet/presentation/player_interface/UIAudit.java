@@ -32,7 +32,7 @@ public class UIAudit extends AbstractUI implements UI {
         potentialAdmin = playerDao.findPlayer(userInput.get("login"));
 
         if (potentialAdmin == null) { return new UIMenu(scanner); }
-        else if (!potentialAdmin.getPermission().equals(Player.Permission.USER)) {
+        else if (!potentialAdmin.getPermissionLevel().equals(Player.Permission.USER)) {
             System.out.println(Localisation.AUDIT_CORRECT_RU);
             System.out.println(Localisation.AUDIT_HEADER_RU);
 

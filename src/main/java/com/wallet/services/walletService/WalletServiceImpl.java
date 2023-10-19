@@ -9,7 +9,6 @@ import com.wallet.entities.Transaction;
 import com.wallet.entities.Wallet;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.IdGenerator;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
 
         Transaction transaction = Transaction.builder()
-                .walletId(wallet.getWalletId())
+                .walletId(wallet.getId())
                 .playerId(wallet.getPlayerId())
                 .transactionId(IdGenerator.genId())
                 .transactionType(Transaction.Type.Deposit)
@@ -44,8 +43,8 @@ public class WalletServiceImpl implements WalletService {
 
         transactionDao.saveTransaction(transaction);
 
-        BigDecimal currentMoney = wallet.getWalletMoneyAmount();
-        wallet.setWalletMoneyAmount(currentMoney.add(amount));
+        BigDecimal currentMoney = wallet.getMoneyAmount();
+        wallet.setMoneyAmount(currentMoney.add(amount));
 
         transaction.setTransactionStatus(Transaction.Status.Approved);
         walletDao.updateWallet(wallet);
@@ -57,7 +56,7 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
 
         Transaction transaction = Transaction.builder()
-                .walletId(wallet.getWalletId())
+                .walletId(wallet.getId())
                 .playerId(wallet.getPlayerId())
                 .transactionId(IdGenerator.genId())
                 .transactionType(Transaction.Type.Withdrawing)
@@ -67,9 +66,9 @@ public class WalletServiceImpl implements WalletService {
                 .build();
         transactionDao.saveTransaction(transaction);
 
-        BigDecimal currentMoney = wallet.getWalletMoneyAmount();
+        BigDecimal currentMoney = wallet.getMoneyAmount();
         if (currentMoney.compareTo(amount) >= 0 ) {
-            wallet.setWalletMoneyAmount(currentMoney.subtract(amount));
+            wallet.setMoneyAmount(currentMoney.subtract(amount));
             transaction.setTransactionStatus(Transaction.Status.Approved);
             transactionDao.updateTransaction(transaction);
             walletDao.updateWallet(wallet);
@@ -85,7 +84,7 @@ public class WalletServiceImpl implements WalletService {
         Player player = playerDao.findPlayer(session);
         Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
 
-        return wallet.getWalletMoneyAmount();
+        return wallet.getMoneyAmount();
     }
 
     @Override
@@ -95,7 +94,7 @@ public class WalletServiceImpl implements WalletService {
         userInfo.put("name", pl.getName());
         userInfo.put("surname", pl.getSurname());
         Wallet wallet = walletDao.getWalletsOfPlayer(pl).get(session.getCurrentWalletNum());
-        userInfo.put("walletId", Long.valueOf(wallet.getWalletId()).toString());
+        userInfo.put("walletId", Long.valueOf(wallet.getId()).toString());
         return userInfo;
     }
 

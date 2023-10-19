@@ -83,9 +83,9 @@ public class WalletDaoImpl implements WalletDao{
 
     private Wallet extractWalletFromResultSet(ResultSet resultSet) throws SQLException {
         return Wallet.builder()
-                .walletId(resultSet.getLong("id"))
+                .id(resultSet.getLong("id"))
                 .playerId(resultSet.getLong("player_id"))
-                .walletMoneyAmount(resultSet.getBigDecimal("money_amount"))
+                .moneyAmount(resultSet.getBigDecimal("money_amount"))
                 .build();
     }
 }

@@ -12,8 +12,8 @@ public class FakeWallet {
     public static Wallet getFake() {
         Faker faker = Faker.instance();
         Wallet wallet = mock(Wallet.class);
-        when(wallet.getWalletId()).thenReturn((long) 1);
-        when(wallet.getWalletMoneyAmount()).thenReturn(BigDecimal.valueOf(0));
+        when(wallet.getId()).thenReturn((long) 1);
+        when(wallet.getMoneyAmount()).thenReturn(BigDecimal.valueOf(0));
         return wallet;
     }
 }

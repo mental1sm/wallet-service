@@ -50,7 +50,7 @@ public class LoggerService {
         Log log = Log.builder()
                 .id(0)
                 .timestamp(new Date())
-                .playerId(pl.getPlayerID())
+                .playerId(pl.getId())
                 .infoLevel(infoLevel)
                 .action(action)
                 .build();

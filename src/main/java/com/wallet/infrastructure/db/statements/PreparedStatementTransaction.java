@@ -96,7 +96,7 @@ public class PreparedStatementTransaction {
         PreparedStatement preparedStatement =  connection.prepareStatement(
                 "SELECT * FROM walletservice.\"Transaction\" WHERE wallet_id = ?"
         );
-        preparedStatement.setLong(1, wallet.getWalletId());
+        preparedStatement.setLong(1, wallet.getId());
         return preparedStatement;
     }
 }

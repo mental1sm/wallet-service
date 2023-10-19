@@ -22,11 +22,11 @@ public class PlayerDaoTest {
         DatabaseContainer.setUp();
         playerDao = new PlayerDaoImpl();
         mockedPlayer = mock(Player.class);
-        when(mockedPlayer.getPLogin()).thenReturn("some_login");
-        when(mockedPlayer.getPPassword()).thenReturn("password");
+        when(mockedPlayer.getLogin()).thenReturn("some_login");
+        when(mockedPlayer.getPassword()).thenReturn("password");
         when(mockedPlayer.getName()).thenReturn("name");
         when(mockedPlayer.getSurname()).thenReturn("surname");
-        when(mockedPlayer.getPermission()).thenReturn(Player.Permission.USER);
+        when(mockedPlayer.getPermissionLevel()).thenReturn(Player.Permission.USER);
         when(mockedPlayer.getPermissionId()).thenReturn(3);
 
     }
@@ -35,11 +35,11 @@ public class PlayerDaoTest {
     @Order(1)
     public void testSaveFindPlayer() throws PlayerAllreadyExistsException {
         playerDao.savePlayer(mockedPlayer);
-        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getPLogin());
-        when(mockedPlayer.getPlayerID()).thenReturn(retrievedPlayer.getPlayerID());
+        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getLogin());
+        when(mockedPlayer.getId()).thenReturn(retrievedPlayer.getId());
 
-        Assertions.assertEquals(mockedPlayer.getPLogin(), retrievedPlayer.getPLogin());
-        Assertions.assertEquals(mockedPlayer.getPPassword(), retrievedPlayer.getPPassword());
+        Assertions.assertEquals(mockedPlayer.getLogin(), retrievedPlayer.getLogin());
+        Assertions.assertEquals(mockedPlayer.getPassword(), retrievedPlayer.getPassword());
     }
 
     @Test
@@ -57,10 +57,10 @@ public class PlayerDaoTest {
     @Test
     @Order(4)
     public void testUpdatePlayerPassword() {
-        when(mockedPlayer.getPPassword()).thenReturn("password_edited");
+        when(mockedPlayer.getPassword()).thenReturn("password_edited");
         playerDao.updatePlayer(mockedPlayer);
-        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getPlayerID());
-        Assertions.assertEquals(mockedPlayer.getPPassword(), retrievedPlayer.getPPassword());
+        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getId());
+        Assertions.assertEquals(mockedPlayer.getPassword(), retrievedPlayer.getPassword());
     }
 
     @Test
@@ -68,15 +68,15 @@ public class PlayerDaoTest {
     public void testUpdatePlayerPermission() {
         when(mockedPlayer.getPermissionId()).thenReturn(2);
         playerDao.updatePlayer(mockedPlayer);
-        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getPlayerID());
-        Assertions.assertEquals(retrievedPlayer.getPermission(), Player.Permission.ADMIN);
+        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getId());
+        Assertions.assertEquals(retrievedPlayer.getPermissionLevel(), Player.Permission.ADMIN);
     }
 
     @Test
     @Order(6)
     public void testDeletePlayer() {
         playerDao.deletePlayer(mockedPlayer);
-        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getPLogin());
+        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getLogin());
         Assertions.assertNull(retrievedPlayer);
     }
 

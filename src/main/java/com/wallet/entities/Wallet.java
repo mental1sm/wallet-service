@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 /**
  * Представляет сущность кошелька.
@@ -15,6 +14,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class Wallet {
-    private long walletId, playerId;
-    @Setter private BigDecimal walletMoneyAmount;
+    private long id, playerId;
+    @Setter private BigDecimal moneyAmount;
 }

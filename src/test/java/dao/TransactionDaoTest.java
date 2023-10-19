@@ -33,12 +33,12 @@ public class TransactionDaoTest {
         PlayerDao playerDao = new PlayerDaoImpl();
 
         mockedPlayer = FakePlayer.getFake();
-        when(mockedPlayer.getPLogin()).thenReturn("for_transaction_testing");
+        when(mockedPlayer.getLogin()).thenReturn("for_transaction_testing");
         playerDao.savePlayer(mockedPlayer);
-        mockedPlayer = playerDao.findPlayer(mockedPlayer.getPLogin());
+        mockedPlayer = playerDao.findPlayer(mockedPlayer.getLogin());
 
         mockedWallet = FakeWallet.getFake();
-        when(mockedWallet.getPlayerId()).thenReturn(mockedPlayer.getPlayerID());
+        when(mockedWallet.getPlayerId()).thenReturn(mockedPlayer.getId());
         walletDao.saveWallet(mockedWallet);
         mockedWallet = walletDao.getWalletsOfPlayer(mockedPlayer).get(0);
     }
@@ -47,8 +47,8 @@ public class TransactionDaoTest {
     @Order(1)
     public void testTransactionSaveFind() {
         Transaction mockedTransaction = FakeTransaction.getFake();
-        when(mockedTransaction.getPlayerId()).thenReturn(mockedPlayer.getPlayerID());
-        when(mockedTransaction.getWalletId()).thenReturn(mockedWallet.getWalletId());
+        when(mockedTransaction.getPlayerId()).thenReturn(mockedPlayer.getId());
+        when(mockedTransaction.getWalletId()).thenReturn(mockedWallet.getId());
         transactionDao.saveTransaction(mockedTransaction);
         Transaction retrievedTransaction = transactionDao.getTransactionsOfWallet(mockedWallet).get(0);
         Assertions.assertEquals(mockedTransaction.getTransactionId(), retrievedTransaction.getTransactionId());
