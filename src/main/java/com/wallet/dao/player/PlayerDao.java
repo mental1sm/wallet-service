@@ -3,7 +3,8 @@ package com.wallet.dao.player;
 import com.wallet.entities.Player;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
+
+import java.util.Optional;
 
 /**
  * Интерфейс, представляющий доступ к данным игрока.
@@ -18,13 +19,34 @@ public interface PlayerDao {
     void savePlayer(Player pl) throws PlayerAllreadyExistsException;
 
     /**
-     * Загружает информацию об игроке по его логину и паролю.
+     * Удаляет информацию об игроке в базе данных.
      *
-     * @param pLogin    Логин игрока.
-     * @param pPassword Пароль игрока.
-     * @return Объект игрока, соответствующий заданным логину и паролю, или null, если игрок не найден.
+     * @param pl Объект игрока, который должен быть удален.
      */
-    Player findPlayer(String pLogin, String pPassword) throws PlayerIsNotExistsException;
+    void deletePlayer(Player pl);
+
+    /**
+     * Обновляет информацию об игроке в базе данных.
+     *
+     * @param pl Объект игрока, который должен быть обновлен.
+     */
+    void updatePlayer(Player pl);
+
+    /**
+     * Загружает информацию об игроке по его логину.
+     *
+     * @param pLogin Логин игрока.
+     * @return Объект игрока, соответствующий заданным логину, или null, если игрок не найден.
+     */
+    Optional<Player> findPlayer(String pLogin);
+
+    /**
+     * Загружает информацию об игроке по его id.
+     *
+     * @param id id игрока.
+     * @return Объект игрока, соответствующий заданным id, или null, если игрок не найден.
+     */
+    Optional<Player> findPlayer(long id);
 
     /**
      * Загружает информацию об игроке на основе сеанса пользователя.
@@ -32,6 +54,6 @@ public interface PlayerDao {
      * @param userSession Сеанс пользователя, для которого нужно загрузить информацию об игроке.
      * @return Объект игрока, связанный с указанным сеансом пользователя, или null, если игрок не найден.
      */
-    Player findPlayer(UserSession userSession);
+    Optional<Player> findPlayer(UserSession userSession);
 
 }

@@ -21,7 +21,10 @@ public class UserSession {
      * Идентификатор игрока, связанный с данной сессией.
      */
     @Getter
-    private final UUID playerID;
+    private final long playerID;
+
+    @Getter @Setter
+    private int currentWalletNum;
 
     /**
      * Конструктор класса UserSession создает новую сессию пользователя с уникальным идентификатором
@@ -29,7 +32,7 @@ public class UserSession {
      *
      * @param playerID Идентификатор игрока, связываемый с данной сессией.
      */
-    public UserSession(UUID playerID) {
+    public UserSession(long playerID) {
         sessionId = IdGenerator.genId();
         this.playerID = playerID;
     }

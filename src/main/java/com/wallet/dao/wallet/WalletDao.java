@@ -1,8 +1,9 @@
 package com.wallet.dao.wallet;
 
+import com.wallet.entities.Player;
 import com.wallet.entities.Wallet;
 
-import java.util.UUID;
+import java.util.ArrayList;
 
 /**
  * Интерфейс, предоставляющий методы для управления данными о кошельках.
@@ -17,11 +18,30 @@ public interface WalletDao {
     void saveWallet(Wallet wallet);
 
     /**
-     * Загружает информацию о кошельке по идентификатору игрока (PID).
+     * Обновляет информацию о кошельке в хранилище данных.
      *
-     * @param PID Идентификатор игрока, для которого нужно загрузить кошелек.
-     * @return Объект кошелька, связанный с указанным игроком, или null, если кошелек не найден.
+     * @param wallet Объект кошелька, который необходимо обновить.
      */
-    Wallet findWallet(UUID PID);
+    void updateWallet(Wallet wallet);
+
+    /**
+     * Метод, удаляющий кошелек из БД
+     * @param wallet - Объект кошелька
+     */
+    void deleteWallet(Wallet wallet);
+
+    /**
+     * Метод, возвращающий объект Wallet из БД по его id
+     * @param id
+     * @return Объект Wallet
+     */
+    Wallet getWalletById(long id);
+
+    /**
+     * Метод, возвращающий коллекцию объектов Wallet из БД
+     * @param pl Игрок, чьи кошельки надо вернуть
+     * @return Коллекция объектов Wallet
+     */
+    ArrayList<Wallet> getWalletsOfPlayer(Player pl);
 
 }

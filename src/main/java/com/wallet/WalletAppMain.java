@@ -1,5 +1,6 @@
 package com.wallet;
 
+import com.wallet.infrastructure.db.liquibase.PostgresMigration;
 import com.wallet.presentation.player_interface.UIMenu;
 import com.wallet.presentation.player_interface.UI;
 
@@ -16,6 +17,8 @@ public class WalletAppMain {
      * @param args Аргументы командной строки (не используются в этом приложении).
      */
     public static void main(String[] args) {
+        PostgresMigration.migrate(); // Миграции
+
         Scanner scanner = new Scanner(System.in);
         UI ui = new UIMenu(scanner);
 

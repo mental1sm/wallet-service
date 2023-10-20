@@ -1,16 +1,21 @@
-# wallet-service
-
-<H1>Install instruction</H1>
-
-```git clone https://github.com/mental1sm/wallet-service.git```
-
-```cd wallet-service```
-
-```git checkout homework1```
-
-```mvn clean package```
-
-```cd target```
-
-```java -jar ment09_Wallet-Service-1.0-SNAPSHOT-jar-with-dependencies.jar```
-
+```agsl
+$ git clone https://github.com/mental1ism/wallet-serivce.git
+```
+```agsl
+$ cd wallet-service
+```
+```agsl
+$ git checkout homework2
+```
+```agsl
+$ mvn clean package
+```
+```agsl
+$ ./postgres_up.sh
+```
+```agsl
+$ cd target
+```
+```agsl
+$ java -jar ment09_Wallet-Service-1.0-SNAPSHOT-jar-with-dependencies.jar
+```

@@ -3,49 +3,79 @@ package dao;
 import com.wallet.dao.player.PlayerDao;
 import com.wallet.dao.player.PlayerDaoImpl;
 import com.wallet.entities.Player;
-import com.wallet.infrastructure.PlayerInMemoryRepository;
-import com.wallet.utility.IdGenerator;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
+import dao.fakentities.FakePlayer;
+import org.junit.jupiter.api.*;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Testcontainers
 public class PlayerDaoTest {
 
-    @Test
-    public void savePlayerTest() throws PlayerIsNotExistsException {
-        PlayerInMemoryRepository repository = PlayerInMemoryRepository.getInstance();
+    private static PlayerDao playerDao;
+    private static Player fakePlayer;
 
-        Player player1 = new Player(IdGenerator.genId(), "Test", "test", "login", "pass");
-        Player player2 = new Player(IdGenerator.genId(), "Test", "test", "login!!!!", "pass");
-        Player player3 = new Player(IdGenerator.genId(), "Test", "Test", "login", "pass");
+    @BeforeAll
+    public static void setUp() {
+        DatabaseContainer.setUp();
+        playerDao = new PlayerDaoImpl();
+        fakePlayer = FakePlayer.getFake("some_login");
+        fakePlayer.setPassword("password");
 
-        PlayerDao playerDao = new PlayerDaoImpl();
-
-        playerDao.savePlayer(player1);
-        playerDao.savePlayer(player2);
-
-        Player testPlayer1 = playerDao.findPlayer("login", "pass");
-        Player testPlayer2 = playerDao.findPlayer("login!", "pass");
-
-        Assertions.assertThat(player1).isEqualTo(testPlayer1);
-        Assertions.assertThat(player2).isEqualTo(testPlayer2);
-        Assertions.assertThatThrownBy(() -> {
-            playerDao.savePlayer(player3);
-        }).isInstanceOf(PlayerAllreadyExistsException.class);
     }
 
     @Test
-    public void findPlayerTest() throws PlayerIsNotExistsException {
-        PlayerInMemoryRepository repository = PlayerInMemoryRepository.getInstance();
+    @Order(1)
+    public void testSaveFindPlayer() throws PlayerAllreadyExistsException {
+        playerDao.savePlayer(fakePlayer);
+        Player retrievedPlayer = playerDao.findPlayer(fakePlayer.getLogin()).orElseThrow();
 
-        Player pl_1 = new Player(IdGenerator.genId(), "Test", "test", "login", "pass");
-
-        PlayerDao playerDao = new PlayerDaoImpl();
-        playerDao.savePlayer(pl_1);
-
-        Player test = playerDao.findPlayer("login", "pass");
-        Assertions.assertThat(pl_1).isEqualTo(test);
+        Assertions.assertEquals(fakePlayer.getLogin(), retrievedPlayer.getLogin());
+        Assertions.assertEquals(fakePlayer.getPassword(), retrievedPlayer.getPassword());
     }
+
+    @Test
+    @Order(2)
+    public void testSaveExistingPlayer() {
+        Assertions.assertThrowsExactly(PlayerAllreadyExistsException.class, () -> {playerDao.savePlayer(fakePlayer);});
+    }
+
+    @Test
+    @Order(3)
+    public void testFindNotExistingPlayer() {
+        Assertions.assertEquals(playerDao.findPlayer("notexistinglogin"), Optional.empty());
+    }
+
+    @Test
+    @Order(4)
+    public void testUpdatePlayerPassword() {
+        fakePlayer = playerDao.findPlayer(fakePlayer.getLogin()).orElseThrow();
+        fakePlayer.setPassword("newpass");
+        playerDao.updatePlayer(fakePlayer);
+        Player retrievedPlayer = playerDao.findPlayer(fakePlayer.getId()).orElseThrow();
+        Assertions.assertEquals(fakePlayer.getPassword(), retrievedPlayer.getPassword());
+    }
+
+    @Test
+    @Order(5)
+    public void testUpdatePlayerPermission() {
+        fakePlayer.setPermissionId(2);
+        playerDao.updatePlayer(fakePlayer);
+        Player retrievedPlayer = playerDao.findPlayer(fakePlayer.getId()).orElseThrow();
+        Assertions.assertEquals(retrievedPlayer.getPermissionLevel(), Player.Permission.ADMIN);
+    }
+
+    @Test
+    @Order(6)
+    public void testDeletePlayer() {
+        playerDao.deletePlayer(fakePlayer);
+        Assertions.assertThrowsExactly(NoSuchElementException.class, () -> playerDao.findPlayer(fakePlayer.getLogin()).orElseThrow());
+    }
+
 }

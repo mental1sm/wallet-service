@@ -9,54 +9,63 @@ import com.wallet.dao.wallet.WalletDaoImpl;
 import com.wallet.entities.Player;
 import com.wallet.entities.Transaction;
 import com.wallet.entities.Wallet;
-import com.wallet.utility.IdGenerator;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
+import dao.fakentities.FakePlayer;
+import dao.fakentities.FakeTransaction;
+import dao.fakentities.FakeWallet;
+import org.junit.jupiter.api.*;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
+import static org.mockito.Mockito.when;
 
+@Testcontainers
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TransactionDaoTest {
+    private static TransactionDao transactionDao;
+    private static Player fakePlayer;
+    private static Wallet fakeWallet;
 
-    static UUID playerId;
-    static UUID walletId;
 
     @BeforeAll
-    public static void setUp(){
-        PlayerDao playerDao = new PlayerDaoImpl();
+    public static void setUp() throws PlayerAllreadyExistsException {
+        transactionDao = new TransactionDaoImpl();
         WalletDao walletDao = new WalletDaoImpl();
+        PlayerDao playerDao = new PlayerDaoImpl();
 
-        playerId = IdGenerator.genId();
-        walletId = IdGenerator.genId();
+        fakePlayer = FakePlayer.getFake("for_transaction_testing");
+        playerDao.savePlayer(fakePlayer);
+        fakePlayer = playerDao.findPlayer(fakePlayer.getLogin()).orElseThrow();
 
-        Player player1 = new Player(playerId, "pl name", "pl surname", "login", "pswd");
-        Wallet wallet1 = new Wallet(walletId, playerId, new BigDecimal(0));
-
-        playerDao.savePlayer(player1);
-        walletDao.saveWallet(wallet1);
-
-
+        fakeWallet = FakeWallet.getFake(fakePlayer.getId());
+        walletDao.saveWallet(fakeWallet);
+        fakeWallet = walletDao.getWalletsOfPlayer(fakePlayer).get(0);
     }
+
     @Test
-    public void transactionSaveTest(){
-        TransactionDao transactionDao = new TransactionDaoImpl();
-
-        Transaction transaction1 = Transaction.builder()
-                .transactionId(IdGenerator.genId())
-                .transactionDate(new Date())
-                .transactionStatus(Transaction.Status.Pending)
-                .transactionType(Transaction.Type.Deposit)
-                .walletId(walletId)
-                .build();
-
-        transactionDao.saveTransaction(transaction1);
-        ArrayList<Transaction> testTransactionArray = transactionDao.findTransaction(walletId);
-
-        Assertions.assertThat(testTransactionArray).contains(transaction1);
+    @Order(1)
+    public void testTransactionSaveFind() {
+        Transaction fakeTransaction = FakeTransaction.getFake(fakePlayer.getId(), fakeWallet.getId());
+        transactionDao.saveTransaction(fakeTransaction);
+        Transaction retrievedTransaction = transactionDao.getTransactionsOfWallet(fakeWallet).get(0);
+        Assertions.assertEquals(fakeTransaction.getTransactionId(), retrievedTransaction.getTransactionId());
     }
 
+    @Test
+    @Order(2)
+    public void testTransactionUpdateStatus() {
+
+    }
+
+    @Test
+    @Order(3)
+    public void testTransactionHistory() {
+
+    }
+
+    @Test
+    @Order(4)
+    public void testTransactionDelete() {
+
+    }
 
 }

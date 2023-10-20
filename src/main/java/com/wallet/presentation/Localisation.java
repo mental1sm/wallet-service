@@ -15,7 +15,7 @@ public class Localisation {
                 [1] - Авторизация
                 [2] - Регистрация
                 [3] - Выйти из приложения
-                [4] - Журнал аудита (ADMIN)
+                [4] - Журнал аудита (ADMIN) [Логин: ment09 Пароль: 123321]
                 ================================
                 """;
 
@@ -109,6 +109,11 @@ public class Localisation {
                 ================================
                 """;
 
+    public static final String AUDIT_LOGIN_RU = "Логин администратора: ";
+    public static final String AUDIT_PASSWORD_RU = "Пароль администратора: ";
+    public static final String AUDIT_INCORRECT_RU = "Такого администратора не существует.";
+    public static final String AUDIT_CORRECT_RU = "<Вы вошли в журнал аудита>";
+
     public static final String AUDIT_SINGLE_LOG_RU = """
                 ---------------------------------------------------------------------------------------------------------------------------------------------------
                 \t%s               
@@ -118,7 +123,9 @@ public class Localisation {
     public static final String INCORRECT_INPUT_RU = "Ошибка ввода данных!";
     public static final String INPUT_MISMATCH_EXCEPTION_RU = "Некорректное значение ввода";
     public static final String EMPTY_TRANSACTION_HISTORY_RU = "Ваша история транзакций пока что пуста...";
-    public static final String USER_IS_NOT_EXISTS_RU = "Пользователь с таким логином/паролем не найден.";
+    public static final String USER_IS_NOT_EXISTS_RU = "Пользователь с таким логином/паролем не найден.\n";
+
+    public static final String USER_IS_ALREADY_EXISTS_RU = "Этот логин занят.";
 
     public static String transactionStatusCodeTranslateRu(Transaction.Status statusCode) {
         HashMap<Transaction.Status, String> codeDict = new HashMap<>();

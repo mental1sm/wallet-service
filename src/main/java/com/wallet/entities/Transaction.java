@@ -27,7 +27,8 @@ public class Transaction {
         Disapproved
     }
 
-    private UUID walletId, playerId, transactionId;
+    private UUID transactionId;
+    private long walletId, playerId;
 
     /**
      * Указывает на тип транзакции.

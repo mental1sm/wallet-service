@@ -1,21 +1,28 @@
 package com.wallet.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.UUID;
 
 /**
  * Представляет сущность игрока.
 */
 @Getter
 @AllArgsConstructor
+@Builder
 public class Player {
+    public static enum Permission {
+        USER,
+        ADMIN,
+        SUPERADMIN
+    }
 
-    final private UUID playerID;
-    final private String name, surname, pLogin;
-    @Setter private String pPassword;
+    final private long id;
+    @Setter private int permissionId;
+    final private Permission permissionLevel;
+    final private String name, surname, login;
+    @Setter private String password;
 
 
 }

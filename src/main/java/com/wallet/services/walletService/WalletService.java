@@ -3,6 +3,7 @@ package com.wallet.services.walletService;
 
 import com.wallet.entities.Transaction;
 import com.wallet.infrastructure.UserSession;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public interface WalletService {
     /**
      * Метод depositMoney позволяет внести деньги на кошелек пользователя.
      *
-     * @param session Сессия пользователя, для которой выполняется операция.
+     * @param session Id сессии
      * @param amount  Сумма денег, которую нужно внести на кошелек.
      */
     void depositMoney(UserSession session, BigDecimal amount);
