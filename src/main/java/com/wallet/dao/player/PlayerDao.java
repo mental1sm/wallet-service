@@ -3,7 +3,8 @@ package com.wallet.dao.player;
 import com.wallet.entities.Player;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
+
+import java.util.Optional;
 
 /**
  * Интерфейс, представляющий доступ к данным игрока.
@@ -34,18 +35,18 @@ public interface PlayerDao {
     /**
      * Загружает информацию об игроке по его логину.
      *
-     * @param pLogin    Логин игрока.
+     * @param pLogin Логин игрока.
      * @return Объект игрока, соответствующий заданным логину, или null, если игрок не найден.
      */
-    Player findPlayer(String pLogin);
+    Optional<Player> findPlayer(String pLogin);
 
     /**
      * Загружает информацию об игроке по его id.
      *
-     * @param id    id игрока.
+     * @param id id игрока.
      * @return Объект игрока, соответствующий заданным id, или null, если игрок не найден.
      */
-    Player findPlayer(long id);
+    Optional<Player> findPlayer(long id);
 
     /**
      * Загружает информацию об игроке на основе сеанса пользователя.
@@ -53,6 +54,6 @@ public interface PlayerDao {
      * @param userSession Сеанс пользователя, для которого нужно загрузить информацию об игроке.
      * @return Объект игрока, связанный с указанным сеансом пользователя, или null, если игрок не найден.
      */
-    Player findPlayer(UserSession userSession);
+    Optional<Player> findPlayer(UserSession userSession);
 
 }

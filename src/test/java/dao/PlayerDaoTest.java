@@ -4,8 +4,12 @@ import com.wallet.dao.player.PlayerDao;
 import com.wallet.dao.player.PlayerDaoImpl;
 import com.wallet.entities.Player;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
+import dao.fakentities.FakePlayer;
 import org.junit.jupiter.api.*;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,69 +19,63 @@ import static org.mockito.Mockito.when;
 public class PlayerDaoTest {
 
     private static PlayerDao playerDao;
-    private static Player mockedPlayer;
+    private static Player fakePlayer;
 
     @BeforeAll
     public static void setUp() {
         DatabaseContainer.setUp();
         playerDao = new PlayerDaoImpl();
-        mockedPlayer = mock(Player.class);
-        when(mockedPlayer.getLogin()).thenReturn("some_login");
-        when(mockedPlayer.getPassword()).thenReturn("password");
-        when(mockedPlayer.getName()).thenReturn("name");
-        when(mockedPlayer.getSurname()).thenReturn("surname");
-        when(mockedPlayer.getPermissionLevel()).thenReturn(Player.Permission.USER);
-        when(mockedPlayer.getPermissionId()).thenReturn(3);
+        fakePlayer = FakePlayer.getFake("some_login");
+        fakePlayer.setPassword("password");
 
     }
 
     @Test
     @Order(1)
     public void testSaveFindPlayer() throws PlayerAllreadyExistsException {
-        playerDao.savePlayer(mockedPlayer);
-        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getLogin());
-        when(mockedPlayer.getId()).thenReturn(retrievedPlayer.getId());
+        playerDao.savePlayer(fakePlayer);
+        Player retrievedPlayer = playerDao.findPlayer(fakePlayer.getLogin()).orElseThrow();
 
-        Assertions.assertEquals(mockedPlayer.getLogin(), retrievedPlayer.getLogin());
-        Assertions.assertEquals(mockedPlayer.getPassword(), retrievedPlayer.getPassword());
+        Assertions.assertEquals(fakePlayer.getLogin(), retrievedPlayer.getLogin());
+        Assertions.assertEquals(fakePlayer.getPassword(), retrievedPlayer.getPassword());
     }
 
     @Test
     @Order(2)
     public void testSaveExistingPlayer() {
-        Assertions.assertThrowsExactly(PlayerAllreadyExistsException.class, () -> {playerDao.savePlayer(mockedPlayer);});
+        Assertions.assertThrowsExactly(PlayerAllreadyExistsException.class, () -> {playerDao.savePlayer(fakePlayer);});
     }
 
     @Test
     @Order(3)
     public void testFindNotExistingPlayer() {
-        Assertions.assertNull(playerDao.findPlayer("notexistinglogin"));
+        Assertions.assertEquals(playerDao.findPlayer("notexistinglogin"), Optional.empty());
     }
 
     @Test
     @Order(4)
     public void testUpdatePlayerPassword() {
-        when(mockedPlayer.getPassword()).thenReturn("password_edited");
-        playerDao.updatePlayer(mockedPlayer);
-        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getId());
-        Assertions.assertEquals(mockedPlayer.getPassword(), retrievedPlayer.getPassword());
+        fakePlayer = playerDao.findPlayer(fakePlayer.getLogin()).orElseThrow();
+        fakePlayer.setPassword("newpass");
+        playerDao.updatePlayer(fakePlayer);
+        Player retrievedPlayer = playerDao.findPlayer(fakePlayer.getId()).orElseThrow();
+        Assertions.assertEquals(fakePlayer.getPassword(), retrievedPlayer.getPassword());
     }
 
     @Test
     @Order(5)
     public void testUpdatePlayerPermission() {
-        when(mockedPlayer.getPermissionId()).thenReturn(2);
-        playerDao.updatePlayer(mockedPlayer);
-        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getId());
+        fakePlayer.setPermissionId(2);
+        playerDao.updatePlayer(fakePlayer);
+        Player retrievedPlayer = playerDao.findPlayer(fakePlayer.getId()).orElseThrow();
         Assertions.assertEquals(retrievedPlayer.getPermissionLevel(), Player.Permission.ADMIN);
     }
 
     @Test
     @Order(6)
     public void testDeletePlayer() {
-        playerDao.deletePlayer(mockedPlayer);
-        Player retrievedPlayer = playerDao.findPlayer(mockedPlayer.getLogin());
-        Assertions.assertNull(retrievedPlayer);
+        playerDao.deletePlayer(fakePlayer);
+        Assertions.assertThrowsExactly(NoSuchElementException.class, () -> playerDao.findPlayer(fakePlayer.getLogin()).orElseThrow());
     }
 
 }

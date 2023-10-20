@@ -19,7 +19,7 @@ public class Player {
     }
 
     final private long id;
-    final private int permissionId;
+    @Setter private int permissionId;
     final private Permission permissionLevel;
     final private String name, surname, login;
     @Setter private String password;

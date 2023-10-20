@@ -7,6 +7,7 @@ import com.wallet.infrastructure.db.statements.PreparedStatementPlayer;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 
 import java.sql.*;
+import java.util.Optional;
 
 
 public class PlayerDaoImpl implements PlayerDao{
@@ -48,7 +49,7 @@ public class PlayerDaoImpl implements PlayerDao{
     }
 
     @Override
-    public Player findPlayer(String pLogin) {
+    public Optional<Player> findPlayer(String pLogin) {
         Player pl;
         try (
                 Connection connection = SetupConnection.getConnection();
@@ -58,15 +59,15 @@ public class PlayerDaoImpl implements PlayerDao{
             ResultSet resultSet = preparedStatement.executeQuery();
             pl = extractPlayerFromResultSet(resultSet);
             resultSet.close();
+            return Optional.ofNullable(pl);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
-        return pl;
     }
 
     @Override
-    public Player findPlayer(long id) {
+    public Optional<Player> findPlayer(long id) {
         Player pl;
         try (
                 Connection connection = SetupConnection.getConnection();
@@ -75,20 +76,18 @@ public class PlayerDaoImpl implements PlayerDao{
             ResultSet resultSet = preparedStatement.executeQuery();
             pl = extractPlayerFromResultSet(resultSet);
             resultSet.close();
+            return Optional.ofNullable(pl);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
-        return pl;
     }
 
     @Override
-    public Player findPlayer(UserSession userSession) {
+    public Optional<Player> findPlayer(UserSession userSession) {
         if (!(userSession == null)) {
             return findPlayer(userSession.getPlayerID());
-        } else {
-            return null;
-        }
+        } return Optional.empty();
     }
 
     /**

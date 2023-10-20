@@ -15,7 +15,6 @@ import java.sql.DriverManager;
 /**
  * Выполняет миграцию для БД Postgres
 */
-
 public class PostgresMigration implements Migration {
 
     public static void migrate() {

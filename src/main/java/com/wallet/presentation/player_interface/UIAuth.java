@@ -11,6 +11,7 @@ import com.wallet.services.accountService.AccountServiceImpl;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -29,15 +30,17 @@ public class UIAuth extends AbstractUI implements UI {
     public UI run() {
         AccountService accountService = new AccountServiceImpl(new PlayerDaoImpl(), new WalletDaoImpl());
         HashMap<String, String> inputValues = UserAuthInputHandler.authInput(scanner);
-        UserSession userSession = accountService.authUser(inputValues.get("login"), inputValues.get("password"));
-        if (userSession != null) {
+        Optional<UserSession> userSessionOptional = authUser(accountService, inputValues);
+        userSessionOptional.map(userSession -> {
             System.out.print(Localisation.AUTH_FINISH_RU);
             loggerService.log(userSession, "Авторизация", Log.InfoLevels.INFO);
             return new UIWalletMenu(scanner, userSession);
-        }
+        });
         System.out.print(Localisation.USER_IS_NOT_EXISTS_RU);
         return new UIMenu(scanner);
     }
 
-
+    private Optional<UserSession> authUser(AccountService accountService, HashMap<String, String> inputValues) {
+            return accountService.authUser(inputValues.get("login"), inputValues.get("password"));
+        }
 }

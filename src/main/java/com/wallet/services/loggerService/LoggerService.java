@@ -9,6 +9,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Класс LoggerService предоставляет сервис для журналирования действий игроков и управления журналом.
@@ -46,7 +47,9 @@ public class LoggerService {
      * @param infoLevel Уровень информирования лога
      */
     public void log(UserSession session, String action, Log.InfoLevels infoLevel) {
-        Player pl = playerDao.findPlayer(session);
+        Optional<Player> optionalPlayer = playerDao.findPlayer(session);
+        if (optionalPlayer.isEmpty()) { return; }
+        Player pl = optionalPlayer.get();
         Log log = Log.builder()
                 .id(0)
                 .timestamp(new Date())

@@ -8,6 +8,7 @@ import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 
 public class AccountServiceImpl implements AccountService {
@@ -21,15 +22,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public UserSession regUser(String name, String surname, String pLogin, String pPassword) throws PlayerAllreadyExistsException {
+    public Optional<UserSession> regUser(String name, String surname, String pLogin, String pPassword) throws PlayerAllreadyExistsException {
         Player pl = new Player(0, 3, Player.Permission.USER, name, surname, pLogin, pPassword);
         playerDao.savePlayer(pl);
-        pl = playerDao.findPlayer(pLogin);
-        UserSession session = new UserSession(pl.getId());
-        regWallet(pl.getId());
-        session.setCurrentWalletNum(0);
+        Optional<Player> optionalPlayer = playerDao.findPlayer(pLogin);
+        if (optionalPlayer.isPresent()) {
+            pl = optionalPlayer.get();
+            UserSession session = new UserSession(pl.getId());
+            regWallet(pl.getId());
+            session.setCurrentWalletNum(0);
+            return Optional.of(session);
+        }
 
-        return session;
+        return Optional.empty();
     }
 
     private void regWallet(long playerId) {
@@ -39,15 +44,16 @@ public class AccountServiceImpl implements AccountService {
 
     }
     @Override
-    public UserSession authUser(String pLogin, String pPassword) {
-        Player pl = playerDao.findPlayer(pLogin);
-        if (pl == null) { return null; }
-        else if (pl.getPassword().contentEquals(pPassword)) {
+    public Optional<UserSession> authUser(String pLogin, String pPassword) {
+        Optional<Player> optionalPlayer = playerDao.findPlayer(pLogin);
+        if (optionalPlayer.isEmpty()) { return Optional.empty(); }
+        Player pl = optionalPlayer.get();
+        if (pl.getPassword().contentEquals(pPassword)) {
             UserSession session = new UserSession(pl.getId());
             session.setCurrentWalletNum(0);
-            return session;
+            return Optional.of(session);
         }
-        return null;
+        return Optional.empty();
     }
 
 }

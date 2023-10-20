@@ -10,9 +10,9 @@ import com.wallet.entities.Player;
 import com.wallet.entities.Transaction;
 import com.wallet.entities.Wallet;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
-import dao.fakemocks.FakePlayer;
-import dao.fakemocks.FakeTransaction;
-import dao.fakemocks.FakeWallet;
+import dao.fakentities.FakePlayer;
+import dao.fakentities.FakeTransaction;
+import dao.fakentities.FakeWallet;
 import org.junit.jupiter.api.*;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -22,8 +22,8 @@ import static org.mockito.Mockito.when;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TransactionDaoTest {
     private static TransactionDao transactionDao;
-    private static Player mockedPlayer;
-    private static Wallet mockedWallet;
+    private static Player fakePlayer;
+    private static Wallet fakeWallet;
 
 
     @BeforeAll
@@ -32,26 +32,22 @@ public class TransactionDaoTest {
         WalletDao walletDao = new WalletDaoImpl();
         PlayerDao playerDao = new PlayerDaoImpl();
 
-        mockedPlayer = FakePlayer.getFake();
-        when(mockedPlayer.getLogin()).thenReturn("for_transaction_testing");
-        playerDao.savePlayer(mockedPlayer);
-        mockedPlayer = playerDao.findPlayer(mockedPlayer.getLogin());
+        fakePlayer = FakePlayer.getFake("for_transaction_testing");
+        playerDao.savePlayer(fakePlayer);
+        fakePlayer = playerDao.findPlayer(fakePlayer.getLogin()).orElseThrow();
 
-        mockedWallet = FakeWallet.getFake();
-        when(mockedWallet.getPlayerId()).thenReturn(mockedPlayer.getId());
-        walletDao.saveWallet(mockedWallet);
-        mockedWallet = walletDao.getWalletsOfPlayer(mockedPlayer).get(0);
+        fakeWallet = FakeWallet.getFake(fakePlayer.getId());
+        walletDao.saveWallet(fakeWallet);
+        fakeWallet = walletDao.getWalletsOfPlayer(fakePlayer).get(0);
     }
 
     @Test
     @Order(1)
     public void testTransactionSaveFind() {
-        Transaction mockedTransaction = FakeTransaction.getFake();
-        when(mockedTransaction.getPlayerId()).thenReturn(mockedPlayer.getId());
-        when(mockedTransaction.getWalletId()).thenReturn(mockedWallet.getId());
-        transactionDao.saveTransaction(mockedTransaction);
-        Transaction retrievedTransaction = transactionDao.getTransactionsOfWallet(mockedWallet).get(0);
-        Assertions.assertEquals(mockedTransaction.getTransactionId(), retrievedTransaction.getTransactionId());
+        Transaction fakeTransaction = FakeTransaction.getFake(fakePlayer.getId(), fakeWallet.getId());
+        transactionDao.saveTransaction(fakeTransaction);
+        Transaction retrievedTransaction = transactionDao.getTransactionsOfWallet(fakeWallet).get(0);
+        Assertions.assertEquals(fakeTransaction.getTransactionId(), retrievedTransaction.getTransactionId());
     }
 
     @Test

@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class WalletServiceImpl implements WalletService {
 
@@ -28,7 +29,9 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public void depositMoney(UserSession session, BigDecimal amount) {
-        Player player = playerDao.findPlayer(session);
+        Optional<Player> optionalPlayer = playerDao.findPlayer(session);
+        if (optionalPlayer.isEmpty()) {return;}
+        Player player = optionalPlayer.get();
         Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
 
         Transaction transaction = Transaction.builder()
@@ -52,7 +55,9 @@ public class WalletServiceImpl implements WalletService {
     }
     @Override
     public void withdrawMoney(UserSession session, BigDecimal amount) {
-        Player player = playerDao.findPlayer(session);
+        Optional<Player> optionalPlayer = playerDao.findPlayer(session);
+        if (optionalPlayer.isEmpty()) { return; }
+        Player player = optionalPlayer.get();
         Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
 
         Transaction transaction = Transaction.builder()
@@ -81,7 +86,8 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public BigDecimal checkMoneyAmount(UserSession session) {
-        Player player = playerDao.findPlayer(session);
+        Optional<Player> optionalPlayer = playerDao.findPlayer(session);
+        Player player = optionalPlayer.orElseThrow();
         Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
 
         return wallet.getMoneyAmount();
@@ -89,7 +95,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public HashMap<String, String> getUserInfo(UserSession session) {
-        Player pl = playerDao.findPlayer(session);
+        Player pl = playerDao.findPlayer(session).orElseThrow();
         HashMap<String, String> userInfo = new HashMap<>();
         userInfo.put("name", pl.getName());
         userInfo.put("surname", pl.getSurname());
@@ -100,7 +106,7 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public ArrayList<Transaction> getTransactionHistory(UserSession session) {
-        Player pl = playerDao.findPlayer(session);
+        Player pl = playerDao.findPlayer(session).orElseThrow();
         Wallet wallet = walletDao.getWalletsOfPlayer(pl).get(session.getCurrentWalletNum());
         return transactionDao.getTransactionsOfWallet(wallet);
     }
