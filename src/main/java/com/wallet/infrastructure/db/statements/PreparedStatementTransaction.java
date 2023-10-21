@@ -1,7 +1,7 @@
 package com.wallet.infrastructure.db.statements;
 
-import com.wallet.entities.Transaction;
-import com.wallet.entities.Wallet;
+import com.wallet.domain.entities.Transaction;
+import com.wallet.domain.entities.Wallet;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

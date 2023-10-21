@@ -1,7 +1,7 @@
 package com.wallet.dao.transaction;
 
-import com.wallet.entities.Transaction;
-import com.wallet.entities.Wallet;
+import com.wallet.domain.entities.Transaction;
+import com.wallet.domain.entities.Wallet;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementTransaction;
 
@@ -20,29 +20,38 @@ public class TransactionDaoImpl implements TransactionDao {
     }
     @Override
     public void saveTransaction(Transaction transaction) {
-        SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementTransaction.insertTransaction(connection, transaction);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        });
+            try (
+                    Connection connection = SetupConnection.getConnection();
+                    PreparedStatement preparedStatement = preparedStatementTransaction.insertTransaction(connection, transaction);
+            ) {
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
     }
 
     @Override
     public void updateTransaction(Transaction transaction) {
-        SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementTransaction.updateTransaction(connection, transaction);
+        try (
+                Connection connection = SetupConnection.getConnection();
+                PreparedStatement preparedStatement = preparedStatementTransaction.updateTransaction(connection, transaction);
+        ) {
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteTransaction(Transaction transaction) {
-        SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementTransaction.deleteTransaction(connection, transaction);
+        try (
+                Connection connection = SetupConnection.getConnection();
+                PreparedStatement preparedStatement = preparedStatementTransaction.deleteTransaction(connection, transaction);
+        ) {
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

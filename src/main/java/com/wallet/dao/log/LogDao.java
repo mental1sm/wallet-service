@@ -1,6 +1,6 @@
 package com.wallet.dao.log;
 
-import com.wallet.entities.Log;
+import com.wallet.domain.entities.Log;
 
 import java.util.ArrayList;
 
@@ -15,11 +15,6 @@ public interface LogDao {
     */
     void saveLog(Log log);
 
-    /**
-     * Выдает все логи игрока с указанным id
-     * @param playerId id игрока
-     */
-    ArrayList<Log> getLogsOfPlayer(long playerId);
 
     /**
      * Метод возвращает количество всех логов с уровнем информирования WARNING и ERROR (для пагинации)

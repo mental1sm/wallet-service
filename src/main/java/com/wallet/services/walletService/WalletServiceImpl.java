@@ -4,11 +4,12 @@ import com.wallet.dao.player.PlayerDao;
 import com.wallet.dao.player.PlayerDaoImpl;
 import com.wallet.dao.transaction.TransactionDao;
 import com.wallet.dao.wallet.WalletDao;
-import com.wallet.entities.Player;
-import com.wallet.entities.Transaction;
-import com.wallet.entities.Wallet;
+import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.Transaction;
+import com.wallet.domain.entities.Wallet;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.IdGenerator;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void depositMoney(UserSession session, BigDecimal amount) {
+    public void depositMoney(UserSession session, BigDecimal amount) throws PlayerIsNotExistsException {
         Optional<Player> optionalPlayer = playerDao.findPlayer(session);
         if (optionalPlayer.isEmpty()) {return;}
         Player player = optionalPlayer.get();
@@ -54,7 +55,7 @@ public class WalletServiceImpl implements WalletService {
         transactionDao.updateTransaction(transaction);
     }
     @Override
-    public void withdrawMoney(UserSession session, BigDecimal amount) {
+    public void withdrawMoney(UserSession session, BigDecimal amount) throws PlayerIsNotExistsException {
         Optional<Player> optionalPlayer = playerDao.findPlayer(session);
         if (optionalPlayer.isEmpty()) { return; }
         Player player = optionalPlayer.get();
@@ -85,7 +86,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public BigDecimal checkMoneyAmount(UserSession session) {
+    public BigDecimal checkMoneyAmount(UserSession session) throws PlayerIsNotExistsException {
         Optional<Player> optionalPlayer = playerDao.findPlayer(session);
         Player player = optionalPlayer.orElseThrow();
         Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
@@ -94,7 +95,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public HashMap<String, String> getUserInfo(UserSession session) {
+    public HashMap<String, String> getUserInfo(UserSession session) throws PlayerIsNotExistsException {
         Player pl = playerDao.findPlayer(session).orElseThrow();
         HashMap<String, String> userInfo = new HashMap<>();
         userInfo.put("name", pl.getName());
@@ -105,7 +106,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public ArrayList<Transaction> getTransactionHistory(UserSession session) {
+    public ArrayList<Transaction> getTransactionHistory(UserSession session) throws PlayerIsNotExistsException {
         Player pl = playerDao.findPlayer(session).orElseThrow();
         Wallet wallet = walletDao.getWalletsOfPlayer(pl).get(session.getCurrentWalletNum());
         return transactionDao.getTransactionsOfWallet(wallet);

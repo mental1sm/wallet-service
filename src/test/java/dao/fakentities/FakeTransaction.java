@@ -1,11 +1,9 @@
 package dao.fakentities;
 
-import com.wallet.entities.Transaction;
+import com.wallet.domain.entities.Transaction;
 import com.wallet.utility.IdGenerator;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import com.github.javafaker.Faker;
 
 import java.math.BigDecimal;
 import java.util.Date;

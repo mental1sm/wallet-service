@@ -1,6 +1,6 @@
 package com.wallet.infrastructure.db.statements;
 
-import com.wallet.entities.Player;
+import com.wallet.domain.entities.Player;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

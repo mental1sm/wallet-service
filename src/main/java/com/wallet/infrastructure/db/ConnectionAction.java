@@ -1,5 +1,6 @@
 package com.wallet.infrastructure.db;
 
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 
@@ -11,5 +12,5 @@ import java.sql.SQLException;
 */
 @FunctionalInterface
 public interface ConnectionAction {
-    void execute(Connection connection) throws SQLException, LiquibaseException;
+    void execute(Connection connection) throws SQLException, PlayerIsNotExistsException;
 }

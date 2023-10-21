@@ -1,10 +1,9 @@
 package dao.fakentities;
 
 import com.github.javafaker.Faker;
-import com.wallet.entities.Player;
+import com.wallet.domain.entities.Player;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class FakePlayer {
     public static Player getFake(String login) {

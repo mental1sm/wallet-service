@@ -1,9 +1,10 @@
 package com.wallet.dao.wallet;
 
-import com.wallet.entities.Player;
-import com.wallet.entities.Wallet;
+import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.Wallet;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementWallet;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,29 +22,35 @@ public class WalletDaoImpl implements WalletDao{
 
     @Override
     public void saveWallet(Wallet wallet) {
-        SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementWallet.insertWallet(connection, wallet);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        });
+            try (
+                    Connection connection = SetupConnection.getConnection();
+                    PreparedStatement preparedStatement = preparedStatementWallet.insertWallet(connection, wallet);
+                    )
+            {
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {}
     }
 
     @Override
     public void updateWallet(Wallet wallet) {
-        SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementWallet.updateWallet(connection, wallet);
+        try (
+                Connection connection = SetupConnection.getConnection();
+                PreparedStatement preparedStatement = preparedStatementWallet.updateWallet(connection, wallet);
+        )
+        {
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-        });
+        } catch (SQLException e) {}
     }
 
     @Override
     public void deleteWallet(Wallet wallet) {
-        SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementWallet.deleteWallet(connection, wallet);
+        try (
+                Connection connection = SetupConnection.getConnection();
+                PreparedStatement preparedStatement = preparedStatementWallet.deleteWallet(connection, wallet);
+        )
+        {
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-        });
+        } catch (SQLException e) {}
     }
 
     @Override

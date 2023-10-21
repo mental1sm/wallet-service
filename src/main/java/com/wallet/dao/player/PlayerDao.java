@@ -1,9 +1,11 @@
 package com.wallet.dao.player;
 
-import com.wallet.entities.Player;
+import com.wallet.domain.entities.Player;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -23,14 +25,14 @@ public interface PlayerDao {
      *
      * @param pl Объект игрока, который должен быть удален.
      */
-    void deletePlayer(Player pl);
+    void deletePlayer(Player pl) throws PlayerIsNotExistsException;
 
     /**
      * Обновляет информацию об игроке в базе данных.
      *
      * @param pl Объект игрока, который должен быть обновлен.
      */
-    void updatePlayer(Player pl);
+    void updatePlayer(Player pl) throws PlayerIsNotExistsException;
 
     /**
      * Загружает информацию об игроке по его логину.
@@ -38,7 +40,7 @@ public interface PlayerDao {
      * @param pLogin Логин игрока.
      * @return Объект игрока, соответствующий заданным логину, или null, если игрок не найден.
      */
-    Optional<Player> findPlayer(String pLogin);
+    Optional<Player> findPlayer(String pLogin) throws PlayerIsNotExistsException;
 
     /**
      * Загружает информацию об игроке по его id.
@@ -46,7 +48,7 @@ public interface PlayerDao {
      * @param id id игрока.
      * @return Объект игрока, соответствующий заданным id, или null, если игрок не найден.
      */
-    Optional<Player> findPlayer(long id);
+    Optional<Player> findPlayer(long id) throws PlayerIsNotExistsException;
 
     /**
      * Загружает информацию об игроке на основе сеанса пользователя.
@@ -54,6 +56,6 @@ public interface PlayerDao {
      * @param userSession Сеанс пользователя, для которого нужно загрузить информацию об игроке.
      * @return Объект игрока, связанный с указанным сеансом пользователя, или null, если игрок не найден.
      */
-    Optional<Player> findPlayer(UserSession userSession);
+    Optional<Player> findPlayer(UserSession userSession) throws PlayerIsNotExistsException;
 
 }

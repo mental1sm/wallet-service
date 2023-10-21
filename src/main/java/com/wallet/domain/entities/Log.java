@@ -1,4 +1,4 @@
-package com.wallet.entities;
+package com.wallet.domain.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +20,6 @@ public class Log {
     }
     private long id;
     private Date timestamp;
-    private long playerId;
     private String action;
     private InfoLevels infoLevel;
 }

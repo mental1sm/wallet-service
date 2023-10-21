@@ -23,17 +23,7 @@ public class PreparedStatementLog {
      * [3 - String info_level]
      */
     public PreparedStatement saveLog(Connection connection) throws SQLException {
-        return connection.prepareStatement("INSERT INTO logs.\"Log\" VALUES (DEFAULT, current_timestamp, ?, ?, ?)");
-    }
-
-    /**
-     * Подготовленный Statement
-     * @param connection Соединение с БД
-     * @return PreparedStatement объект
-     * [1 - long player_id]
-     */
-    public PreparedStatement getLogsOfPlayer(Connection connection) throws SQLException {
-        return connection.prepareStatement("SELECT * FROM logs.\"Log\" WHERE player_id = ?");
+        return connection.prepareStatement("INSERT INTO logs.\"Log\" VALUES (DEFAULT, current_timestamp, ?, ?)");
     }
 
     /**
