@@ -2,3 +2,5 @@
 /wallet-migrations/target/
 /wallet-migrations/.idea/
 /.idea/
+/docker/pg_data/
+/docker/migrate.jar
