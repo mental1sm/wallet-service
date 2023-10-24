@@ -1,0 +1,66 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <servlet>
+        <servlet-name>registrationServlet</servlet-name>
+        <servlet-class>com.wallet.presentation.servlets.client.RegistrationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>registrationServlet</servlet-name>
+        <url-pattern>/reg</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>com.wallet.presentation.servlets.client.AuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/api/auth</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>UserAPI</servlet-name>
+        <servlet-class>com.wallet.presentation.servlets.server.UserServletAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserAPI</servlet-name>
+        <url-pattern>/api/user</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>WalletAPI</servlet-name>
+        <servlet-class>com.wallet.presentation.servlets.server.WalletServletAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WalletAPI</servlet-name>
+        <url-pattern>/api/wallet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>TransactionAPI</servlet-name>
+        <servlet-class>com.wallet.presentation.servlets.server.TransactionServletAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TransactionAPI</servlet-name>
+        <url-pattern>/api/transaction/*</url-pattern>
+    </servlet-mapping>
+
+
+    <filter>
+        <filter-name>OIDCFilter</filter-name>
+        <filter-class>org.keycloak.adapters.servlet.KeycloakOIDCFilter</filter-class>
+        <init-param>
+            <param-name>keycloak.config.path</param-name>
+            <param-value>/WEB-INF/keycloak.json</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>OIDCFilter</filter-name>
+        <url-pattern>/ping/protected/*</url-pattern>
+    </filter-mapping>
+
+
+</web-app>
