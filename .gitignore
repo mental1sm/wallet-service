@@ -1,4 +1,7 @@
-/target/
+wallet-service/target/
+wallet-migrations/target/
+wallet-migrations/.idea
 /.idea/
 /docker/pg_data/
 /docker/database/
+/docker/migrate.jar
