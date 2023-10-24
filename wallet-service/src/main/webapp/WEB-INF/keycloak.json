@@ -1,0 +1,11 @@
+{
+  "realm": "wallet-realm",
+  "auth-server-url": "http://localhost:8282/",
+  "resource": "wallet-client",
+  "credentials": {
+    "secret": "YVCAPKM703ILhKCqJ4xdOWzWpFxvB1MQ"
+  },
+  "use-resource-role-mappings": "true",
+  "token-minimum-time-to-live": 30,
+  "allow-any-hostname": true
+}
