@@ -6,6 +6,7 @@ import com.wallet.domain.dto.player.PlayerAuthDTO;
 import com.wallet.infrastructure.configs.KeycloakConfig;
 import com.wallet.presentation.servlets.client.util.TokenHandler;
 import com.wallet.presentation.servlets.server.CustomServletTemplate;
+import com.wallet.utility.aspects.SpeedTest;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,6 +36,7 @@ public class AuthServlet extends CustomServletTemplate {
      * login
      * password
     */
+    @SpeedTest
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
@@ -60,6 +62,7 @@ public class AuthServlet extends CustomServletTemplate {
      * @param password - Пароль, полученный из json-строки запроса.
      * @return Access Token в виде строки.
      */
+    @SpeedTest
     private Optional<String> getAccessToken(String login, String password) throws IOException {
         URL url = new URL("http://localhost:8282/realms/wallet-realm/protocol/openid-connect/token");
         String secret = KeycloakConfig.getInstance().getProperty("secret");
