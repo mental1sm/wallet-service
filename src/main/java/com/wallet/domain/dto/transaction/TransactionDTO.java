@@ -23,6 +23,8 @@ public class TransactionDTO {
     @JsonSerialize(using = SumSerializer.class)
     @JsonDeserialize(using = SumDeserializer.class)
     private BigDecimal transactionSum;
+    @JsonSerialize(using = DateSerializer.class)
+    @JsonDeserialize(using = DateDeserializer.class)
     private Date transactionDate;
 
 }
