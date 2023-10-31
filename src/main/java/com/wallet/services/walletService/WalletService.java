@@ -1,7 +1,7 @@
 package com.wallet.services.walletService;
 
 
-import com.wallet.entities.Transaction;
+import com.wallet.domain.entities.Transaction;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
@@ -19,40 +19,48 @@ public interface WalletService {
     /**
      * Метод depositMoney позволяет внести деньги на кошелек пользователя.
      *
-     * @param session Id сессии
+     * @param walletId id кошелька
      * @param amount  Сумма денег, которую нужно внести на кошелек.
      */
-    void depositMoney(UserSession session, BigDecimal amount);
+    void depositMoney(long walletId, BigDecimal amount) throws PlayerIsNotExistsException;
 
     /**
      * Метод withdrawMoney позволяет снять деньги с кошелька пользователя.
      *
-     * @param session Сессия пользователя, для которой выполняется операция.
+     * @param walletId id кошелька
      * @param amount  Сумма денег, которую нужно снять с кошелька.
      */
-    void withdrawMoney(UserSession session, BigDecimal amount);
+    void withdrawMoney(long walletId, BigDecimal amount) throws PlayerIsNotExistsException;
 
     /**
      * Метод checkMoneyAmount позволяет проверить текущий баланс на кошельке пользователя.
      *
-     * @param session Сессия пользователя, для которой выполняется операция.
+     * @param walletId id кошелька
      * @return Текущий баланс на кошельке пользователя.
      */
-    BigDecimal checkMoneyAmount(UserSession session);
+    BigDecimal checkMoneyAmount(long walletId) throws PlayerIsNotExistsException;
 
     /**
      * Метод getUserInfo позволяет получить информацию о пользователе.
      *
-     * @param session Сессия пользователя, для которой выполняется операция.
+     * @param login логин пользователя, для которой выполняется операция.
      * @return HashMap, содержащая информацию о пользователе, например, имя и фамилию.
      */
-    HashMap<String, String> getUserInfo(UserSession session);
+    HashMap<String, String> getUserInfo(String login, long walletId) throws PlayerIsNotExistsException;
 
     /**
      * Метод getTransactionHistory позволяет получить историю транзакций пользователя.
      *
-     * @param session Сессия пользователя, для которой выполняется операция.
+     * @param walletId id кошелька
      * @return Список транзакций, совершенных пользователем.
      */
-    ArrayList<Transaction> getTransactionHistory(UserSession session);
+    ArrayList<Transaction> getTransactionHistory(long walletId) throws PlayerIsNotExistsException;
+
+    /**
+     * Формирует и обрабатывает транзакцию
+     * @param walletId id кошелька
+     * @param moneyAmount Сумма транзакции
+     * @param type Тип транзакции
+    */
+    void processTransactionFromRawData(long walletId, BigDecimal moneyAmount, Transaction.Type type) throws PlayerIsNotExistsException;
 }

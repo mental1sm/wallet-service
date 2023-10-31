@@ -1,6 +1,6 @@
 package com.wallet.presentation;
 
-import com.wallet.entities.Transaction;
+import com.wallet.domain.entities.Transaction;
 
 import java.util.HashMap;
 

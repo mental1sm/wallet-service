@@ -2,12 +2,16 @@ package dao;
 
 import com.wallet.infrastructure.configs.DatabaseConfig;
 import com.wallet.infrastructure.db.liquibase.PostgresMigration;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
+import liquibase.exception.LiquibaseException;
 import lombok.Getter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.sql.SQLException;
 
 @Getter
 @Testcontainers
@@ -31,7 +35,13 @@ public class DatabaseContainer {
         password = postgresContainer.getPassword();
 
         DatabaseConfig.getInstance(jdbcUrl, username, password);
-        PostgresMigration.migrate();
+        try {
+            PostgresMigration.migrate();
+        } catch (Exception e) {
+            System.out.println("Произошла ошибка в миграции!!!");
+            e.printStackTrace();
+        }
+
     }
 
 

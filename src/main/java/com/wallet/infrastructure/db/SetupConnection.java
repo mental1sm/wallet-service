@@ -2,10 +2,12 @@ package com.wallet.infrastructure.db;
 
 import com.wallet.dao.log.LogDaoImpl;
 import com.wallet.dao.player.PlayerDaoImpl;
-import com.wallet.entities.Log;
+import com.wallet.domain.entities.Log;
 import com.wallet.infrastructure.configs.Config;
 import com.wallet.infrastructure.configs.DatabaseConfig;
 import com.wallet.services.loggerService.LoggerService;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
+import liquibase.exception.LiquibaseException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,23 +21,30 @@ public class SetupConnection {
     /**
      * Абстрагированная установка соединения с автоматическим закрытием ресурсов
      */
-    public static void withConnection(ConnectionAction action) {
+    public static void withConnection(ConnectionAction action) throws SQLException, PlayerIsNotExistsException {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class not found: db driver");
+        }
         Config config = DatabaseConfig.getInstance();
         String URL = config.getProperty("url");
         String user = config.getProperty("username");
         String password = config.getProperty("password");
-        try (Connection connection = DriverManager.getConnection(URL, user, password) ) {
-            action.execute(connection);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.logAnonymously(String.format("%s", e.getMessage()), Log.InfoLevels.ERROR);
-        }
+        Connection connection = DriverManager.getConnection(URL, user, password);
+        action.execute(connection);
+        connection.close();
     }
 
     /**
      * Получение готового соединения
      */
     public static Connection getConnection() throws SQLException {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class not found: db driver");
+        }
         Config config = DatabaseConfig.getInstance();
         String URL = config.getProperty("url");
         String user = config.getProperty("username");

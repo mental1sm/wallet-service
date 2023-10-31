@@ -1,7 +1,7 @@
 package com.wallet.infrastructure.db.statements;
 
-import com.wallet.entities.Transaction;
-import com.wallet.entities.Wallet;
+import com.wallet.domain.entities.Transaction;
+import com.wallet.domain.entities.Wallet;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,7 +32,7 @@ public class PreparedStatementTransaction {
         PreparedStatement preparedStatement = connection.prepareStatement("" +
                 "INSERT INTO walletservice.\"Transaction\" VALUES (?, ?, ?, ?, ?, current_timestamp);"
         );
-        preparedStatement.setString(1, transaction.getTransactionId().toString());
+        preparedStatement.setString(1, transaction.getId().toString());
         preparedStatement.setLong(2, transaction.getWalletId());
         preparedStatement.setString(3, transaction.getTransactionType().toString());
         preparedStatement.setString(4, transaction.getTransactionStatus().toString());
@@ -54,7 +54,7 @@ public class PreparedStatementTransaction {
                 WHERE id = ?;
                 """);
         preparedStatement.setString(1, transaction.getTransactionStatus().toString());
-        preparedStatement.setString(2, transaction.getTransactionId().toString());
+        preparedStatement.setString(2, transaction.getId().toString());
         return preparedStatement;
     }
 
@@ -68,7 +68,7 @@ public class PreparedStatementTransaction {
         PreparedStatement preparedStatement =  connection.prepareStatement(
                 "DELETE FROM walletservice.\"Transaction\" WHERE id = ?;"
         );
-        preparedStatement.setString(1, transaction.getTransactionId().toString());
+        preparedStatement.setString(1, transaction.getId().toString());
         return preparedStatement;
     }
 

@@ -1,6 +1,6 @@
 package com.wallet.dao.transaction;
-import com.wallet.entities.Transaction;
-import com.wallet.entities.Wallet;
+import com.wallet.domain.entities.Transaction;
+import com.wallet.domain.entities.Wallet;
 
 import java.util.ArrayList;
 import java.util.UUID;

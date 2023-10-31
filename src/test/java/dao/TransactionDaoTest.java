@@ -6,17 +6,16 @@ import com.wallet.dao.transaction.TransactionDao;
 import com.wallet.dao.transaction.TransactionDaoImpl;
 import com.wallet.dao.wallet.WalletDao;
 import com.wallet.dao.wallet.WalletDaoImpl;
-import com.wallet.entities.Player;
-import com.wallet.entities.Transaction;
-import com.wallet.entities.Wallet;
+import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.Transaction;
+import com.wallet.domain.entities.Wallet;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 import dao.fakentities.FakePlayer;
 import dao.fakentities.FakeTransaction;
 import dao.fakentities.FakeWallet;
 import org.junit.jupiter.api.*;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import static org.mockito.Mockito.when;
 
 @Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -27,7 +26,7 @@ public class TransactionDaoTest {
 
 
     @BeforeAll
-    public static void setUp() throws PlayerAllreadyExistsException {
+    public static void setUp() throws PlayerAllreadyExistsException, PlayerIsNotExistsException {
         transactionDao = new TransactionDaoImpl();
         WalletDao walletDao = new WalletDaoImpl();
         PlayerDao playerDao = new PlayerDaoImpl();
@@ -47,7 +46,7 @@ public class TransactionDaoTest {
         Transaction fakeTransaction = FakeTransaction.getFake(fakePlayer.getId(), fakeWallet.getId());
         transactionDao.saveTransaction(fakeTransaction);
         Transaction retrievedTransaction = transactionDao.getTransactionsOfWallet(fakeWallet).get(0);
-        Assertions.assertEquals(fakeTransaction.getTransactionId(), retrievedTransaction.getTransactionId());
+        Assertions.assertEquals(fakeTransaction.getId(), retrievedTransaction.getId());
     }
 
     @Test

@@ -1,10 +1,11 @@
 package com.wallet.dao.player;
 
-import com.wallet.entities.Player;
+import com.wallet.domain.entities.Player;
 import com.wallet.infrastructure.UserSession;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementPlayer;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.sql.*;
 import java.util.Optional;
@@ -26,26 +27,36 @@ public class PlayerDaoImpl implements PlayerDao{
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new PlayerAllreadyExistsException("");
+            throw new PlayerAllreadyExistsException();
         }
     }
 
     @Override
-    public void updatePlayer(Player pl) {
-        SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementPlayer.updatePlayer(connection, pl);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        });
+    public void updatePlayer(Player pl) throws PlayerIsNotExistsException {
+            try (
+                    Connection connection = SetupConnection.getConnection();
+                    PreparedStatement preparedStatement = preparedStatementPlayer.updatePlayer(connection, pl);
+                    )
+            {
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new PlayerIsNotExistsException();
+            }
     }
 
     @Override
-    public void deletePlayer(Player pl) {
-        SetupConnection.withConnection(connection -> {
-            PreparedStatement preparedStatement = preparedStatementPlayer.deletePlayer(connection, pl);
+    public void deletePlayer(Player pl) throws PlayerIsNotExistsException {
+        try (
+                Connection connection = SetupConnection.getConnection();
+                PreparedStatement preparedStatement = preparedStatementPlayer.deletePlayer(connection, pl);
+        )
+        {
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new PlayerIsNotExistsException();
+        }
     }
 
     @Override
@@ -99,12 +110,11 @@ public class PlayerDaoImpl implements PlayerDao{
         if (resultSet.next()) {
             pl =  Player.builder()
                     .id(resultSet.getLong("id"))
-                    .permissionLevel(Player.Permission.valueOf(resultSet.getString(7)))
-                    .permissionId(resultSet.getInt("permission_id"))
                     .name(resultSet.getString("name"))
                     .surname(resultSet.getString("surname"))
                     .login(resultSet.getString("login"))
                     .password(resultSet.getString("password"))
+                    .email(resultSet.getString("email"))
                     .build();
         } else {
             pl = null;

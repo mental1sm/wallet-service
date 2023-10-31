@@ -5,7 +5,7 @@ package com.wallet.utility.exceptions;
  */
 public class PlayerAllreadyExistsException extends Exception {
 
-    public PlayerAllreadyExistsException(String msg) {
-        super(msg);
+    public PlayerAllreadyExistsException() {
+        super();
     }
 }

@@ -1,8 +1,10 @@
 package com.wallet.dao.wallet;
 
-import com.wallet.entities.Player;
-import com.wallet.entities.Wallet;
+import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.Wallet;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**

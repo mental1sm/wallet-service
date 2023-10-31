@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd"
+        logicalFilePath="changelog.xml">
+
+    <property name="defaultSchemaName" value="changelog"/>
+    <include file="v.1.0.0/000-create-schemas.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0/001-create-sequences.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0/002-create-player-table.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0/003-create-wallet-table.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0/004-create-transaction-table.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0/006-create-log-table.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0/007-set-relationships.xml" relativeToChangelogFile="true"/>
+    <include file="v.1.0.0/008-insert-superadmin-data.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>

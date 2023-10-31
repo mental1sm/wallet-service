@@ -1,6 +1,6 @@
 package com.wallet.dao.log;
 
-import com.wallet.entities.Log;
+import com.wallet.domain.entities.Log;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementLog;
 
@@ -19,14 +19,17 @@ public class LogDaoImpl implements LogDao {
 
     @Override
     public void saveLog(Log log) {
-        SetupConnection.withConnection(connection -> {
+        try (
+            Connection connection = SetupConnection.getConnection();
             PreparedStatement preparedStatement = preparedStatementLog.saveLog(connection);
-            preparedStatement.setLong(1, log.getPlayerId());
+        )
+        {
             preparedStatement.setString(2, log.getAction());
             preparedStatement.setString(3, log.getInfoLevel().toString());
             preparedStatement.executeUpdate();
-            preparedStatement.close();
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -46,25 +49,6 @@ public class LogDaoImpl implements LogDao {
         return importantLogsCount;
     }
 
-    @Override
-    public ArrayList<Log> getLogsOfPlayer(long playerId) {
-        ArrayList<Log> logs = new ArrayList<>();
-        try (
-                Connection connection = SetupConnection.getConnection();
-                PreparedStatement preparedStatement = preparedStatementLog.getLogsOfPlayer(connection);
-        )
-        {
-            preparedStatement.setLong(1, playerId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                logs.add(extractLogFromResultSet(resultSet));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return logs;
-    }
 
     @Override
     public ArrayList<Log> getImportantLogs(long start, long end) {
@@ -110,7 +94,6 @@ public class LogDaoImpl implements LogDao {
         return Log.builder()
                 .id(resultSet.getLong("id"))
                 .timestamp(resultSet.getTimestamp("timestamp"))
-                .playerId(resultSet.getLong("player_id"))
                 .action(resultSet.getString("action"))
                 .infoLevel(Log.InfoLevels.valueOf(resultSet.getString("info_level")))
                 .build();

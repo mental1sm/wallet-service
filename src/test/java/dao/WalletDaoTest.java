@@ -4,9 +4,10 @@ import com.wallet.dao.player.PlayerDao;
 import com.wallet.dao.player.PlayerDaoImpl;
 import com.wallet.dao.wallet.WalletDao;
 import com.wallet.dao.wallet.WalletDaoImpl;
-import com.wallet.entities.Player;
-import com.wallet.entities.Wallet;
+import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.Wallet;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 import dao.fakentities.FakePlayer;
 import dao.fakentities.FakeWallet;
 import org.junit.jupiter.api.*;
@@ -14,8 +15,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-
-import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Testcontainers
@@ -26,7 +25,7 @@ public class WalletDaoTest {
     private static Wallet fakeWallet;
 
     @BeforeAll
-    public static void setUp() throws PlayerAllreadyExistsException {
+    public static void setUp() throws PlayerAllreadyExistsException, PlayerIsNotExistsException {
         walletDao = new WalletDaoImpl();
         playerDao = new PlayerDaoImpl();
 

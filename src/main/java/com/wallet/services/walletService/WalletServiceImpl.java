@@ -4,11 +4,11 @@ import com.wallet.dao.player.PlayerDao;
 import com.wallet.dao.player.PlayerDaoImpl;
 import com.wallet.dao.transaction.TransactionDao;
 import com.wallet.dao.wallet.WalletDao;
-import com.wallet.entities.Player;
-import com.wallet.entities.Transaction;
-import com.wallet.entities.Wallet;
-import com.wallet.infrastructure.UserSession;
+import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.Transaction;
+import com.wallet.domain.entities.Wallet;
 import com.wallet.utility.IdGenerator;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,16 +28,13 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void depositMoney(UserSession session, BigDecimal amount) {
-        Optional<Player> optionalPlayer = playerDao.findPlayer(session);
-        if (optionalPlayer.isEmpty()) {return;}
-        Player player = optionalPlayer.get();
-        Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
+    public void depositMoney(long walletId, BigDecimal amount) throws PlayerIsNotExistsException {
+        Wallet wallet = walletDao.getWalletById(walletId);
 
         Transaction transaction = Transaction.builder()
                 .walletId(wallet.getId())
                 .playerId(wallet.getPlayerId())
-                .transactionId(IdGenerator.genId())
+                .id(IdGenerator.genId().toString())
                 .transactionType(Transaction.Type.Deposit)
                 .transactionStatus(Transaction.Status.Pending)
                 .transactionSum(amount)
@@ -54,16 +51,13 @@ public class WalletServiceImpl implements WalletService {
         transactionDao.updateTransaction(transaction);
     }
     @Override
-    public void withdrawMoney(UserSession session, BigDecimal amount) {
-        Optional<Player> optionalPlayer = playerDao.findPlayer(session);
-        if (optionalPlayer.isEmpty()) { return; }
-        Player player = optionalPlayer.get();
-        Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
+    public void withdrawMoney(long walletId, BigDecimal amount) throws PlayerIsNotExistsException {
+        Wallet wallet = walletDao.getWalletById(walletId);
 
         Transaction transaction = Transaction.builder()
                 .walletId(wallet.getId())
                 .playerId(wallet.getPlayerId())
-                .transactionId(IdGenerator.genId())
+                .id(IdGenerator.genId().toString())
                 .transactionType(Transaction.Type.Withdrawing)
                 .transactionStatus(Transaction.Status.Pending)
                 .transactionSum(amount)
@@ -85,30 +79,37 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public BigDecimal checkMoneyAmount(UserSession session) {
-        Optional<Player> optionalPlayer = playerDao.findPlayer(session);
-        Player player = optionalPlayer.orElseThrow();
-        Wallet wallet = walletDao.getWalletsOfPlayer(player).get(session.getCurrentWalletNum());
+    public BigDecimal checkMoneyAmount(long walletId) throws PlayerIsNotExistsException {
+        Wallet wallet = walletDao.getWalletById(walletId);
 
         return wallet.getMoneyAmount();
     }
 
     @Override
-    public HashMap<String, String> getUserInfo(UserSession session) {
-        Player pl = playerDao.findPlayer(session).orElseThrow();
+    public HashMap<String, String> getUserInfo(String login, long walletId) throws PlayerIsNotExistsException {
+        System.out.println("login is: " + login);
         HashMap<String, String> userInfo = new HashMap<>();
-        userInfo.put("name", pl.getName());
+
+        Player pl = playerDao.findPlayer(login).orElseThrow();
         userInfo.put("surname", pl.getSurname());
-        Wallet wallet = walletDao.getWalletsOfPlayer(pl).get(session.getCurrentWalletNum());
+        userInfo.put("name", pl.getName());
+
+        Wallet wallet = walletDao.getWalletById(walletId);
+        userInfo.put("moneyAmount", (wallet.getMoneyAmount()).toString());
         userInfo.put("walletId", Long.valueOf(wallet.getId()).toString());
         return userInfo;
     }
 
     @Override
-    public ArrayList<Transaction> getTransactionHistory(UserSession session) {
-        Player pl = playerDao.findPlayer(session).orElseThrow();
-        Wallet wallet = walletDao.getWalletsOfPlayer(pl).get(session.getCurrentWalletNum());
+    public ArrayList<Transaction> getTransactionHistory(long walletId) throws PlayerIsNotExistsException {
+        Wallet wallet = walletDao.getWalletById(walletId);
         return transactionDao.getTransactionsOfWallet(wallet);
+    }
+
+    @Override
+    public void processTransactionFromRawData(long walletId, BigDecimal moneyAmount, Transaction.Type type) throws PlayerIsNotExistsException {
+        if (type.equals(Transaction.Type.Deposit)) { depositMoney(walletId, moneyAmount); }
+        if (type.equals(Transaction.Type.Withdrawing)) { withdrawMoney(walletId, moneyAmount); }
     }
 }
 

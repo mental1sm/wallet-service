@@ -1,6 +1,6 @@
 package com.wallet.infrastructure.db.statements;
 
-import com.wallet.entities.Player;
+import com.wallet.domain.entities.Player;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,11 +25,12 @@ public class PreparedStatementPlayer {
      *  [4 - String surname]
     */
     public PreparedStatement insertPlayer(Connection connection, Player pl) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO walletservice.\"Player\" VALUES (DEFAULT, ?, ?, ?, ?, 3);");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO walletservice.\"Player\" VALUES (DEFAULT, ?, ?, ?, ?, ?);");
         preparedStatement.setString(1, pl.getLogin());
         preparedStatement.setString(2, pl.getPassword());
         preparedStatement.setString(3, pl.getName());
         preparedStatement.setString(4, pl.getSurname());
+        preparedStatement.setString(5, pl.getEmail());
         return preparedStatement;
     }
 
@@ -59,15 +60,13 @@ public class PreparedStatementPlayer {
                 UPDATE walletservice."Player" SET 
                 password = ?,
                 name = ?,
-                surname = ?,
-                permission_id = ?
+                surname = ?
                 WHERE login = ?;
                 """);
         preparedStatement.setString(1, pl.getPassword());
         preparedStatement.setString(2, pl.getName());
         preparedStatement.setString(3, pl.getSurname());
-        preparedStatement.setInt(4, pl.getPermissionId());
-        preparedStatement.setString(5, pl.getLogin());
+        preparedStatement.setString(4, pl.getLogin());
         return preparedStatement;
     }
 
@@ -80,10 +79,8 @@ public class PreparedStatementPlayer {
     public PreparedStatement getPlayerById(Connection connection, long id) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("""
 
-                SELECT walletservice."Player".*, walletservice."Permission".name 
-                FROM walletservice."Player" 
-                JOIN walletservice."Permission" ON walletservice."Player".permission_id = walletservice."Permission".id 
-                WHERE walletservice."Player".id = ?
+                SELECT * FROM walletservice."Player"
+                WHERE id = ?
                 """);
         preparedStatement.setLong(1, id);
         return preparedStatement;
@@ -98,10 +95,24 @@ public class PreparedStatementPlayer {
     public PreparedStatement getPlayerByLogin(Connection connection, String pLogin) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("""
 
-                SELECT walletservice."Player".*, walletservice."Permission".name AS permission_name 
-                FROM walletservice."Player" 
-                JOIN walletservice."Permission" ON walletservice."Player".permission_id = walletservice."Permission".id 
-                WHERE walletservice."Player".login = ?
+                SELECT * FROM walletservice."Player"
+                WHERE login = ?
+                """);
+        preparedStatement.setString(1, pLogin);
+        return preparedStatement;
+    }
+
+    /**
+     * Подготовленный Statement
+     * @param connection Соединение с БД
+     * @return PreparedStatement объект
+     * [1 - String email]
+     */
+    public PreparedStatement getPlayerByEmail(Connection connection, String pLogin) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("""
+
+                SELECT * FROM walletservice."Player"
+                WHERE email = ?
                 """);
         preparedStatement.setString(1, pLogin);
         return preparedStatement;

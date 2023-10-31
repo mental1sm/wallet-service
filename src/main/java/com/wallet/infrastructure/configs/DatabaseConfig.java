@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Доступ к .properties файлу с настройками БД и миграции (bd/liquibase.properties)
+ * Доступ к .properties файлу с настройками БД и миграции (db/liquibase.properties)
 */
 public class DatabaseConfig implements Config {
     private Properties property;

@@ -2,12 +2,13 @@ package com.wallet.services.accountService;
 
 import com.wallet.dao.player.PlayerDao;
 import com.wallet.dao.wallet.WalletDao;
-import com.wallet.entities.Player;
-import com.wallet.entities.Wallet;
-import com.wallet.infrastructure.UserSession;
+import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.Wallet;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -22,38 +23,27 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Optional<UserSession> regUser(String name, String surname, String pLogin, String pPassword) throws PlayerAllreadyExistsException {
-        Player pl = new Player(0, 3, Player.Permission.USER, name, surname, pLogin, pPassword);
+    public boolean regUser(String name, String surname, String login, String email, String password) throws PlayerAllreadyExistsException, PlayerIsNotExistsException {
+        Player pl = new Player(0, name, surname, login, email, password);
         playerDao.savePlayer(pl);
-        Optional<Player> optionalPlayer = playerDao.findPlayer(pLogin);
-        if (optionalPlayer.isPresent()) {
-            pl = optionalPlayer.get();
-            UserSession session = new UserSession(pl.getId());
-            regWallet(pl.getId());
-            session.setCurrentWalletNum(0);
-            return Optional.of(session);
-        }
+        Optional<Player> optionalPlayer = playerDao.findPlayer(login);
+        if (optionalPlayer.isEmpty()) { throw new PlayerIsNotExistsException(); }
+        pl = optionalPlayer.get();
+        regWallet(pl.getId());
 
-        return Optional.empty();
+        return true;
     }
 
     private void regWallet(long playerId) {
         Wallet wallet = new Wallet(0, playerId, new BigDecimal(0));
         walletDao.saveWallet(wallet);
-
-
     }
+
     @Override
-    public Optional<UserSession> authUser(String pLogin, String pPassword) {
-        Optional<Player> optionalPlayer = playerDao.findPlayer(pLogin);
-        if (optionalPlayer.isEmpty()) { return Optional.empty(); }
-        Player pl = optionalPlayer.get();
-        if (pl.getPassword().contentEquals(pPassword)) {
-            UserSession session = new UserSession(pl.getId());
-            session.setCurrentWalletNum(0);
-            return Optional.of(session);
-        }
-        return Optional.empty();
+    public ArrayList<Wallet> getWalletsOfUser(String login) throws PlayerIsNotExistsException {
+        System.out.println(login);
+        Player player = playerDao.findPlayer(login).orElseThrow(PlayerIsNotExistsException::new);
+        return walletDao.getWalletsOfPlayer(player);
     }
 
 }

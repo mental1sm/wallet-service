@@ -1,9 +1,11 @@
 package com.wallet.services.accountService;
 
-import com.wallet.infrastructure.UserSession;
+import com.wallet.domain.entities.Wallet;
+import com.wallet.utility.exceptions.InvalidPasswordException;
 import com.wallet.utility.exceptions.PlayerAllreadyExistsException;
+import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
-import java.util.Optional;
+import java.util.ArrayList;
 
 /**
  * Представляет класс для управления аккаунтом пользователя.
@@ -16,16 +18,9 @@ public interface AccountService {
      * @param surname   Фамилий игрока
      * @param pLogin    Уникальный логин игрока
      * @param pPassword Пароль от аккаунта
-     * @return Объект UserSession - сессия пользователя
+     * @return
      */
-    Optional<UserSession> regUser(String name, String surname, String pLogin, String pPassword) throws PlayerAllreadyExistsException;
+    boolean regUser(String name, String surname, String pLogin, String email, String pPassword) throws PlayerAllreadyExistsException, PlayerIsNotExistsException;
 
-    /**
-     * Метод, аутентифицирующий пользователя.
-     *
-     * @param pLogin    Уникальный логин игрока
-     * @param pPassword Пароль от аккаунта
-     * @return Объект UserSession - сессия пользователя
-     */
-    Optional<UserSession> authUser(String pLogin, String pPassword);
+    ArrayList<Wallet> getWalletsOfUser(String login) throws PlayerIsNotExistsException;
 }

@@ -1,7 +1,7 @@
 package com.wallet.infrastructure.configs;
 
 /**
- * Доступ к .properties файлам
+ * Доступ к Конфиг файлам
  */
 public interface Config {
     String getProperty(String propertyName);
