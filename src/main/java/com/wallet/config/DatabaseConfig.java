@@ -5,7 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.DataSourceFactory;
+
+import javax.sql.DataSource;
 import java.util.Map;
 
 
@@ -30,8 +36,19 @@ public class DatabaseConfig {
         url = (String) dataSource.get("url");
         username = (String) dataSource.get("username");
         password = dataSource.get("password").toString();
-        defaultSchema = (String) liquibase.get("schema");
+        defaultSchema = (String) liquibase.get("default-schema");
         changelogPath = (String) liquibase.get("change-log");
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource managerDataSource = new DriverManagerDataSource();
+        managerDataSource.setPassword(password);
+        managerDataSource.setUsername(username);
+        managerDataSource.setUrl(url);
+        managerDataSource.setDriverClassName(driver);
+        managerDataSource.setSchema(defaultSchema);
+        return managerDataSource;
     }
 
 }
