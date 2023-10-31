@@ -1,10 +1,8 @@
 package com.wallet.dao.wallet;
 
-import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.User;
 import com.wallet.domain.entities.Wallet;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -41,9 +39,10 @@ public interface WalletDao {
 
     /**
      * Метод, возвращающий коллекцию объектов Wallet из БД
+     *
      * @param pl Игрок, чьи кошельки надо вернуть
      * @return Коллекция объектов Wallet
      */
-    ArrayList<Wallet> getWalletsOfPlayer(Player pl);
+    ArrayList<Wallet> getWalletsOfUser(User pl);
 
 }

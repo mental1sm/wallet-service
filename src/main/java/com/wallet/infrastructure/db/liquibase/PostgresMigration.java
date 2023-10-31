@@ -1,40 +1,44 @@
 package com.wallet.infrastructure.db.liquibase;
 
-import com.wallet.infrastructure.configs.Config;
-import com.wallet.infrastructure.configs.DatabaseConfig;
+import com.wallet.config.DatabaseConfig;
 import com.wallet.infrastructure.db.SetupConnection;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
+import com.wallet.utility.exceptions.UserIsNotExistsException;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
  * Выполняет миграцию для БД Postgres
 */
+@RequiredArgsConstructor
+@Service
 public class PostgresMigration implements Migration {
 
-    public static void migrate() throws PlayerIsNotExistsException, SQLException {
-        CreateServiceSchema.createSchema();
-        CreateKeycloakSchema.createSchema();
-        Config config = DatabaseConfig.getInstance();
-        SetupConnection.withConnection(connection -> {
+    private final SetupConnection setupConnection;
+    private final CreateServiceSchema createServiceSchema;
+    private final CreateKeycloakSchema createKeycloakSchema;
+   // private final DatabaseConfig databaseConfig;
+
+    public void migrate() throws UserIsNotExistsException, SQLException {
+        createServiceSchema.createSchema();
+        createKeycloakSchema.createSchema();
             Database database = null;
-            try {
+            try (Connection connection = setupConnection.getConnection()) {
                 database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-                database.setDefaultSchemaName(config.getProperty("defaultSchemaName"));
-                Liquibase liquibase = new Liquibase("/db/changelog/changelog.xml", new ClassLoaderResourceAccessor(), database);
+                database.setDefaultSchemaName("");//databaseConfig.getDefaultSchema());
+                Liquibase liquibase = new Liquibase("", new ClassLoaderResourceAccessor(), database);
                 liquibase.update("Initial migration");
             } catch (LiquibaseException e) {
                 throw new RuntimeException(e);
             }
-        });
     }
 }

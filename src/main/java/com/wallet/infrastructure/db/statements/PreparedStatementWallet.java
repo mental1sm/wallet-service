@@ -1,6 +1,6 @@
 package com.wallet.infrastructure.db.statements;
 
-import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.User;
 import com.wallet.domain.entities.Wallet;
 
 import java.sql.Connection;
@@ -67,7 +67,7 @@ public class PreparedStatementWallet {
      * @return PreparedStatement объект
      * [1 - long player_id]
      */
-    public PreparedStatement getWalletsOfPlayer(Connection connection, Player pl) throws SQLException {
+    public PreparedStatement getWalletsOfPlayer(Connection connection, User pl) throws SQLException {
         PreparedStatement preparedStatement =  connection.prepareStatement("SELECT * FROM walletservice.\"Wallet\" WHERE player_id = ?;");
         preparedStatement.setLong(1, pl.getId());
         return preparedStatement;

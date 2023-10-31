@@ -4,6 +4,8 @@ import com.wallet.domain.entities.Transaction;
 import com.wallet.domain.entities.Wallet;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementTransaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,16 +14,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+
+@Repository
 public class TransactionDaoImpl implements TransactionDao {
 
     PreparedStatementTransaction preparedStatementTransaction;
-    public TransactionDaoImpl() {
+    private final SetupConnection setupConnection;
+    @Autowired
+    public TransactionDaoImpl(SetupConnection setupConnection) {
         preparedStatementTransaction = PreparedStatementTransaction.getInstance();
+        this.setupConnection = setupConnection;
     }
+
     @Override
     public void saveTransaction(Transaction transaction) {
             try (
-                    Connection connection = SetupConnection.getConnection();
+                    Connection connection = setupConnection.getConnection();
                     PreparedStatement preparedStatement = preparedStatementTransaction.insertTransaction(connection, transaction);
             ) {
                 preparedStatement.executeUpdate();
@@ -33,7 +41,7 @@ public class TransactionDaoImpl implements TransactionDao {
     @Override
     public void updateTransaction(Transaction transaction) {
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementTransaction.updateTransaction(connection, transaction);
         ) {
             preparedStatement.executeUpdate();
@@ -45,7 +53,7 @@ public class TransactionDaoImpl implements TransactionDao {
     @Override
     public void deleteTransaction(Transaction transaction) {
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementTransaction.deleteTransaction(connection, transaction);
         ) {
             preparedStatement.executeUpdate();
@@ -59,7 +67,7 @@ public class TransactionDaoImpl implements TransactionDao {
     public Transaction getTransactionById(UUID id) {
         Transaction transaction = null;
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementTransaction.getTransactionById(connection, id);
                 )
         {
@@ -76,7 +84,7 @@ public class TransactionDaoImpl implements TransactionDao {
     public ArrayList<Transaction> getTransactionsOfWallet(Wallet wallet) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementTransaction.getTransactionHistoryOfWallet(connection, wallet);
         )
         {
@@ -101,6 +109,4 @@ public class TransactionDaoImpl implements TransactionDao {
                 .transactionDate(resultSet.getTimestamp("timestamp"))
                 .build();
     }
-
-
 }

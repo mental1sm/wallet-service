@@ -1,10 +1,11 @@
 package com.wallet.dao.wallet;
 
-import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.User;
 import com.wallet.domain.entities.Wallet;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementWallet;
-import com.wallet.utility.exceptions.PlayerIsNotExistsException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,18 +13,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
+@Repository
 public class WalletDaoImpl implements WalletDao{
 
     PreparedStatementWallet preparedStatementWallet;
+    private final SetupConnection setupConnection;
 
-    public WalletDaoImpl() {
+    @Autowired
+    public WalletDaoImpl(SetupConnection setupConnection) {
         preparedStatementWallet = PreparedStatementWallet.getInstance();
+        this.setupConnection = setupConnection;
     }
 
     @Override
     public void saveWallet(Wallet wallet) {
             try (
-                    Connection connection = SetupConnection.getConnection();
+                    Connection connection = setupConnection.getConnection();
                     PreparedStatement preparedStatement = preparedStatementWallet.insertWallet(connection, wallet);
                     )
             {
@@ -34,7 +40,7 @@ public class WalletDaoImpl implements WalletDao{
     @Override
     public void updateWallet(Wallet wallet) {
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementWallet.updateWallet(connection, wallet);
         )
         {
@@ -45,7 +51,7 @@ public class WalletDaoImpl implements WalletDao{
     @Override
     public void deleteWallet(Wallet wallet) {
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementWallet.deleteWallet(connection, wallet);
         )
         {
@@ -57,7 +63,7 @@ public class WalletDaoImpl implements WalletDao{
     public Wallet getWalletById(long id) {
         Wallet wallet = null;
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementWallet.getWalletById(connection, id);
                 )
         {
@@ -72,16 +78,17 @@ public class WalletDaoImpl implements WalletDao{
     }
 
     @Override
-    public ArrayList<Wallet> getWalletsOfPlayer(Player pl) {
+    public ArrayList<Wallet> getWalletsOfUser(User pl) {
         ArrayList<Wallet> playerWallets = new ArrayList<>();
         try (
-             Connection connection = SetupConnection.getConnection();
+             Connection connection = setupConnection.getConnection();
              PreparedStatement preparedStatement = preparedStatementWallet.getWalletsOfPlayer(connection, pl);
              )
         {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                playerWallets.add(extractWalletFromResultSet(resultSet));
+                Wallet wallet = extractWalletFromResultSet(resultSet);
+                playerWallets.add(wallet);
             }
         } catch (SQLException e ) {
             e.printStackTrace();

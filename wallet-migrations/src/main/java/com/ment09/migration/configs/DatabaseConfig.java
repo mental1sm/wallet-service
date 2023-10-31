@@ -1,7 +1,5 @@
 package com.ment09.migration.configs;
 
-import liquibase.pro.packaged.S;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
