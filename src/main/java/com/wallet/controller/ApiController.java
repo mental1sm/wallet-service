@@ -14,6 +14,7 @@ import com.wallet.service.auth.AuthService;
 import com.wallet.service.wallet.WalletService;
 import com.wallet.utility.exceptions.UserIsNotExistsException;
 import com.wallet.utility.exceptions.WalletIsNotExistsException;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,7 @@ public class ApiController {
      * }
      * @return Bearer Auth TOKEN
     */
+    @Operation(summary = "Get example data", description = "Retrieve example data from the API")
     @PostMapping(value = "/auth/login", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<Map<String, String>> getAuthToken(@RequestBody UserAuthDTO request) {
         Map<String, String> data = new HashMap<>();
