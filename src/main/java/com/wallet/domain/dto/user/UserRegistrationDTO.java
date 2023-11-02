@@ -1,12 +1,12 @@
 package com.wallet.domain.dto.user;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class UserRegistrationDTO {
+@EqualsAndHashCode(callSuper = false)
+public class UserRegistrationDTO extends UserAuthDTO implements UserDTO {
     private String name;
     private String surname;
-    private String login;
-    private String password;
     private String email;
 }

@@ -174,7 +174,7 @@ public class ApiController {
     */
     @AuditToken
     @PostMapping(value = "/wallet/{walletId}/transaction", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<Map<String, Object>> getTransactionDetails(
+    public ResponseEntity<Map<String, Object>> processNewTransaction(
             @RequestBody NewTransactionDTO transactionDetails,
             @PathVariable long walletId,
             @RequestHeader("Authorization") String authHeader

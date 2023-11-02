@@ -2,20 +2,16 @@ package com.wallet.infrastructure.db.statements;
 
 import com.wallet.domain.entities.User;
 import com.wallet.domain.entities.Wallet;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Component
+@RequiredArgsConstructor
 public class PreparedStatementWallet {
-    private static PreparedStatementWallet instance = null;
-
-    private PreparedStatementWallet() {}
-
-    public static PreparedStatementWallet getInstance() {
-        if (instance == null) { instance = new PreparedStatementWallet(); }
-        return instance;
-    }
 
     /**
      * Подготовленный Statement

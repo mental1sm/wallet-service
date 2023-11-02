@@ -13,9 +13,17 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class Log {
+    public enum Actions {
+        auth,
+        reg,
+        get_wallets,
+        get_wallet,
+        get_transactions,
+        initiate_transaction
+    }
     private long id;
     private String login;
     private Date timestamp;
-    private String action;
+    private Actions action;
     private String description;
 }

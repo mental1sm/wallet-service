@@ -1,5 +1,6 @@
 package com.wallet.infrastructure.db.statements;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -7,16 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @Component
+@RequiredArgsConstructor
 public class PreparedStatementLog {
-    private static PreparedStatementLog instance = null;
-
-    private PreparedStatementLog() {}
-
-    public static PreparedStatementLog getInstance() {
-        if (instance == null) { instance = new PreparedStatementLog(); }
-        return instance;
-    }
-
     /**
      * Подготовленный Statement
      * @param connection Соединение с БД

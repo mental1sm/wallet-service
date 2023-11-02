@@ -4,3 +4,4 @@
 /.idea/
 /docker/pg_data/
 /docker/migrate.jar
+/docker/wallet-service-v1.0.war

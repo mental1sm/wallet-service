@@ -2,22 +2,17 @@ package com.wallet.infrastructure.db.statements;
 
 import com.wallet.domain.entities.Transaction;
 import com.wallet.domain.entities.Wallet;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
 
+@Component
+@RequiredArgsConstructor
 public class PreparedStatementTransaction {
-    private static PreparedStatementTransaction instance = null;
-
-    private PreparedStatementTransaction() {}
-
-    public static PreparedStatementTransaction getInstance() {
-        if (instance == null) { instance = new PreparedStatementTransaction(); }
-        return instance;
-    }
-
     /**
      * Подготовленный Statement
      * @param connection Соединение с БД

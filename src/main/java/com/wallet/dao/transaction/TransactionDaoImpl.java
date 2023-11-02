@@ -4,6 +4,7 @@ import com.wallet.domain.entities.Transaction;
 import com.wallet.domain.entities.Wallet;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementTransaction;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 
 @Repository
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
 public class TransactionDaoImpl implements TransactionDao {
 

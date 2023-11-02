@@ -5,11 +5,17 @@ $ git clone https://github.com/mental1ism/wallet-serivce.git
 $ cd wallet-service
 ```
 ```agsl
-$ git checkout homework3
+$ git checkout homework4
 ```
 ```agsl
-$ ./deploy-subservices.bat
+$ mvn clean package
 ```
 ```agsl
-Run tomcat from maven
+Copy .war file from ./target to ./docker
+```
+```agsl
+cd docker
+```
+```agsl
+docker-compose up
 ```

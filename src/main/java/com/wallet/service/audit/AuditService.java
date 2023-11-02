@@ -11,7 +11,7 @@ public interface AuditService {
      * @param action действие пользователя
      * @param description описание действия пользователя
     */
-    void logThis(String login, String action, String description);
+    void logThis(String login, Log.Actions action, String description);
 
     /**
      * Получить все записи аудита для конкретного пользователя

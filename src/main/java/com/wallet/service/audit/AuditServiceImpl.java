@@ -14,7 +14,7 @@ public class AuditServiceImpl implements AuditService {
     private final LoggerDao loggerDao;
 
     @Override
-    public void logThis(String login, String action, String description) {
+    public void logThis(String login, Log.Actions action, String description) {
         Log log = Log.builder()
                 .login(login)
                 .action(action)

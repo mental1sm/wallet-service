@@ -5,6 +5,7 @@ import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementPlayer;
 import com.wallet.utility.exceptions.UserAllreadyExistsException;
 import com.wallet.utility.exceptions.UserIsNotExistsException;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,9 @@ import java.util.Optional;
 
 @Repository
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserDaoImpl implements UserDao {
-    PreparedStatementPlayer preparedStatementPlayer;
+    private final PreparedStatementPlayer preparedStatementPlayer;
     private final SetupConnection setupConnection;
 
     @Override
