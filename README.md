@@ -19,3 +19,6 @@ $ cd docker
 ```agsl
 $ docker-compose up
 ```
+```agsl
+Don't forget to copy your client secret and puplic rsa key to application.yml
+```
