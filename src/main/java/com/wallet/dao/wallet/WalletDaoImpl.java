@@ -4,6 +4,8 @@ import com.wallet.domain.entities.User;
 import com.wallet.domain.entities.Wallet;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementWallet;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,16 +17,12 @@ import java.util.ArrayList;
 
 
 @Repository
+@RequiredArgsConstructor
+@Slf4j
 public class WalletDaoImpl implements WalletDao{
 
     PreparedStatementWallet preparedStatementWallet;
     private final SetupConnection setupConnection;
-
-    @Autowired
-    public WalletDaoImpl(SetupConnection setupConnection) {
-        preparedStatementWallet = PreparedStatementWallet.getInstance();
-        this.setupConnection = setupConnection;
-    }
 
     @Override
     public void saveWallet(Wallet wallet) {
@@ -34,7 +32,9 @@ public class WalletDaoImpl implements WalletDao{
                     )
             {
                 preparedStatement.executeUpdate();
-            } catch (SQLException e) {}
+            } catch (SQLException e) {
+                log.warn(e.getMessage());
+            }
     }
 
     @Override
@@ -45,7 +45,9 @@ public class WalletDaoImpl implements WalletDao{
         )
         {
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {}
+        } catch (SQLException e) {
+            log.warn(e.getMessage());
+        }
     }
 
     @Override
@@ -56,7 +58,9 @@ public class WalletDaoImpl implements WalletDao{
         )
         {
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {}
+        } catch (SQLException e) {
+            log.warn(e.getMessage());
+        }
     }
 
     @Override
@@ -72,7 +76,7 @@ public class WalletDaoImpl implements WalletDao{
             wallet = extractWalletFromResultSet(resultSet);
             resultSet.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
         }
         return wallet;
     }
@@ -91,7 +95,7 @@ public class WalletDaoImpl implements WalletDao{
                 playerWallets.add(wallet);
             }
         } catch (SQLException e ) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
         }
         return playerWallets;
     }

@@ -21,6 +21,17 @@ services:
     volumes:
       - ./pg_data:/var/lib/postgresql/data
 
+  tomcat:
+    image: tomcat:9.0.82
+    container_name: tomcat-server
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./wallet-service-v1.0.war:/usr/local/tomcat/webapps/webwallet.war
+
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.4
     container_name: keycloak
@@ -39,6 +50,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      tomcat:
+        condition: service_started
     healthcheck:
       test: ["CMD", "curl", "-f", "http://0.0.0.0:8080/realms/master"]
       start_period: 10s

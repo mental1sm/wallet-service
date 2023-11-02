@@ -5,6 +5,8 @@ import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementPlayer;
 import com.wallet.utility.exceptions.UserAllreadyExistsException;
 import com.wallet.utility.exceptions.UserIsNotExistsException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,15 +15,11 @@ import java.util.Optional;
 
 
 @Repository
+@Slf4j
+@RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {
     PreparedStatementPlayer preparedStatementPlayer;
     private final SetupConnection setupConnection;
-
-    @Autowired
-    public UserDaoImpl(SetupConnection setupConnection) {
-        preparedStatementPlayer = PreparedStatementPlayer.getInstance();
-        this.setupConnection = setupConnection;
-    }
 
     @Override
     public void savePlayer(User pl) throws UserAllreadyExistsException {
@@ -31,7 +29,7 @@ public class UserDaoImpl implements UserDao {
         ) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
             throw new UserAllreadyExistsException();
         }
     }
@@ -45,7 +43,7 @@ public class UserDaoImpl implements UserDao {
             {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.warn(e.getMessage());
                 throw new UserIsNotExistsException();
             }
     }
@@ -59,7 +57,7 @@ public class UserDaoImpl implements UserDao {
         {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
             throw new UserIsNotExistsException();
         }
     }
@@ -73,11 +71,11 @@ public class UserDaoImpl implements UserDao {
         )
         {
             ResultSet resultSet = preparedStatement.executeQuery();
-            pl = extractPlayerFromResultSet(resultSet);
+            pl = extractUserFromResultSet(resultSet);
             resultSet.close();
             return Optional.ofNullable(pl);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
             return Optional.empty();
         }
     }
@@ -90,11 +88,11 @@ public class UserDaoImpl implements UserDao {
                 PreparedStatement preparedStatement = preparedStatementPlayer.getPlayerById(connection, id)
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            pl = extractPlayerFromResultSet(resultSet);
+            pl = extractUserFromResultSet(resultSet);
             resultSet.close();
             return Optional.ofNullable(pl);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
             return Optional.empty();
         }
     }
@@ -102,7 +100,7 @@ public class UserDaoImpl implements UserDao {
     /**
      * Извлекает из ResultSet данные игрока и возвращает объект
     */
-    private User extractPlayerFromResultSet(ResultSet resultSet) throws SQLException {
+    private User extractUserFromResultSet(ResultSet resultSet) throws SQLException {
         User pl;
 
         if (resultSet.next()) {

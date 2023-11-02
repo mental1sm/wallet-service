@@ -1,6 +1,7 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5032/testwalletdb
+    docker_url: jdbc:postgresql://postgresdb:5432/testwalletdb
     username: root
     password: 123321
     driver-class-name: org.postgresql.Driver
@@ -14,5 +15,5 @@ keycloak:
   users_url: http://localhost:8282/admin/realms/wallet-realm/users
   admin_username: admin
   admin_password: 123321
-  secret: YVCAPKM703ILhKCqJ4xdOWzWpFxvB1MQ
-  public_rsa_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyXxcERyn/QzAfmGmVrv7BPY90HPlKpye0BhvOXeN6X0tOIF+QYdWPKNsW6tJ7BzR8u9DVFvvNilrdtc024a6uRxUDMpz/o6sWix2izPRqsrYfGBzo4BoYo/eaY6yWmi20UI6pWcLMSoDTVyI6AFdOtAWCTWRGSWf1vT2Luy0SAt/UbDd3Oz6H74aj8YZYAw1ncgVuCU+pmQz8m5xyi6XmHNChraaYXAVaxx24zxzCFs7rqr0h2kB1xztIMgSb3hQfIBVdxCnmVGMR7zLJnXBTEV8ALyCGEla2dcmpvaznkvJKW2oJaJvm24bBoI51fL5wm7lnaQgovdpbfZuyvUPcQIDAQAB
+  secret: kHcQTi6AgwS1fMuqZPc4ohb6Jm3aa3J0
+  public_rsa_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwvse1eLbhWvR43I0qdJrOk67mrgcSNsBaRcIiDPQs6mjquw3D/8dBeewzqZmTbp/S7k9GnPxO5fBuJIk7MX6PrZHZGfmBBgVbVo8F/7cYC2ppxaZ7CYmbnzLgoHobBG9Hv/VOBD/RqAl2lTgt0OLRlWWYnyKs5l5PlfHePD1ceXye03THWYBetvzHm6krliLo04zZ+kZq8t1Cj1w3qb5PEdVuU51o8AmFVlKlwN8YqyAKtuO9PIU2mET/1uSproZgbcFbf06gHij12lAGzmpqvU9jP5UDg9ZqHNj9zW/dMRphS4ZiaHEWSn0HAa1cLIKUHpehr9AddjqdJgGLZ296QIDAQAB

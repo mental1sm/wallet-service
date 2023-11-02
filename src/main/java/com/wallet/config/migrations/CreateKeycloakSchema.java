@@ -1,7 +1,7 @@
-package com.wallet.infrastructure.db.liquibase;
+package com.wallet.config.migrations;
 
 import com.wallet.infrastructure.db.SetupConnection;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -9,9 +9,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @Component
-@RequiredArgsConstructor
 public class CreateKeycloakSchema {
     private final SetupConnection setupConnection;
+
+    @Autowired
+    public CreateKeycloakSchema(SetupConnection setupConnection) {
+        this.setupConnection = setupConnection;
+    }
+
     public void createSchema() {
         String SQL = "CREATE SCHEMA IF NOT EXISTS keycloak;";
         try (Connection connection = setupConnection.getConnection();) {

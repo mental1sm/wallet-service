@@ -1,6 +1,7 @@
 package com.wallet.utility.aspects;
 
 
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,23 +13,31 @@ import java.util.Arrays;
 
 @Aspect
 @Component
+@RequiredArgsConstructor
 public class UserAuditAspect {
-    @Around("@within(com.wallet.utility.aspects.Audit) || @annotation(com.wallet.utility.aspects.Audit)")
-    public Object auditGetInfo(ProceedingJoinPoint joinPoint) throws Throwable {
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        Method method = methodSignature.getMethod();
 
+
+    /**
+     * Регистрирует анонимное действие в журнал аудита
+    */
+    @Around("@annotation(com.wallet.utility.aspects.AuditRaw)")
+    public Object auditGetInfoFromRaw(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
+        Object obj = args[0];
 
         System.out.println(Arrays.toString(args));
-//        // Ваша логика аудита
-//        String action = "GetInfo"; // Название действия
-//        String details = "User: " + username + ", Method: " + method.getName() + ", Parameters: " + Arrays.toString(args);
-//
-//        // Вызов сервиса аудита для сохранения информации
-//        auditService.auditUserAction(username, action, details);
 
-        // Вызов метода, к которому применяется аспект
+        return joinPoint.proceed();
+    }
+
+    /**
+     * Регистрирует действие пользователя в журнал аудита
+     */
+    @Around("@annotation(com.wallet.utility.aspects.AuditToken)")
+    public Object auditGetInfoFromToken(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object[] args = joinPoint.getArgs();
+        System.out.println(Arrays.toString(args));
+
         return joinPoint.proceed();
     }
 }

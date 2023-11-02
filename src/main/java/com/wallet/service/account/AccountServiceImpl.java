@@ -49,7 +49,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ArrayList<Wallet> getWalletsOfUser(String login) throws UserIsNotExistsException {
-        System.out.println(login);
         User player = userDao.findPlayer(login).orElseThrow(UserIsNotExistsException::new);
         return walletDao.getWalletsOfUser(player);
     }

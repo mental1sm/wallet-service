@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", MediaType.APPLICATION_JSON);
-        connection.setRequestProperty("Authorization", "Bearer " + tokenUtil.getAdminToken());
+        connection.setRequestProperty("Authorization", "Bearer " + tokenUtil.getAdminToken().orElseThrow(RuntimeException::new));
         connection.setDoOutput(true);
         String jsonString = jsonBodyBuilder.userRegistrationBody(regDTO);
         try (OutputStream oStream = connection.getOutputStream()) {

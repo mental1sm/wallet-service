@@ -1,9 +1,12 @@
 package com.wallet.infrastructure.db.statements;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Component
 public class PreparedStatementLog {
     private static PreparedStatementLog instance = null;
 
@@ -37,5 +40,18 @@ public class PreparedStatementLog {
                 SELECT * FROM logs."Log"
                 WHERE login = ?;
                 """);
+    }
+
+    public PreparedStatement getAllLogs(Connection connection) throws SQLException {
+        return connection.prepareStatement("""
+                SELECT * FROM logs."Log";
+        """);
+    }
+
+    public PreparedStatement getAllLogsFilterByAction(Connection connection) throws SQLException {
+        return connection.prepareStatement("""
+                SELECT * FROM logs."Log"
+                WHERE action = ?;
+        """);
     }
 }

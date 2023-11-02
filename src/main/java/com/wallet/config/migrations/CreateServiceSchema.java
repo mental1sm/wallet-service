@@ -1,7 +1,6 @@
-package com.wallet.infrastructure.db.liquibase;
+package com.wallet.config.migrations;
 
 import com.wallet.infrastructure.db.SetupConnection;
-import com.wallet.utility.exceptions.UserIsNotExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +13,7 @@ import java.sql.Statement;
  */
 @Component
 @RequiredArgsConstructor
-class CreateServiceSchema {
+public class CreateServiceSchema {
 
     private final SetupConnection setupConnection;
     /**

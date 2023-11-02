@@ -5,7 +5,11 @@
         </encoder>
     </appender>
 
-    <root level="debug">
+    <logger name="your.package.name" level="debug">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="warn">
         <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
