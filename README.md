@@ -1,5 +1,5 @@
 ```agsl
-$ git clone https://github.com/mental1ism/wallet-serivce.git
+$ git clone https://github.com/mental1ism/wallet-service.git
 ```
 ```agsl
 $ cd wallet-service
