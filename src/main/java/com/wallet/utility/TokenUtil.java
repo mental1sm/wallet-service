@@ -2,11 +2,10 @@ package com.wallet.utility;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wallet.config.DatabaseConfig;
 import com.wallet.config.KeycloakConfig;
 import com.wallet.domain.dto.user.UserAuthDTO;
 import com.wallet.utility.encoded.builder.EncodedBodyBuilder;
-import jakarta.ws.rs.core.MediaType;
+import javax.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.io.BufferedReader;

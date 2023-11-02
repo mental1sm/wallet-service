@@ -3,15 +3,15 @@ package com.wallet.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Properties;
 
 @Configuration
+@EnableAspectJAutoProxy
 public class AppConfig {
     @Bean
     public  Map<String, Object> yamlProperties() throws IOException {

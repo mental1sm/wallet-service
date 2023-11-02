@@ -18,50 +18,24 @@ public class PreparedStatementLog {
      * Подготовленный Statement
      * @param connection Соединение с БД
      * @return PreparedStatement объект
-     * [1 - long player_id]
-     * [2 - String action]
-     * [3 - String info_level]
+     * [1 - String action]
+     * [2 - String login]
+     * [3 - String description]
      */
     public PreparedStatement saveLog(Connection connection) throws SQLException {
-        return connection.prepareStatement("INSERT INTO logs.\"Log\" VALUES (DEFAULT, current_timestamp, ?, ?)");
+        return connection.prepareStatement("INSERT INTO logs.\"Log\" VALUES (DEFAULT, current_timestamp, ?, ?, ?)");
     }
 
     /**
      * Подготовленный Statement
      * @param connection Соединение с БД
-     * @return PreparedStatement объект
-     * [1 - long id]
-     */
-    public PreparedStatement getAmountOfImportantLogs(Connection connection) throws SQLException {
-        return connection.prepareStatement("""
-            SELECT count(id) AS log_count FROM logs."Log" GROUP BY id 
-            HAVING (info_level = 'WARNING' OR info_level='ERROR');
-    """);
-    }
-
-    /**
-     * Подготовленный Statement
-     * @param connection Соединение с БД
-     * @return PreparedStatement объект
-     * [1 - long OFFSET]
-     * [2 - long LIMIT]
-     */
-    public PreparedStatement getImportantLogs(Connection connection) throws SQLException {
-        return connection.prepareStatement("""
-                SELECT * FROM logs."Log" WHERE
-                (info_level = 'WARNING' OR info_level = 'ERROR')
-                LIMIT ? OFFSET ?;
-                """);
-    }
-
-    /**
-     * Подготовленный Statement
-     * @param connection Соединение с БД
+     * [1 - String login]
      * @return PreparedStatement объект
      */
-    public PreparedStatement getAllLogs(Connection connection) throws SQLException {
+    public PreparedStatement getAllLogsOfUser(Connection connection) throws SQLException {
         return connection.prepareStatement("""
-                SELECT * FROM logs."Log";
+                SELECT * FROM logs."Log"
+                WHERE login = ?;
                 """);
     }
 }

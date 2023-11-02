@@ -1,13 +1,13 @@
 package com.wallet.service.auth;
 
-import com.wallet.config.DatabaseConfig;
 import com.wallet.config.KeycloakConfig;
 import com.wallet.domain.dto.user.UserAuthDTO;
 import com.wallet.domain.dto.user.UserRegistrationDTO;
 import com.wallet.utility.TokenUtil;
+import com.wallet.utility.aspects.SpeedTest;
 import com.wallet.utility.exceptions.UserAllreadyExistsException;
 import com.wallet.utility.json.builder.JsonBodyBuilder;
-import jakarta.ws.rs.core.MediaType;
+import javax.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,7 @@ public class AuthServiceImpl implements AuthService {
     private final TokenUtil tokenUtil;
     private final JsonBodyBuilder jsonBodyBuilder;
 
+    @SpeedTest
     @Override
     public Optional<String> getAuthToken(UserAuthDTO userAuthDTO) throws IOException {
         return tokenUtil.getAuthToken(userAuthDTO);

@@ -7,7 +7,6 @@
     <changeSet id="006-create-log-table" author="ment09">
 
         <createTable schemaName="logs" tableName="Log">
-
             <column name="id" type="BIGINT" defaultValueComputed="nextval('logs.log_ids')">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

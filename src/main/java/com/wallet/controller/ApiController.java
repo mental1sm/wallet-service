@@ -6,6 +6,8 @@ import com.wallet.domain.dto.user.UserRegistrationDTO;
 import com.wallet.domain.entities.Transaction;
 import com.wallet.domain.entities.Wallet;
 import com.wallet.utility.TokenContext;
+import com.wallet.utility.aspects.Audit;
+import com.wallet.utility.aspects.SpeedTest;
 import com.wallet.utility.exceptions.UserAllreadyExistsException;
 import com.wallet.utility.exceptions.UnauthorizedException;
 import com.wallet.domain.dto.user.UserAuthDTO;
@@ -14,8 +16,9 @@ import com.wallet.service.auth.AuthService;
 import com.wallet.service.wallet.WalletService;
 import com.wallet.utility.exceptions.UserIsNotExistsException;
 import com.wallet.utility.exceptions.WalletIsNotExistsException;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.ws.rs.core.MediaType;
+import javax.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +42,12 @@ public class ApiController {
 
     /**
      * Авторизация
-     * JSON {
-     *     login
-     *     password
-     * }
-     * @return Bearer Auth TOKEN
     */
+    @ApiOperation("Логин для получения авторизационного токена.")
     @Operation(summary = "Get example data", description = "Retrieve example data from the API")
     @PostMapping(value = "/auth/login", produces = MediaType.APPLICATION_JSON)
+    @SpeedTest
+    @Audit
     public ResponseEntity<Map<String, String>> getAuthToken(@RequestBody UserAuthDTO request) {
         Map<String, String> data = new HashMap<>();
         try {
@@ -61,15 +62,8 @@ public class ApiController {
 
     /**
      * Регистрация
-     * JSON {
-     *     login
-     *     password
-     *     name
-     *     surname
-     *     email
-     * }
-     * @return Bearer Auth TOKEN
      */
+    @Audit
     @PostMapping(value = "/auth/registration", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<Map<String, String>> registerAndGetToken(
             @RequestBody UserRegistrationDTO userRegistrationDTO
@@ -95,6 +89,7 @@ public class ApiController {
      * Возвращает информацию о всех кошельках пользователя
      * Не требует входных данных
     */
+    @Audit
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<Map<String, Object>> getAllWalletsOfUser(
             @RequestHeader("Authorization") String authHeader
@@ -119,6 +114,7 @@ public class ApiController {
      * Возвращает информацию о кошельке пользователя по id
      * /api/wallet/1
      **/
+    @Audit
     @GetMapping(value = "/wallet/{walletId}", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<Map<String, Object>> getWalletInfo(
             @PathVariable long walletId,
@@ -145,8 +141,8 @@ public class ApiController {
 
     /**
      * Получить историю транзакций
-     * "wallet_id":
      */
+    @Audit
     @GetMapping(value = "/wallet/{walletId}/transaction", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<Map<String, Object>> getTransactionHistory(
             @PathVariable long walletId,
@@ -175,12 +171,8 @@ public class ApiController {
 
     /**
      * Инициировать новую транзакцию
-     * {
-     *     "walletId": num,
-     *     "transactionSum": string,
-     *     "transactionType": "Deposit" OR "Withdraw"
-     * }
     */
+    @Audit
     @PostMapping(value = "/wallet/{walletId}/transaction", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<Map<String, Object>> getTransactionDetails(
             @RequestBody NewTransactionDTO transactionDetails,
@@ -207,10 +199,5 @@ public class ApiController {
         }
 
     }
-
-
-
-
-
 
 }

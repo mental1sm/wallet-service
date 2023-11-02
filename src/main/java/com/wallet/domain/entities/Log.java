@@ -13,13 +13,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class Log {
-    public enum InfoLevels {
-        INFO,
-        WARNING,
-        ERROR
-    }
     private long id;
+    private String login;
     private Date timestamp;
     private String action;
-    private InfoLevels infoLevel;
+    private String description;
 }

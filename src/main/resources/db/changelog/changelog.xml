@@ -15,4 +15,5 @@
     <include file="v.1.0.0/006-create-log-table.xml" relativeToChangelogFile="true"/>
     <include file="v.1.0.0/007-set-relationships.xml" relativeToChangelogFile="true"/>
     <include file="v.1.0.0/008-insert-superadmin-data.xml" relativeToChangelogFile="true"/>
+    <include file="v.2.0.0/000-edit-log-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
