@@ -14,8 +14,8 @@ $ mvn clean package
 Copy .war file from ./target to ./docker
 ```
 ```agsl
-cd docker
+$ cd docker
 ```
 ```agsl
-docker-compose up
+$ docker-compose up
 ```
