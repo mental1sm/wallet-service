@@ -1,20 +1,16 @@
 package com.wallet.infrastructure.db.statements;
 
-import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Component
+@RequiredArgsConstructor
 public class PreparedStatementPlayer {
-    private static PreparedStatementPlayer instance = null;
-
-    private PreparedStatementPlayer() {}
-
-    public static PreparedStatementPlayer getInstance() {
-        if (instance == null) { instance = new PreparedStatementPlayer(); }
-        return instance;
-    }
     /**
      * Подготовленный Statement
      * @param connection Соединение с БД
@@ -24,7 +20,7 @@ public class PreparedStatementPlayer {
      *  [3 - String name]
      *  [4 - String surname]
     */
-    public PreparedStatement insertPlayer(Connection connection, Player pl) throws SQLException {
+    public PreparedStatement insertPlayer(Connection connection, User pl) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO walletservice.\"Player\" VALUES (DEFAULT, ?, ?, ?, ?, ?);");
         preparedStatement.setString(1, pl.getLogin());
         preparedStatement.setString(2, pl.getPassword());
@@ -40,7 +36,7 @@ public class PreparedStatementPlayer {
      * @return PreparedStatement объект
      * [1 - long id]
      */
-    public PreparedStatement deletePlayer(Connection connection, Player pl) throws SQLException {
+    public PreparedStatement deletePlayer(Connection connection, User pl) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM walletservice.\"Player\" WHERE login = ?;");
         preparedStatement.setString(1, pl.getLogin());
         return preparedStatement;
@@ -55,7 +51,7 @@ public class PreparedStatementPlayer {
      * [3 - String surname]
      * [4 - int permission_id]
      */
-    public PreparedStatement updatePlayer(Connection connection, Player pl) throws SQLException {
+    public PreparedStatement updatePlayer(Connection connection, User pl) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("""
                 UPDATE walletservice."Player" SET 
                 password = ?,

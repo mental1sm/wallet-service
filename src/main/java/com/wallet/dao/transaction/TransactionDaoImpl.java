@@ -4,6 +4,11 @@ import com.wallet.domain.entities.Transaction;
 import com.wallet.domain.entities.Wallet;
 import com.wallet.infrastructure.db.SetupConnection;
 import com.wallet.infrastructure.db.statements.PreparedStatementTransaction;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,45 +17,48 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+
+@Repository
+@AllArgsConstructor
+@Slf4j
 public class TransactionDaoImpl implements TransactionDao {
 
     PreparedStatementTransaction preparedStatementTransaction;
-    public TransactionDaoImpl() {
-        preparedStatementTransaction = PreparedStatementTransaction.getInstance();
-    }
+    private final SetupConnection setupConnection;
+
     @Override
     public void saveTransaction(Transaction transaction) {
             try (
-                    Connection connection = SetupConnection.getConnection();
+                    Connection connection = setupConnection.getConnection();
                     PreparedStatement preparedStatement = preparedStatementTransaction.insertTransaction(connection, transaction);
             ) {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.warn(e.getMessage());
             }
     }
 
     @Override
     public void updateTransaction(Transaction transaction) {
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementTransaction.updateTransaction(connection, transaction);
         ) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
         }
     }
 
     @Override
     public void deleteTransaction(Transaction transaction) {
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementTransaction.deleteTransaction(connection, transaction);
         ) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
         }
     }
 
@@ -59,14 +67,14 @@ public class TransactionDaoImpl implements TransactionDao {
     public Transaction getTransactionById(UUID id) {
         Transaction transaction = null;
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementTransaction.getTransactionById(connection, id);
                 )
         {
             ResultSet resultSet = preparedStatement.executeQuery();
             transaction = extractTransactionFromResultSet(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
         }
 
         return transaction;
@@ -76,7 +84,7 @@ public class TransactionDaoImpl implements TransactionDao {
     public ArrayList<Transaction> getTransactionsOfWallet(Wallet wallet) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         try (
-                Connection connection = SetupConnection.getConnection();
+                Connection connection = setupConnection.getConnection();
                 PreparedStatement preparedStatement = preparedStatementTransaction.getTransactionHistoryOfWallet(connection, wallet);
         )
         {
@@ -85,7 +93,7 @@ public class TransactionDaoImpl implements TransactionDao {
                 transactions.add(extractTransactionFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
         }
 
         return transactions;
@@ -101,6 +109,4 @@ public class TransactionDaoImpl implements TransactionDao {
                 .transactionDate(resultSet.getTimestamp("timestamp"))
                 .build();
     }
-
-
 }

@@ -9,6 +9,9 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Полное DTO транзакции
+ */
 @Data
 public class TransactionDTO {
     private String id;
@@ -23,6 +26,8 @@ public class TransactionDTO {
     @JsonSerialize(using = SumSerializer.class)
     @JsonDeserialize(using = SumDeserializer.class)
     private BigDecimal transactionSum;
+    @JsonSerialize(using = DateSerializer.class)
+    @JsonDeserialize(using = DateDeserializer.class)
     private Date transactionDate;
 
 }

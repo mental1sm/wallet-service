@@ -1,21 +1,17 @@
 package com.wallet.infrastructure.db.statements;
 
-import com.wallet.domain.entities.Player;
+import com.wallet.domain.entities.User;
 import com.wallet.domain.entities.Wallet;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Component
+@RequiredArgsConstructor
 public class PreparedStatementWallet {
-    private static PreparedStatementWallet instance = null;
-
-    private PreparedStatementWallet() {}
-
-    public static PreparedStatementWallet getInstance() {
-        if (instance == null) { instance = new PreparedStatementWallet(); }
-        return instance;
-    }
 
     /**
      * Подготовленный Statement
@@ -67,7 +63,7 @@ public class PreparedStatementWallet {
      * @return PreparedStatement объект
      * [1 - long player_id]
      */
-    public PreparedStatement getWalletsOfPlayer(Connection connection, Player pl) throws SQLException {
+    public PreparedStatement getWalletsOfPlayer(Connection connection, User pl) throws SQLException {
         PreparedStatement preparedStatement =  connection.prepareStatement("SELECT * FROM walletservice.\"Wallet\" WHERE player_id = ?;");
         preparedStatement.setLong(1, pl.getId());
         return preparedStatement;

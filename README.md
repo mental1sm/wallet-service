@@ -1,15 +1,24 @@
 ```agsl
-$ git clone https://github.com/mental1ism/wallet-serivce.git
+$ git clone https://github.com/mental1ism/wallet-service.git
 ```
 ```agsl
 $ cd wallet-service
 ```
 ```agsl
-$ git checkout homework3
+$ git checkout homework4
 ```
 ```agsl
-$ ./deploy-subservices.bat
+$ mvn clean package
 ```
 ```agsl
-Run tomcat from maven
+Copy .war file from ./target to ./docker
+```
+```agsl
+$ cd docker
+```
+```agsl
+$ docker-compose up
+```
+```agsl
+Don't forget to copy your client secret and puplic rsa key to application.yml
 ```
