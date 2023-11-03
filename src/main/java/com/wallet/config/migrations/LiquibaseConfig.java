@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
+/**
+ * Осуществляет миграции
+ */
 @Configuration
 @RequiredArgsConstructor
 @ComponentScan("com.wallet.config.migrations")

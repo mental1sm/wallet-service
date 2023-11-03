@@ -10,15 +10,17 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * Предоставляет готовые json строки для ответа
+ */
 @Component
 @RequiredArgsConstructor
 public class JsonBodyBuilder {
     private final ObjectMapper objectMapper;
 
-    public String buildJsonFromMap(Map<String, Object> data) throws IOException {
-        return objectMapper.writeValueAsString(data);
-    }
-
+    /**
+     * Предоставляет готовую json строку для регистрации пользователя на сервере аутентификации
+     */
     public String userRegistrationBody(UserRegistrationDTO userRegistrationDTO) throws IOException {
         ObjectNode json = objectMapper.createObjectNode();
         json.put("username", userRegistrationDTO.getLogin());

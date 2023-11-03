@@ -8,6 +8,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * DTO новой транзакции
+ */
 @Data
 public class NewTransactionDTO {
     @JsonSerialize(using = TransactionTypeSerializer.class)

@@ -8,6 +8,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Создает схему для служебных таблиц Keycloak
+*/
 @Component
 public class CreateKeycloakSchema {
     private final SetupConnection setupConnection;
@@ -17,6 +20,9 @@ public class CreateKeycloakSchema {
         this.setupConnection = setupConnection;
     }
 
+    /**
+     * Создает схему для служебных таблиц Keycloak
+     */
     public void createSchema() {
         String SQL = "CREATE SCHEMA IF NOT EXISTS keycloak;";
         try (Connection connection = setupConnection.getConnection();) {

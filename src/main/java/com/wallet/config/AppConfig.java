@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+/**
+ * Конфигурация модулей приложения
+ */
 @Configuration
 @EnableAspectJAutoProxy
 public class AppConfig {

@@ -21,7 +21,7 @@ public interface WalletService {
     /**
      * Метод depositMoney позволяет внести деньги на кошелек пользователя.
      *
-     * @param walletId id кошелька
+     * @param wallet объект кошелька
      * @param amount  Сумма денег, которую нужно внести на кошелек.
      */
     void depositMoney(Wallet wallet, BigDecimal amount) throws UserIsNotExistsException;

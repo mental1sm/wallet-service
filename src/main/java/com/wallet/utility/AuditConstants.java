@@ -3,13 +3,14 @@ package com.wallet.utility;
 import com.wallet.domain.entities.Log;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Константы для аудита. Выдает ноды с информацией на основе названия метода, аудит которого проводится.
+*/
 @Component
 public class AuditConstants {
 

@@ -1,6 +1,5 @@
 //package dao;
 //
-//import com.wallet.infrastructure.db.liquibase.PostgresMigration;
 //import lombok.Getter;
 //import org.junit.jupiter.api.AfterAll;
 //import org.junit.jupiter.api.BeforeAll;
@@ -10,6 +9,7 @@
 //
 //@Getter
 //@Testcontainers
+//@ContextCo
 //public class DatabaseContainer {
 //    private static String jdbcUrl;
 //    private static String username;

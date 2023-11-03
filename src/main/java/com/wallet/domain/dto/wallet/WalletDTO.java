@@ -8,6 +8,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * DTO кошелька пользователя
+ */
 @Data
 public class WalletDTO {
     private long id;

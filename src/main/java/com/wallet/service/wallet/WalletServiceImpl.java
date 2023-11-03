@@ -46,7 +46,7 @@ public class WalletServiceImpl implements WalletService {
         transactionDao.updateTransaction(transaction);
     }
     @Override
-    public void withdrawMoney(Wallet wallet, BigDecimal amount) throws UserIsNotExistsException {
+    public void withdrawMoney(Wallet wallet, BigDecimal amount) {
 
         Transaction transaction = Transaction.builder()
                 .walletId(wallet.getId())
@@ -73,7 +73,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public BigDecimal checkMoneyAmount(Wallet wallet) throws UserIsNotExistsException {
+    public BigDecimal checkMoneyAmount(Wallet wallet) {
         return wallet.getMoneyAmount();
     }
 
@@ -90,7 +90,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public ArrayList<Transaction> getTransactionHistory(Wallet wallet) throws UserIsNotExistsException {
+    public ArrayList<Transaction> getTransactionHistory(Wallet wallet) {
         return transactionDao.getTransactionsOfWallet(wallet);
     }
 

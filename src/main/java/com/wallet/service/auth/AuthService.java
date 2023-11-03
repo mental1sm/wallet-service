@@ -16,6 +16,11 @@ public interface AuthService {
      * @return Access Token в виде строки.
      */
     Optional<String> getAuthToken(UserAuthDTO userAuthDTO) throws IOException;
+
+    /**
+     * Зарегистрировать нового пользователя на сервере аутентификации
+     * @param regDTO DTO регистрации
+     */
     void regUserInRealm(UserRegistrationDTO regDTO) throws UserAllreadyExistsException, IOException;
 
 }

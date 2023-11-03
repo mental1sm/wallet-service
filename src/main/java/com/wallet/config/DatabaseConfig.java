@@ -11,7 +11,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 import java.util.Map;
 
-
+/**
+ * Конфигурация раздачи env-переменных для БД
+ */
 @Configuration
 @Data
 public class DatabaseConfig {

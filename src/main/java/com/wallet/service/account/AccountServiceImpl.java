@@ -5,10 +5,10 @@ import com.wallet.dao.wallet.WalletDao;
 import com.wallet.domain.dto.user.UserRegistrationDTO;
 import com.wallet.domain.entities.User;
 import com.wallet.domain.entities.Wallet;
+import com.wallet.domain.mappers.UserMapper;
 import com.wallet.utility.exceptions.UserAllreadyExistsException;
 import com.wallet.utility.exceptions.UserIsNotExistsException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,16 +22,11 @@ public class AccountServiceImpl implements AccountService {
 
     private final UserDao userDao;
     private final WalletDao walletDao;
+    private final UserMapper userMapper;
 
     @Override
     public void regUser(UserRegistrationDTO regDTO) throws UserAllreadyExistsException, UserIsNotExistsException {
-        User newUser = User.builder()
-                .login(regDTO.getLogin())
-                .password(regDTO.getPassword())
-                .email(regDTO.getEmail())
-                .name(regDTO.getName())
-                .surname(regDTO.getSurname())
-                .build();
+        User newUser = userMapper.RegPlayerDTOToPlayer(regDTO);
 
         userDao.savePlayer(newUser);
         Optional<User> optionalPlayer = userDao.findPlayer(regDTO.getLogin());

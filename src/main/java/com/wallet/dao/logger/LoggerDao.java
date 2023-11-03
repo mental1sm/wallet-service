@@ -1,7 +1,6 @@
 package com.wallet.dao.logger;
 
 import com.wallet.domain.entities.Log;
-import com.wallet.domain.entities.User;
 
 import java.util.ArrayList;
 

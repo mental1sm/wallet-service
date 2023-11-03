@@ -5,7 +5,7 @@ import com.wallet.domain.entities.Wallet;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface WalletMapper {
 
     @Mapping(target = "id", source = "id")

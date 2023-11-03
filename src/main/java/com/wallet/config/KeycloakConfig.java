@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
 
+/**
+ * Конфигурация раздачи env-переменных для Keycloak
+ */
 @Data
 @Configuration
 public class KeycloakConfig {

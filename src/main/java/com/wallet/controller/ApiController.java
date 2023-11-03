@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * API-контроллер
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")

@@ -8,6 +8,9 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+/**
+ * Конфигурация swagger
+*/
 @Configuration
 @EnableOpenApi
 public class SwaggerConfig {

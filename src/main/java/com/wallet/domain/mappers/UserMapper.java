@@ -14,20 +14,20 @@ public interface UserMapper {
     @Mapping(target = "name", source = "name")
     @Mapping(target = "surname", source = "surname")
     @Mapping(target = "email", source = "email")
-    User PlayerDTOToPlayerReg(UserRegistrationDTO userRegistrationDTO);
+    User RegPlayerDTOToPlayer(UserRegistrationDTO userRegistrationDTO);
 
     @Mapping(target = "login", source = "login")
     @Mapping(target = "password", source = "password")
     @Mapping(target = "name", source = "name")
     @Mapping(target = "surname", source = "surname")
     @Mapping(target = "email", source = "email")
-    UserRegistrationDTO PlayerRegToPlayerDTO(User player);
+    UserRegistrationDTO PlayerToRegPlayerDTO(User player);
 
     @Mapping(target = "login", source = "login")
     @Mapping(target = "password", source = "password")
-    UserAuthDTO playerAuthToPlayerDTO(User player);
+    UserAuthDTO playerToAuthPlayerDTO(User player);
 
     @Mapping(target = "login", source = "login")
     @Mapping(target = "password", source = "password")
-    User playerDTOToPlayerAuth (UserAuthDTO userAuthDTO);
+    User authPlayerDTOToPlayer(UserAuthDTO userAuthDTO);
 }

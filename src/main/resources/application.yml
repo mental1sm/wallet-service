@@ -1,21 +1,21 @@
 spring:
   datasource:
-    #url: jdbc:postgresql://localhost:5032/testwalletdb
-    url: jdbc:postgresql://postgresdb:5432/testwalletdb
+    url: jdbc:postgresql://localhost:5032/testwalletdb
+#    url: jdbc:postgresql://postgresdb:5432/testwalletdb
     username: root
     password: 123321
     driver-class-name: org.postgresql.Driver
   liquibase:
-    change-log: /db/changelog/changelog.xml
+    change-log: db/changelog/changelog.xml
     default-schema: changelog
 
 keycloak:
-  #client_url: http://localhost:8282/realms/wallet-realm/protocol/openid-connect/token
-  #admin_url: http://localhost:8282/realms/master/protocol/openid-connect/token
-  #users_url: http://localhost:8282/admin/realms/wallet-realm/users
-  client_url: http://keycloak:8080/realms/wallet-realm/protocol/openid-connect/token
-  admin_url: http://keycloak:8080/realms/master/protocol/openid-connect/token
-  users_url: http://keycloak:8080/admin/realms/wallet-realm/users
+  client_url: http://localhost:8282/realms/wallet-realm/protocol/openid-connect/token
+  admin_url: http://localhost:8282/realms/master/protocol/openid-connect/token
+  users_url: http://localhost:8282/admin/realms/wallet-realm/users
+#  client_url: http://keycloak:8080/realms/wallet-realm/protocol/openid-connect/token
+#  admin_url: http://keycloak:8080/realms/master/protocol/openid-connect/token
+#  users_url: http://keycloak:8080/admin/realms/wallet-realm/users
   admin_username: admin
   admin_password: 123321
   secret: kHcQTi6AgwS1fMuqZPc4ohb6Jm3aa3J0
