@@ -8,29 +8,16 @@ spring:
   liquibase:
     change-log: db/changelog/changelog.xml
     default-schema: changelog
+    liquibase-schema: changelog
   application:
     name: wallet-service
 
   security:
     oauth2:
-      client:
-        provider:
-          keycloak:
-            issuer-uri: http://localhost:8282/realms/wallet-realm
-            user-name-attribute: preferred_username
-
-        registration:
-          keycloak:
-            client-id: wallet-client
-            client-secret: bO06LhYXKple5KnVwXCqjFE6lJkKXUnJ
-            authorization-grant-type: authorization_code
-            scope:
-              - openid
-
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8282/realms/wallet-realm
-          jwk-set-uri: http://localhost:8282/realms/wallet-realm/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8282/realms/mentalism
+          jwk-set-uri: http://localhost:8282/realms/mentalism/protocol/openid-connect/certs
 
 logging:
   level:
@@ -38,3 +25,9 @@ logging:
 
 server:
   port: '8080'
+
+keycloak:
+  token-url: http://localhost:8282/realms/mentalism/protocol/openid-connect/token
+  introspect-url: http://localhost:8282/realms/mentalism/protocol/openid-connect/token/introspect
+  client-id: wallet-client
+  client-secret: aPSNa2sFWT2SPUJv7HxWGXoJ54mcLFgh
