@@ -15,19 +15,18 @@ spring:
     oauth2:
       client:
         provider:
-          wallet-realm:
+          keycloak:
             issuer-uri: http://localhost:8282/realms/wallet-realm
+            user-name-attribute: preferred_username
+
         registration:
-          wallet-realm:
-            provider: wallet-realm
-            client-name: wallet-client
+          keycloak:
             client-id: wallet-client
             client-secret: bO06LhYXKple5KnVwXCqjFE6lJkKXUnJ
+            authorization-grant-type: authorization_code
             scope:
               - openid
-              - offline_access
-              - profile
-            authorization-grant-type: password
+
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8282/realms/wallet-realm
