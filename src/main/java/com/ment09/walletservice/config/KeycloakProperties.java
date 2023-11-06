@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Getter
 @Configuration
-@PropertySource("/application.yml")
+@PropertySource("/application.properties")
 public class KeycloakProperties {
     @Value("${keycloak.client-id}")
     private String clientId;

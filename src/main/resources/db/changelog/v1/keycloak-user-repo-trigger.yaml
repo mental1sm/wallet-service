@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: ment09
+      changes:
+        - sql:
+            sql: |
+              CREATE OR REPLACE FUNCTION keycloak_users_trigger_func()
+              RETURN TRIGGER AS $$
+              BEGIN
+                INSERT INTO accounts.t_user

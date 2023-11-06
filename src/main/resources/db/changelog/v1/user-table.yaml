@@ -20,11 +20,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: password
-                  type: varchar(100)
-                  constraints:
-                    nullable: false
-              - column:
                   name: first_name
                   type: varchar(100)
               - column:
@@ -37,19 +32,3 @@ databaseChangeLog:
                   name: email_verified
                   type: boolean
                   defaultValue: "false"
-              - column:
-                  name: enabled
-                  type: boolean
-                  defaultValue: "true"
-              - column:
-                  name: non_expired
-                  type: boolean
-                  defaultValue: "true"
-              - column:
-                  name: credentials_non_expired
-                  type: boolean
-                  defaultValue: "true"
-              - column:
-                  name: non_locked
-                  type: boolean
-                  defaultValue: "true"
