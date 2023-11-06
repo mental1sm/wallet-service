@@ -20,27 +20,15 @@ services:
     volumes:
       - ./docker/pg_data:/var/lib/postgresql/data
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:22.0.5
-    container_name: keycloak
-    command:
-      - start --auto-build --db postgres --hostname-strict-https false --hostname-strict false --proxy edge --http-enabled true --import-realm --spi-user-profile-legacy-user-profile-read-only-attributes *_RES_ACCESS_MODE
+  redis:
+    image: 'redis:latest'
+    container_name: redis-master
     environment:
-      KC_DB_URL: jdbc:postgresql://postgresdb:5432/testwalletdb
-      KC_DB_USERNAME: root
-      KC_DB_PASSWORD: 123321
-      KC_DB_SCHEMA: keycloak
-      KC_FEATURES: preview
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: 123321
+      - REDIS_PASSWORD=123321
     ports:
-      - 8282:8080
-    depends_on:
-      db:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://0.0.0.0:8080/realms/master"]
-      start_period: 10s
-      interval: 30s
-      retries: 3
-      timeout: 5s
+      - "6000:6379"
+    volumes:
+      - ./docker/redis/redis_log:/log
+      - ./docker/redis/redis_conf:/conf
+      - ./docker/redis/redis_data:/data
+    command: redis-server --save 900 1 --appendonly yes

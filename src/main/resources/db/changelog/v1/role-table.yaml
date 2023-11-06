@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: ment09
+      changes:
+        - createTable:
+            tableName: t_role
+            schemaName: accounts
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false

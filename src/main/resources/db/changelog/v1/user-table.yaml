@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ment09
+      changes:
+        - createTable:
+            tableName: t_user
+            schemaName: accounts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(100)
+              - column:
+                  name: last_name
+                  type: varchar(100)
+              - column:
+                  name: email
+                  type: varchar(100)
+              - column:
+                  name: email_verified
+                  type: boolean
+                  defaultValue: "false"
+              - column:
+                  name: enabled
+                  type: boolean
+                  defaultValue: "true"
+              - column:
+                  name: non_expired
+                  type: boolean
+                  defaultValue: "true"
+              - column:
+                  name: credentials_non_expired
+                  type: boolean
+                  defaultValue: "true"
+              - column:
+                  name: non_locked
+                  type: boolean
+                  defaultValue: "true"

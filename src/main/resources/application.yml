@@ -1,23 +1,33 @@
 spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    generate-ddl: false
+
   datasource:
-    url: jdbc:postgresql://localhost:5032/testwalletdb
-    #    url: jdbc:postgresql://postgresdb:5432/testwalletdb
+    url: jdbc:postgresql://localhost:5032/spring
     username: root
     password: 123321
     driver-class-name: org.postgresql.Driver
   liquibase:
-    change-log: db/changelog/changelog.xml
+  #  liquibase:
+    change-log: db/changelog/changelog.yml
     default-schema: changelog
     liquibase-schema: changelog
+  data:
+    redis:
+      host: localhost
+      port: 6000
+      password: 123321
+
+
   application:
     name: wallet-service
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8282/realms/mentalism
-          jwk-set-uri: http://localhost:8282/realms/mentalism/protocol/openid-connect/certs
+
+
+
 
 logging:
   level:

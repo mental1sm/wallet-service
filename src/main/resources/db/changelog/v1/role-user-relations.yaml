@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: ment09
+      changes:
+        - createTable:
+            tableName: "t_user_roles"
+            schemaName: "accounts"
+            columns:
+              - column:
+                  name: roles_id
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: users_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: FK_t_user_roles_role
+            baseColumnNames: roles_id
+            referencedColumnNames: id
+            baseTableName: t_user_roles
+            referencedTableName: t_role
+            referencedTableSchemaName: accounts
+            baseTableSchemaName: accounts
+
+        - addForeignKeyConstraint:
+            constraintName: FK_t_user_roles_user
+            baseColumnNames: users_id
+            referencedColumnNames: id
+            baseTableName: t_user_roles
+            referencedTableName: t_user
+            baseTableSchemaName: accounts
+            referencedTableSchemaName: accounts

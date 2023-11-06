@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - include:
+      relativeToChangelogFile: true
+      file: v1/role-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: v1/user-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: v1/role-user-relations.yaml
