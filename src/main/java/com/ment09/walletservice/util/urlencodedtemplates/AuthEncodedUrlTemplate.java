@@ -15,7 +15,6 @@ public class AuthEncodedUrlTemplate {
 
     private final KeycloakProperties keycloakProperties;
 
-    @Bean
     public MultiValueMap<String, String> authEncodedUrlBody(Map<String, Object> requestBody) {
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
         data.add("grant_type", "password");

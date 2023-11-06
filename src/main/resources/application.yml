@@ -1,14 +1,16 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5032/testwalletdb
-    #    url: jdbc:postgresql://postgresdb:5432/testwalletdb
+    url: jdbc:postgresql://localhost:5032/spring
     username: root
     password: 123321
     driver-class-name: org.postgresql.Driver
+
   liquibase:
     change-log: db/changelog/changelog.xml
     default-schema: changelog
     liquibase-schema: changelog
+    enabled: false
+
   application:
     name: wallet-service
 
@@ -30,4 +32,4 @@ keycloak:
   token-url: http://localhost:8282/realms/mentalism/protocol/openid-connect/token
   introspect-url: http://localhost:8282/realms/mentalism/protocol/openid-connect/token/introspect
   client-id: wallet-client
-  client-secret: aPSNa2sFWT2SPUJv7HxWGXoJ54mcLFgh
+  client-secret: iwKr4dNljRDnbmzdgp0YoYyVnNWltKM1

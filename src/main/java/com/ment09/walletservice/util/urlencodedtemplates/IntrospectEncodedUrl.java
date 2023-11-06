@@ -15,10 +15,9 @@ public class IntrospectEncodedUrl {
 
     private final KeycloakProperties keycloakProperties;
 
-    @Bean
-    public MultiValueMap<String, String> introspectEncodedUrlBody(Map<String, Object> requestBody) {
+    public MultiValueMap<String, String> introspectEncodedUrlBody(String accessToken) {
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
-        data.add("token", requestBody.get("token").toString());
+        data.add("token", accessToken);
         data.add("client_id", keycloakProperties.getClientId());
         data.add("client_secret", keycloakProperties.getClientSecret());
         return data;

@@ -42,14 +42,6 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                const accessToken = data.access_token
-                const accessLife = data.expires_in
-                const refreshToken = data.refresh_token
-                const refreshLife = data.refresh_expires_in
-
-                document.cookie = `REFRESH_TOKEN=${refreshToken}; path=/; max-age=${refreshLife}`
-                document.cookie = `ACCESS_TOKEN=${accessToken}; path=/; max-age=${accessLife}`
-
             })
             .catch(error => {
                 console.error('Ошибка: ', error)

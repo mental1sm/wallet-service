@@ -22,14 +22,13 @@ public class AuthTokenRequest {
     private final AuthEncodedUrlTemplate encodedUrlTemplate;
     private final KeycloakProperties keycloakProperties;
 
-    @Bean
     public ResponseEntity<String> getAuthToken(Map<String, Object> body) {
         RestTemplate authTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> data = encodedUrlTemplate.authEncodedUrlBody(body);
         HttpEntity<MultiValueMap<String, String>> requestHttpEntity = new HttpEntity<>(data, headers);
-        String authServerEndpointUrl = keycloakProperties.getTokenUrl();
-        return authTemplate.postForEntity(authServerEndpointUrl, requestHttpEntity, String.class);
+        String tokenEndpointUrl = keycloakProperties.getTokenUrl();
+        return authTemplate.postForEntity(tokenEndpointUrl, requestHttpEntity, String.class);
     }
 }
